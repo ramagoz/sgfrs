@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateFirmaEmpresasTable extends Migration
+class CreateRolesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateFirmaEmpresasTable extends Migration
      */
     public function up()
     {
-        Schema::create('firma_empresas', function (Blueprint $table) {
-            $table->integer('cedula')->references('cedula')->on('personas');
-            $table->string('id_recibo')->references('id_recibo')->on('recibos');
+        Schema::create('roles', function (Blueprint $table) {
+            $table->increments('id_rol');
+            $table->string('rol');
         });
     }
 
@@ -26,6 +26,6 @@ class CreateFirmaEmpresasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('firma_empresas');
+        Schema::dropIfExists('roles');
     }
 }
