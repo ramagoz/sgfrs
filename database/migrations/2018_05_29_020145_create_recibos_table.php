@@ -16,7 +16,7 @@ class CreateRecibosTable extends Migration
         Schema::create('recibos', function (Blueprint $table) {
             $table->string('id_recibo')->primary();
             $table->integer('id_estado_recibo')->references('id_estado_recibo')->on('estado_recibos');
-            $table->integer('cedula')->references('cedula')->on('personas');
+            $table->string('cedula')->references('cedula')->on('personas');
             $table->integer('id_periodo')->references('id_periodo')->on('periodos');
         });
     }

@@ -15,7 +15,7 @@ class CreateAuditoriasTable extends Migration
     {
         Schema::create('auditorias', function (Blueprint $table) {
             $table->increments('id_auditoria');
-            $table->integer('cedula')->references('cedula')->on('personas');
+            $table->string('cedula')->references('cedula')->on('personas');
             $table->string('tipo_operacion');
             $table->string('descripcion');
             $table->dateTime('fecha_hora');

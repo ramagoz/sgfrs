@@ -14,7 +14,7 @@ class CreatePersonasTable extends Migration
     public function up()
     {
         Schema::create('personas', function (Blueprint $table) {
-            $table->integer('cedula')->primary();
+            $table->string('cedula')->primary();
             $table->integer('id_usuario')->references('id')->on('users')->unique();
             $table->integer('id_grupo')->references('id_grupo')->on('grupos_recibos');
             $table->string('nombres');
@@ -24,7 +24,7 @@ class CreatePersonasTable extends Migration
             $table->string('dpto');
             $table->string('cargo');
             $table->string('correo');
-            $table->boolean('estado')->default(false);
+            $table->boolean('estado');
             $table->string('obs');
         });
     }

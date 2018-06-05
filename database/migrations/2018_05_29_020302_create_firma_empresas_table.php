@@ -14,7 +14,7 @@ class CreateFirmaEmpresasTable extends Migration
     public function up()
     {
         Schema::create('firma_empresas', function (Blueprint $table) {
-            $table->integer('cedula')->references('cedula')->on('personas');
+            $table->string('cedula')->references('cedula')->on('personas');
             $table->string('id_recibo')->references('id_recibo')->on('recibos');
         });
     }

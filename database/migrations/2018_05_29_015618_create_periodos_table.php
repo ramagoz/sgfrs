@@ -15,7 +15,7 @@ class CreatePeriodosTable extends Migration
     {
         Schema::create('periodos', function (Blueprint $table) {
             $table->increments('id_periodo');
-            $table->boolean('estado_periodo')->default(false);
+            $table->boolean('estado_periodo');
             $table->dateTime('fecha');
         });
     }

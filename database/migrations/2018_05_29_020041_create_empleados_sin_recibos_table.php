@@ -15,7 +15,7 @@ class CreateEmpleadosSinRecibosTable extends Migration
     {
         Schema::create('empleados_sin_recibos', function (Blueprint $table) {
             $table->increments('id_emp_sin_rec');
-            $table->integer('cedula')->references('cedula')->on('personas');
+            $table->string('cedula')->references('cedula')->on('personas');
             $table->integer('id_periodo')->references('id_periodo')->on('periodos');
         });
     }
