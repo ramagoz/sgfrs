@@ -43,6 +43,18 @@ class DatabaseSeeder extends Seeder
 
         self::seedPersona();
         $this->command->info('Tabla de Personas inicializada con datos!');
+
+        self::seedEmpleado_sin_recibo();
+        $this->command->info('Tabla de Empleados sin recibos inicializada con datos!');
+
+        self::seedRecibo();
+        $this->command->info('Tabla de Recibos inicializada con datos!');
+
+        self::seedAuditoria();
+        $this->command->info('Tabla de Auditoria inicializada con datos!');
+
+        self::seedFirma_empresa();
+        $this->command->info('Tabla de Firma Empresa inicializada con datos!');
     }
      private function seedRol()
     {
@@ -162,24 +174,54 @@ class DatabaseSeeder extends Seeder
     {
     	DB::table('empleados_sin_recibos')->delete();
 
-
+        foreach( $this->arrayEmpleados_sin_recibos as $empleados_sin_recibos) 
+        {
+        $p = new Empleado_sin_recibo;
+        $p->id_emp_sin_rec = $empleados_sin_recibos['id_emp_sin_rec'];
+        $p->cedula = $empleados_sin_recibos['cedula'];
+        $p->id_periodo = $empleados_sin_recibos['id_periodo'];
+        $p->save();
+        }
     }
         private function seedRecibo()
     {
     	DB::table('recibos')->delete();
 
-
+        foreach( $this->arrayRecibos as $recibos) 
+        {
+        $p = new Recibo;
+        $p->id_recibo = $recibos['id_recibo'];
+        $p->id_estado_recibo = $recibos['id_estado_recibo'];
+        $p->cedula = $recibos['cedula'];
+        $p->id_periodo = $recibos['id_periodo'];
+        $p->save();
+        }
     }
         private function seedAuditoria()
     {
     	DB::table('auditorias')->delete();
 
-
+        foreach( $this->arrayAuditorias as $auditorias) 
+        {
+        $p = new Auditoria;
+        $p->cedula = $auditorias['cedula'];
+        $p->tipo_operacion = $auditorias['tipo_operacion'];
+        $p->descripcion = $auditorias['descripcion'];
+        $p->fecha_hora = $auditorias['fecha_hora'];
+        $p->save();
+        }
     }
         private function seedFirma_empresa()
     {
     	DB::table('firma_empresas')->delete();
 
+        foreach( $this->arrayFirma_empresas as $firma_empresas) 
+        {
+        $p = new Firma_empresa;
+        $p->cedula = $firma_empresas['cedula'];
+        $p->id_recibo = $firma_empresas['id_recibo'];
+        $p->save();
+        }
     }
 
     private $arrayRoles = 
@@ -440,6 +482,166 @@ class DatabaseSeeder extends Seeder
             'correo' => 'f@f.c',
             'estado' => '1',
             'obs' => 'ninguna'
+            )
+    );
+    private $arrayEmpleados_sin_recibos = 
+    array(
+        array(
+            'id_emp_sin_rec' => '1',
+            'cedula' => '1111111',
+            'id_periodo' => '2'
+            ),
+        array(
+            'id_emp_sin_rec' => '2',
+            'cedula' => '2222222',
+            'id_periodo' => '3'
+            ),
+        array(
+            'id_emp_sin_rec' => '3',
+            'cedula' => '1111111',
+            'id_periodo' => '3'
+            )
+    );
+    private $arrayRecibos = 
+    array(
+        array(
+            'id_recibo' => 'recibo-1111111-0118',
+            'id_estado_recibo' => '4',
+            'cedula' => '1111111',
+            'id_periodo' => '1'
+            ),
+        array(
+            'id_recibo' => 'recibo-2222222-0118',
+            'id_estado_recibo' => '4',
+            'cedula' => '2222222',
+            'id_periodo' => '1'
+            ),
+        array(
+            'id_recibo' => 'recibo-3333333-0118',
+            'id_estado_recibo' => '4',
+            'cedula' => '3333333',
+            'id_periodo' => '1'
+            ),
+        array(
+            'id_recibo' => 'recibo-4444444-0118',
+            'id_estado_recibo' => '4',
+            'cedula' => '4444444',
+            'id_periodo' => '1'
+            ),
+        array(
+            'id_recibo' => 'recibo-5555555-0118',
+            'id_estado_recibo' => '4',
+            'cedula' => '5555555',
+            'id_periodo' => '1'
+            ),
+        array(
+            'id_recibo' => 'recibo-2222222-0218',
+            'id_estado_recibo' => '4',
+            'cedula' => '2222222',
+            'id_periodo' => '2'
+            ),
+        array(
+            'id_recibo' => 'recibo-3333333-0218',
+            'id_estado_recibo' => '4',
+            'cedula' => '3333333',
+            'id_periodo' => '2'
+            ),
+        array(
+            'id_recibo' => 'recibo-4444444-0218',
+            'id_estado_recibo' => '4',
+            'cedula' => '4444444',
+            'id_periodo' => '2'
+            ),
+        array(
+            'id_recibo' => 'recibo-5555555-0218',
+            'id_estado_recibo' => '4',
+            'cedula' => '5555555',
+            'id_periodo' => '2'
+            ),
+        array(
+            'id_recibo' => 'recibo-3333333-0318',
+            'id_estado_recibo' => '4',
+            'cedula' => '3333333',
+            'id_periodo' => '3'
+            ),
+        array(
+            'id_recibo' => 'recibo-4444444-0318',
+            'id_estado_recibo' => '4',
+            'cedula' => '4444444',
+            'id_periodo' => '3'
+            ),
+        array(
+            'id_recibo' => 'recibo-5555555-0318',
+            'id_estado_recibo' => '4',
+            'cedula' => '5555555',
+            'id_periodo' => '3'
+            )
+    );
+    private $arrayAuditorias = 
+    array(
+        array(
+            'cedula' => '0000000',
+            'tipo_operacion' => 'firma',
+            'descripcion' => 'firma recibo empleado ci 2222222',
+            'fecha_hora' => '2018-01-01'
+            ),
+        array(
+            'cedula' => '0000000',
+            'tipo_operacion' => 'firma',
+            'descripcion' => 'firma recibo empleado ci 3333333',
+            'fecha_hora' => '2018-01-01'
+            )
+        
+    );
+    private $arrayFirma_empresas = 
+    array(
+        array(
+            'cedula' => '0000000',
+            'id_recibo' => 'recibo-1111111-0118'
+            ),
+        array(
+            'cedula' => '0000000',
+            'id_recibo' => 'recibo-2222222-0118'
+            ),
+        array(
+            'cedula' => '0000000',
+            'id_recibo' => 'recibo-33333333-0118'
+            ),
+        array(
+            'cedula' => '0000000',
+            'id_recibo' => 'recibo-4444444-0118'
+            ),
+        array(
+            'cedula' => '0000000',
+            'id_recibo' => 'recibo-5555555-0118'
+            ),
+        array(
+            'cedula' => '0000000',
+            'id_recibo' => 'recibo-2222222-0218'
+            ),
+        array(
+            'cedula' => '0000000',
+            'id_recibo' => 'recibo-3333333-0218'
+            ),
+        array(
+            'cedula' => '0000000',
+            'id_recibo' => 'recibo-4444444-0218'
+            ),
+        array(
+            'cedula' => '0000000',
+            'id_recibo' => 'recibo-5555555-0218'
+            ),
+        array(
+            'cedula' => '0000000',
+            'id_recibo' => 'recibo-3333333-0318'
+            ),
+        array(
+            'cedula' => '0000000',
+            'id_recibo' => 'recibo-4444444-0318'
+            ),
+        array(
+            'cedula' => '0000000',
+            'id_recibo' => 'recibo-5555555-0318'
             )
     );
 /*
