@@ -5,10 +5,10 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">PAGINA PRINCIPAL</div>
+                <div class="card-header">ERROR</div>
 
                 <div class="card-body">
-                    Contenido Página Principal
+                    Usuario sin rol asignado!!!
                 </div>
             </div>
         </div>
