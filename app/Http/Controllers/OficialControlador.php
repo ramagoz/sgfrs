@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 
 class OficialControlador extends Controller
 {
-    public function getIndex()
+    public function getIndexOficial()
     {
-    	return view('oficial.index');
+    	return view('oficial.indexoficial');
     }
 }

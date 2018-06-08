@@ -14,13 +14,13 @@ Route::get('/sin_rol', function()
 Route::group(['middleware' => 'auth'], function() 
 {
 
-	Route::get('rrhh', 'RrhhControlador@getIndex');
+	Route::get('rrhh', 'RrhhControlador@getIndexRrhh');
 
-	Route::get('oficial', 'OficialControlador@getIndex');
+	Route::get('oficial', 'OficialControlador@getIndexOficial');
 
-	Route::get('empleado', 'EmpleadoControlador@getIndex');
+	Route::get('empleado', 'EmpleadoControlador@getIndexEmpleado');
 
-	Route::get('empresa', 'EmpresaControlador@getIndex');
+	Route::get('empresa', 'EmpresaControlador@getIndexEmpresa');
 
 });
 

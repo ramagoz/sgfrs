@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 
 class RrhhControlador extends Controller
 {
-    public function getIndex()
+    public function getIndexRrhh()
     {
-    	return view('rrhh.index');
+    	return view('rrhh.indexrrhh');
     }
 }

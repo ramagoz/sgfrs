@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 
 class EmpleadoControlador extends Controller
 {
-    public function getIndex()
+    public function getIndexEmpleado()
     {
-    	return view('empleado.index');
+    	return view('empleado.indexempleado');
     }
 }
