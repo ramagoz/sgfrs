@@ -1,17 +1,6 @@
 @extends('layouts.app')
-
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">PAGINA PRINCIPAL EMPRESA</div>
+@include('layouts.menu_empresa')
+{{-- Dentro de section va el contenido de la vista--}}
 
-                <div class="card-body">
-                    Contenido Página Principal Empresa
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 @endsection
