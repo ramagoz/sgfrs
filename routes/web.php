@@ -50,10 +50,26 @@ Route::group(['middleware' => 'auth'], function()
 //Sección rutas oficial----------------------------------------------
 
 	Route::get('oficial', 'OficialControlador@getIndexOficial');
+	Route::get('oficial/alta_rrhh', 'OficialControlador@getAltaRrhh');
+	Route::get('oficial/baja_rrhh', 'OficialControlador@getBajaRrhh');
+	Route::get('oficial/modificacion_rrhh', 'OficialControlador@getModificacionRrhh');
+	Route::get('oficial/busqueda_rrhh', 'OficialControlador@getBusquedaRrhh');
+	Route::get('oficial/alta_empresa', 'OficialControlador@getAltaEmpresa');
+	Route::get('oficial/baja_empresa', 'OficialControlador@getBajaEmpresa');
+	Route::get('oficial/modificacion_empresa', 'OficialControlador@getModificacionEmpresa');
+	Route::get('oficial/busqueda_empresa', 'OficialControlador@getBusquedaEmpresa');
+	Route::get('oficial/roles', 'OficialControlador@getRoles');
+	Route::get('oficial/auditoria', 'OficialControlador@getAuditoria');
+	Route::get('oficial/restablecer_contraseña', 'OficialControlador@getRestablecerContraseña');
+	Route::get('oficial/cambiar_contraseña', 'OficialControlador@getCambiarContraseña');
 
 //Sección rutas empleado----------------------------------------------
 
 	Route::get('empleado', 'EmpleadoControlador@getIndexEmpleado');
+	Route::get('empleado/recibos_pendientes', 'EmpleadoControlador@getRecibosPendientes');
+	Route::get('empleado/recibos_firmados', 'EmpleadoControlador@getRecibosFirmados');
+	Route::get('empleado/contactar_rrhh', 'EmpleadoControlador@getContactarRrhh');
+	Route::get('empleado/cambiar_contraseña', 'EmpleadoControlador@getCambiarContraseña');
 
 });
 
