@@ -30,6 +30,11 @@ class RrhhControlador extends Controller
     {
     	return view('rrhh.crear_nuevo_periodo');
     }
+    /*public function getCrear()
+    {
+
+        return view('rrhh.crear_nuevo_periodo');
+    }*/
     public function getValidarRecibos()
     {
     	return view('rrhh.validar_recibos');
