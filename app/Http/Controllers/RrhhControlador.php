@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Periodo;
 
 class RrhhControlador extends Controller
 {
@@ -30,11 +31,22 @@ class RrhhControlador extends Controller
     {
     	return view('rrhh.crear_nuevo_periodo');
     }
-    /*public function getCrear()
+    public function getCrear(Request $request)
     {
-
-        return view('rrhh.crear_nuevo_periodo');
-    }*/
+        $periodo= new Periodo();
+        $periodo->estado_periodo = 0;
+        $periodo->fecha = $request->año.'-'.$request->mes.'-01';
+        $periodo->save();
+        $estructura_carpetas_nuevos = 'C:/xampp/htdocs/sgfrs/public/recibos/nuevos/'.$request->año.'/'.$request->mes;
+        $estructura_carpetas_pendientes = 'C:/xampp/htdocs/sgfrs/public/recibos/pendientes/'.$request->año.'/'.$request->mes;
+        $estructura_carpetas_firmados_empresa = 'C:/xampp/htdocs/sgfrs/public/recibos/firmados_empresa/'.$request->año.'/'.$request->mes;
+        $estructura_carpetas_firmados_empresa_empleados = 'C:/xampp/htdocs/sgfrs/public/recibos/firmados_empresa_empleados/'.$request->año.'/'.$request->mes;
+        mkdir($estructura_carpetas_nuevos, 0777, true);
+        mkdir($estructura_carpetas_pendientes, 0777, true);
+        mkdir($estructura_carpetas_firmados_empresa, 0777, true);
+        mkdir($estructura_carpetas_firmados_empresa_empleados, 0777, true);
+        return view('rrhh.periodo_creado');
+    }
     public function getValidarRecibos()
     {
     	return view('rrhh.validar_recibos');

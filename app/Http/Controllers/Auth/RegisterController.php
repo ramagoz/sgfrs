@@ -63,7 +63,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $rol=0; // identidicado de rol por defecto, sin rol definido
+        $rol=0; // identidicador de rol por defecto, sin rol definido
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],

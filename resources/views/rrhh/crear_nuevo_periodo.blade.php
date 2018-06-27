@@ -6,7 +6,7 @@
 	<p align="center"><strong>Usuario: </strong> {{ Auth::user()->name }}, esta conectado con el Rol de <strong>Recursos Humanos</strong></p>
 	<br>
 
-	<form action="/rrhh/crear_nuevo_periodo" method="POST">	
+	<form action="/rrhh/periodo_creado" method="POST">	
 	{{csrf_field()}}
 
 	<div align="center" id="prueba">
@@ -14,15 +14,15 @@
 			<tr> 
 				<th>Mes: </th>
 				<td><select name="mes" id="mes"> 
-				   <option value="1">Enero</option> 
-				   <option value="2">Febrero</option> 
-				   <option value="3">Marzo</option>
-				   <option value="4">Abril</option> 
-				   <option value="5">Mayo</option> 
-				   <option value="6">Junio</option>
-				   <option value="7">Julio</option> 
-				   <option value="8">Agosto</option> 
-				   <option value="9">Setiembre</option>
+				   <option value="01">Enero</option> 
+				   <option value="02">Febrero</option> 
+				   <option value="03">Marzo</option>
+				   <option value="04">Abril</option> 
+				   <option value="05">Mayo</option> 
+				   <option value="06">Junio</option>
+				   <option value="07">Julio</option> 
+				   <option value="08">Agosto</option> 
+				   <option value="09">Setiembre</option>
 				   <option value="10">Octubre</option> 
 				   <option value="11">Noviembre</option> 
 				   <option value="12">Diciembre</option>
