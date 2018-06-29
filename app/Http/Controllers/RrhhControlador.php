@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Periodo;
 use App\Persona;
+use App\Recibo;
 
 class RrhhControlador extends Controller
 {
@@ -60,6 +61,7 @@ class RrhhControlador extends Controller
     {
         $mes=$request->mes;
         $año=$request->año;
+        $periodo= 1;
         $dir = "C:/xampp/htdocs/sgfrs/public/recibos/nuevos/".$año."/".$mes."/";
         $a=0;$b=0;$c=0;$d=0;
         foreach (scandir($dir) as $f)//esta funcion permite leer el nombre de los archivos contenidos en un directorio
@@ -77,6 +79,13 @@ class RrhhControlador extends Controller
                         {
                             $recibos[$a] = $f;
                             $a++;
+                            $Recibo= new Recibo();
+                            $Recibo->id_recibo=substr($f, 0, -4);
+                            $Recibo->id_estado_recibo=2;
+                            $Recibo->cedula=$cedula;
+                            $Recibo->id_periodo=$periodo;
+                            $Recibo->save();
+                            rename($dir.$f, "C:/xampp/htdocs/sgfrs/public/recibos/pendientes/".$año."/".$mes."/".$f);
                         }
                         else
                         {//aqui se guardan los recibos que el numero de cedula no corresponde
