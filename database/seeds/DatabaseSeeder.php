@@ -505,73 +505,73 @@ class DatabaseSeeder extends Seeder
     private $arrayRecibos = 
     array(
         array(
-            'id_recibo' => 'recibo-1111111-0118',
+            'id_recibo' => '1111111-0118',
             'id_estado_recibo' => '4',
             'cedula' => '1111111',
             'id_periodo' => '1'
             ),
         array(
-            'id_recibo' => 'recibo-2222222-0118',
+            'id_recibo' => '2222222-0118',
             'id_estado_recibo' => '4',
             'cedula' => '2222222',
             'id_periodo' => '1'
             ),
         array(
-            'id_recibo' => 'recibo-3333333-0118',
+            'id_recibo' => '3333333-0118',
             'id_estado_recibo' => '4',
             'cedula' => '3333333',
             'id_periodo' => '1'
             ),
         array(
-            'id_recibo' => 'recibo-4444444-0118',
+            'id_recibo' => '4444444-0118',
             'id_estado_recibo' => '4',
             'cedula' => '4444444',
             'id_periodo' => '1'
             ),
         array(
-            'id_recibo' => 'recibo-5555555-0118',
+            'id_recibo' => '5555555-0118',
             'id_estado_recibo' => '4',
             'cedula' => '5555555',
             'id_periodo' => '1'
             ),
         array(
-            'id_recibo' => 'recibo-2222222-0218',
+            'id_recibo' => '2222222-0218',
             'id_estado_recibo' => '4',
             'cedula' => '2222222',
             'id_periodo' => '2'
             ),
         array(
-            'id_recibo' => 'recibo-3333333-0218',
+            'id_recibo' => '3333333-0218',
             'id_estado_recibo' => '4',
             'cedula' => '3333333',
             'id_periodo' => '2'
             ),
         array(
-            'id_recibo' => 'recibo-4444444-0218',
+            'id_recibo' => '4444444-0218',
             'id_estado_recibo' => '4',
             'cedula' => '4444444',
             'id_periodo' => '2'
             ),
         array(
-            'id_recibo' => 'recibo-5555555-0218',
+            'id_recibo' => '5555555-0218',
             'id_estado_recibo' => '4',
             'cedula' => '5555555',
             'id_periodo' => '2'
             ),
         array(
-            'id_recibo' => 'recibo-3333333-0318',
+            'id_recibo' => '3333333-0318',
             'id_estado_recibo' => '4',
             'cedula' => '3333333',
             'id_periodo' => '3'
             ),
         array(
-            'id_recibo' => 'recibo-4444444-0318',
+            'id_recibo' => '4444444-0318',
             'id_estado_recibo' => '4',
             'cedula' => '4444444',
             'id_periodo' => '3'
             ),
         array(
-            'id_recibo' => 'recibo-5555555-0318',
+            'id_recibo' => '5555555-0318',
             'id_estado_recibo' => '4',
             'cedula' => '5555555',
             'id_periodo' => '3'
