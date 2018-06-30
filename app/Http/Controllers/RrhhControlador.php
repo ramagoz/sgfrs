@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
 use App\Periodo;
 use App\Persona;
 use App\Recibo;
+use DB;
 
 class RrhhControlador extends Controller
 {
@@ -61,6 +63,7 @@ class RrhhControlador extends Controller
     {
         $mes=$request->mes;
         $año=$request->año;
+        $cantidad_empleados= DB::table('personas')->where('id_usuario', '1')->orWhere('id_usuario', '2')->orWhere('id_usuario', '5')->orWhere('id_usuario', '6')->count();
         $periodo= 1;
         $dir = "C:/xampp/htdocs/sgfrs/public/recibos/nuevos/".$año."/".$mes."/";
         $a=0;$b=0;$c=0;$d=0;
@@ -131,9 +134,11 @@ class RrhhControlador extends Controller
         {
             echo "Recibo error de cedula<br>";
             print_r($recibo_error_cedula);
-            echo "<br>Cantidad de recibos con error de cedula: ".count($recibo_error_cedula);
+            echo "<br>Cantidad de recibos con número de cedula no encontrado en el sistema: ".count($recibo_error_cedula);
             echo "<br>";
         }
+        echo "Total de usuarios del sistema: ";
+        print_r($cantidad_empleados);
         //return view('rrhh.recibos_importados')->with('recibos',$recibos);;
     }
     public function getEmpleadosSinRecibos()
