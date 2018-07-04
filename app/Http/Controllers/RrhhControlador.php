@@ -53,7 +53,112 @@ class RrhhControlador extends Controller
     }
     public function getValidarRecibos()
     {
-    	return view('rrhh.validar_recibos');
+        return view('rrhh.validar_recibos');
+    }
+    public function postValidarRecibos(Request $request)
+    {
+        $mes=$request->mes;
+        $año=$request->año;
+        $cantidad_empleados= DB::table('users')->where('id_rol', '1')->orWhere('id_rol', '2')->orWhere('id_rol', '4')->orWhere('id_rol', '5')->count();
+        $periodo= 1;
+        $dir = "C:/xampp/htdocs/sgfrs/public/recibos/nuevos/".$año."/".$mes."/";
+        $a=0;$b=0;$c=0;$d=0;
+        foreach (scandir($dir) as $f)//esta funcion permite leer el nombre de los archivos contenidos en un directorio
+        {
+          if ($f !== '.' and $f !== '..')// se descarta del directorio el "." y ".."
+          {
+            if (strtolower(substr($f, -4))== '.pdf') //se controlar si la extension es .pdf
+            {
+                if (substr($f, -9, 3)== "-".$mes and substr($f, -6, 2)== substr($año,-2)) 
+                //se verifica si el mes y año corresponde con el que se quiere importar
+                {
+                        $cedula= substr($f, 0, (strlen($f)-9));
+                        $persona= Persona::find($cedula);
+                        if (!empty($persona)) 
+                        {
+                            $recibos[$a] = $f;
+                            $a++;
+                        }
+                        else
+                        {//aqui se guardan los recibos que el numero de cedula no corresponde
+                            $recibo_error_cedula[$d] =$f;
+                            $d++;
+                        }
+                }
+                else
+                {//aqui se guardan los recibos que estan mal su periodo
+                    $recibo_error_periodo[$b] = $f;
+                    $b++;
+                }
+            }
+            else
+            {//aqui se guardan los recibos que estan mal su extension
+              $recibo_error_extension[$c] = $f;
+              $c++;
+            }
+          }
+        }
+        if ($a>0) 
+        {
+            echo "Recibo Correcto<br>";
+            print_r($recibos);
+            echo "<br>Cantidad de recibos correctos procesados: ".count($recibos);
+            echo "<br>";
+            $resultado[0]=count($recibos);
+        }else{
+            echo "Cantidad de recibos correctos procesados: 0";
+            echo "<br>";
+            $resultado[0]=0;
+        }
+        if ($b>0) 
+        {
+            echo "Recibo error de periodo<br>";
+            print_r($recibo_error_periodo);
+            echo "<br>Cantidad de recibos con error de periodo: ".count($recibo_error_periodo);
+            echo "<br>";
+            $resultado[1]=count($recibo_error_periodo);
+        }else{
+            echo "Cantidad de recibos con error de periodo: 0";
+            echo "<br>";
+            $resultado[1]=0;
+        }
+        if ($c>0) 
+        {
+            echo "Recibo error de extension<br>";
+            print_r($recibo_error_extension);
+            echo "<br>Cantidad de recibos con error de extension: ".count($recibo_error_extension);
+            echo "<br>";
+            $resultado[2]=count($recibo_error_extension);
+        }else{
+            echo "Cantidad de recibos con error de extension: 0";
+            echo "<br>";
+            $resultado[2]=0;
+        }
+        if ($d>0) 
+        {
+            echo "Recibo error de cedula<br>";
+            print_r($recibo_error_cedula);
+            echo "<br>Cantidad de recibos con número de cedula no encontrado en el sistema: ".count($recibo_error_cedula);
+            echo "<br>";
+            $resultado[3]=count($recibo_error_cedula);
+        }
+        else{
+            echo "Cantidad de recibos con número de cedula no encontrado en el sistema: 0";
+            echo "<br>";
+            $resultado[3]=0;
+        }
+        if ($a>0) 
+        {
+            echo "Total de empleados del sistema sin recibos: ";
+            $recibos_correctos=count($recibos);
+            echo ($cantidad_empleados-$recibos_correctos);
+            $resultado[4]=count($recibos);
+        }else{
+            echo "Total de empleados del sistema sin recibos: 0";
+            echo "<br>";
+            $resultado[4]=0;
+        }
+    	return view('rrhh.resultado_validacion')->with('resultados',$resultado);
     }
     public function getImportarRecibos()
     {
@@ -63,7 +168,7 @@ class RrhhControlador extends Controller
     {
         $mes=$request->mes;
         $año=$request->año;
-        $cantidad_empleados= DB::table('personas')->where('id_usuario', '1')->orWhere('id_usuario', '2')->orWhere('id_usuario', '5')->orWhere('id_usuario', '6')->count();
+        $cantidad_empleados= DB::table('users')->where('id_rol', '1')->orWhere('id_rol', '2')->orWhere('id_rol', '4')->orWhere('id_rol', '5')->count();
         $periodo= 1;
         $dir = "C:/xampp/htdocs/sgfrs/public/recibos/nuevos/".$año."/".$mes."/";
         $a=0;$b=0;$c=0;$d=0;
@@ -115,6 +220,11 @@ class RrhhControlador extends Controller
             print_r($recibos);
             echo "<br>Cantidad de recibos correctos procesados: ".count($recibos);
             echo "<br>";
+            $resultado[0]=count($recibos);
+        }else{
+            echo "Cantidad de recibos correctos procesados: 0";
+            echo "<br>";
+            $resultado[0]=0;
         }
         if ($b>0) 
         {
@@ -122,6 +232,11 @@ class RrhhControlador extends Controller
             print_r($recibo_error_periodo);
             echo "<br>Cantidad de recibos con error de periodo: ".count($recibo_error_periodo);
             echo "<br>";
+            $resultado[1]=count($recibo_error_periodo);
+        }else{
+            echo "Cantidad de recibos con error de periodo: 0";
+            echo "<br>";
+            $resultado[1]=0;
         }
         if ($c>0) 
         {
@@ -129,6 +244,11 @@ class RrhhControlador extends Controller
             print_r($recibo_error_extension);
             echo "<br>Cantidad de recibos con error de extension: ".count($recibo_error_extension);
             echo "<br>";
+            $resultado[2]=count($recibo_error_extension);
+        }else{
+            echo "Cantidad de recibos con error de extension: 0";
+            echo "<br>";
+            $resultado[2]=0;
         }
         if ($d>0) 
         {
@@ -136,10 +256,25 @@ class RrhhControlador extends Controller
             print_r($recibo_error_cedula);
             echo "<br>Cantidad de recibos con número de cedula no encontrado en el sistema: ".count($recibo_error_cedula);
             echo "<br>";
+            $resultado[3]=count($recibo_error_cedula);
         }
-        echo "Total de usuarios del sistema: ";
-        print_r($cantidad_empleados);
-        //return view('rrhh.recibos_importados')->with('recibos',$recibos);;
+        else{
+            echo "Cantidad de recibos con número de cedula no encontrado en el sistema: 0";
+            echo "<br>";
+            $resultado[3]=0;
+        }
+        if ($a>0) 
+        {
+            echo "Total de empleados del sistema sin recibos: ";
+            $recibos_correctos=count($recibos);
+            echo ($cantidad_empleados-$recibos_correctos);
+            $resultado[4]=count($recibos);
+        }else{
+            echo "Total de empleados del sistema sin recibos: 0";
+            echo "<br>";
+            $resultado[4]=0;
+        }
+        return view('rrhh.recibos_importados')->with('resultado',$resultado);
     }
     public function getEmpleadosSinRecibos()
     {

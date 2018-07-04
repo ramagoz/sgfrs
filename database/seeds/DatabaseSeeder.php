@@ -244,14 +244,10 @@ class DatabaseSeeder extends Seeder
 			),
 		array(
 			'id_rol' => 4,
-			'rol' => 'empresa 1'
-			),
-		array(
-			'id_rol' => 5,
 			'rol' => 'empresa 1 - empleado'
 			),
 		array(
-			'id_rol' => 6,
+			'id_rol' => 5,
 			'rol' => 'oficial de seguridad - empleado'
 			)
 	);
@@ -274,7 +270,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'CCCC',
             'email' => 'c@c.c',
             'password' => '$2y$10$bsZ1EpQwakjKIPlXUEbQwe.x2MusZu5jjgvo7yy80IdyPaH9tIBey',
-            'id_rol' => '6'
+            'id_rol' => '5'
             ),
         array(
             'name' => 'DDDD',
