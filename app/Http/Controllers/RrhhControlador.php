@@ -19,6 +19,24 @@ class RrhhControlador extends Controller
     {
     	return view('rrhh.alta_empleado');
     }
+    public function postEmpleadoCargado(Request $request)
+    {
+        $persona=new Persona();
+        $persona->id_usuario=6;
+        $persona->id_grupo=$request->grupo;
+        $persona->nombres=$request->nombre;
+        $persona->apellidos=$request->apellido;
+        $persona->cedula=$request->cedula;
+        $persona->cel=$request->celular;
+        $persona->tel=$request->telefono;
+        $persona->dpto=$request->dpto;
+        $persona->cargo=$request->cargo;
+        $persona->correo=$request->correo;
+        $persona->estado=$request->estado;
+        $persona->obs=$request->observacion;
+        $persona->save();
+        return view('rrhh.empleado_cargado');
+    }
     public function getBajaEmpleado()
     {
     	return view('rrhh.baja_empleado');

@@ -29,6 +29,7 @@ Route::group(['middleware' => 'auth'], function()
 
 	Route::get('rrhh', 'RrhhControlador@getIndexRrhh');
 	Route::get('rrhh/alta_empleado', 'RrhhControlador@getAltaEmpleado');
+	Route::post('rrhh/empleado_cargado', 'RrhhControlador@postEmpleadoCargado');
 	Route::get('rrhh/baja_empleado', 'RrhhControlador@getBajaEmpleado');
 	Route::get('rrhh/modificacion_empleado', 'RrhhControlador@getModificacionEmpleado');
 	Route::get('rrhh/busqueda_empleado', 'RrhhControlador@getBusquedaEmpleado');
