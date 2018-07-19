@@ -22,7 +22,7 @@ class RrhhControlador extends Controller
     public function postEmpleadoCargado(Request $request)
     {
         $persona=new Persona();
-        $persona->id_usuario=6;
+        $persona->id_usuario=7;
         $persona->id_grupo=$request->grupo;
         $persona->nombres=$request->nombre;
         $persona->apellidos=$request->apellido;
