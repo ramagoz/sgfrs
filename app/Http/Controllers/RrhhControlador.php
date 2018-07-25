@@ -75,24 +75,25 @@ class RrhhControlador extends Controller
     }
     public function postValidarRecibos(Request $request)
     {
-        $mes=$request->mes;
-        $año=$request->año;
+        $mes=$request->mes;//se obtiene el mes del periodo a validar
+        $año=$request->año;//se obtiene el año del periodo a validar
         $cantidad_empleados= DB::table('users')->where('id_rol', '1')->orWhere('id_rol', '2')->orWhere('id_rol', '4')->orWhere('id_rol', '5')->count();
-        $periodo= 1;
-        $dir = "C:/xampp/htdocs/sgfrs/public/recibos/nuevos/".$año."/".$mes."/";
-        $a=0;$b=0;$c=0;$d=0;
-        foreach (scandir($dir) as $f)//esta funcion permite leer el nombre de los archivos contenidos en un directorio
+        $periodo= 1;//se obtiene la cantidad de usuarios que son empleados
+        $dir = "C:/xampp/htdocs/sgfrs/public/recibos/nuevos/".$año."/".$mes."/";//se define la direccion del directorio que sera validado
+        $a=0;$b=0;$c=0;$d=0;$e=0; //contadores de datos
+        foreach (scandir($dir) as $f)//esta funcion permite leer el nombre de los archivos contenidos segun directorio especificado y los guarda en la variable $f por cada pasada de la iteraccion hasta leer todos los archivos del directorio
         {
-          if ($f !== '.' and $f !== '..')// se descarta del directorio el "." y ".."
+          if ($f !== '.' and $f !== '..')// se descarta los elementos "." y ".." ya que no son archivos
           {
-            if (strtolower(substr($f, -4))== '.pdf') //se controlar si la extension es .pdf
+            $e++;//contador de cantidad de archivos procesados
+            if (strtolower(substr($f, -4))== '.pdf') //se controlar si la extension del archivo es .pdf
             {
                 if (substr($f, -9, 3)== "-".$mes and substr($f, -6, 2)== substr($año,-2)) 
                 //se verifica si el mes y año corresponde con el que se quiere importar
                 {
                         $cedula= substr($f, 0, (strlen($f)-9));
                         $persona= Persona::find($cedula);
-                        if (!empty($persona)) 
+                        if (!empty($persona))//se verificar que el numero de cedula corresponda con algun usuario del sistema (luego faltaria validar que el numero de cedula solo sea para usuarios que tienen el rol de empleado)
                         {
                             $recibos[$a] = $f;
                             $a++;
@@ -116,67 +117,40 @@ class RrhhControlador extends Controller
             }
           }
         }
-        if ($a>0) 
+        if ($a>0) //aqui se guardan la cantidad de recibos correctos que fueron procesados
         {
-            echo "Recibo Correcto<br>";
-            print_r($recibos);
-            echo "<br>Cantidad de recibos correctos procesados: ".count($recibos);
-            echo "<br>";
             $resultado[0]=count($recibos);
         }else{
-            echo "Cantidad de recibos correctos procesados: 0";
-            echo "<br>";
             $resultado[0]=0;
         }
-        if ($b>0) 
+        if ($b>0) //aqui se guardan la cantidad de recibos con error de periodo
         {
-            echo "Recibo error de periodo<br>";
-            print_r($recibo_error_periodo);
-            echo "<br>Cantidad de recibos con error de periodo: ".count($recibo_error_periodo);
-            echo "<br>";
             $resultado[1]=count($recibo_error_periodo);
         }else{
-            echo "Cantidad de recibos con error de periodo: 0";
-            echo "<br>";
             $resultado[1]=0;
         }
-        if ($c>0) 
+        if ($c>0) //aqui se guardan la cantidad de recibos con error de extension
         {
-            echo "Recibo error de extension<br>";
-            print_r($recibo_error_extension);
-            echo "<br>Cantidad de recibos con error de extension: ".count($recibo_error_extension);
-            echo "<br>";
             $resultado[2]=count($recibo_error_extension);
         }else{
-            echo "Cantidad de recibos con error de extension: 0";
-            echo "<br>";
             $resultado[2]=0;
         }
-        if ($d>0) 
+        if ($d>0) //aqui se guardan la cantidad de recibos con número de cedula no encontrado en el sistema
         {
-            echo "Recibo error de cedula<br>";
-            print_r($recibo_error_cedula);
-            echo "<br>Cantidad de recibos con número de cedula no encontrado en el sistema: ".count($recibo_error_cedula);
-            echo "<br>";
             $resultado[3]=count($recibo_error_cedula);
         }
         else{
-            echo "Cantidad de recibos con número de cedula no encontrado en el sistema: 0";
-            echo "<br>";
             $resultado[3]=0;
         }
-        if ($a>0) 
+        if ($a>0) //aqui se guardan la cantidad de recibos con número de cedula no encontrado en el sistema 
         {
-            echo "Total de empleados del sistema sin recibos: ";
             $recibos_correctos=count($recibos);
-            echo ($cantidad_empleados-$recibos_correctos);
-            $resultado[4]=count($recibos);
+            $resultado[4]=$cantidad_empleados-$recibos_correctos;
         }else{
-            echo "Total de empleados del sistema sin recibos: 0";
-            echo "<br>";
             $resultado[4]=0;
         }
-    	return view('rrhh.resultado_validacion')->with('resultados',$resultado);
+        $resultado[5]=$e; //aqui se guardan la cantidad de archivos que fueron procesados
+    	return view('rrhh.resultado_validacion')->with('resultados',$resultado);//se envia los resultados de la validacion a la vista
     }
     public function getImportarRecibos()
     {
