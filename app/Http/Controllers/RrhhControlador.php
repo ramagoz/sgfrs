@@ -22,12 +22,15 @@ class RrhhControlador extends Controller
     }
     public function postEmpleadoCargado(Request $request)
     {   
-        $usuario=DB::table('users')->select('id') ->where('email',$request->correo)->get();
-        /*$usuario=DB::table('users')->get();*/
-        var_dump($usuario);
-        /*$persona=new Persona();
-        $persona->id_usuario=$usuario->id;
-        //$persona->id_usuario=7;
+        $usuario=DB::table('users')->where('email',$request->correo)->get()->toArray();
+        foreach($usuario as $users)
+        {
+
+            $id=$users->id;
+        }
+    
+        $persona=new Persona();
+        $persona->id_usuario=$id;
         $persona->id_grupo=$request->grupo;
         $persona->nombres=$request->nombre;
         $persona->apellidos=$request->apellido;
@@ -40,7 +43,7 @@ class RrhhControlador extends Controller
         $persona->estado=$request->estado;
         $persona->obs=$request->observacion;
         $persona->save();
-        return view('rrhh.empleado_cargado');*/
+        return view('rrhh.empleado_cargado');
     }
     public function getBajaEmpleado()
     {
