@@ -42,6 +42,7 @@ Route::group(['middleware' => 'auth'], function()
 	Route::get('rrhh/empleados_sin_recibos', 'RrhhControlador@getEmpleadosSinRecibos');
 	Route::get('rrhh/corregir_recibos', 'RrhhControlador@getCorregirRecibos');
 	Route::get('rrhh/grupos_recibos', 'RrhhControlador@getGruposRecibos');
+	Route::post('rrhh/grupos_recibos', 'RrhhControlador@postCrearGrupoRecibo');
 	Route::get('rrhh/pendientes_firma_empresa', 'RrhhControlador@getPendientesFirmaEmpresa');
 	Route::get('rrhh/pendientes_firma_empleados', 'RrhhControlador@getPendientesFirmaEmpleados');
 	Route::get('rrhh/firmados_empresa_empleados', 'RrhhControlador@getFirmadosEmpresaEmpleados');
