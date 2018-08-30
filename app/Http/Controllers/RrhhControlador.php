@@ -21,18 +21,13 @@ class RrhhControlador extends Controller
     	return view('rrhh.alta_empleado');
     }
     public function postEmpleadoCargado(Request $request)
-    {
-<<<<<<< HEAD
-        
+    {   
         $usuario=DB::table('users')->where('email',$request->correo)->all();
         /*$usuario=DB::table('users')->get();*/
-       var_dump($usuario);
-       /* $persona=new Persona();
+        //var_dump($usuario);
         $persona->id_usuario=$usuario->email;
-=======
         $persona=new Persona();
-        $persona->id_usuario=7;
->>>>>>> 28475e262690951c752b58e15644c483de4e6e98
+        //$persona->id_usuario=7;
         $persona->id_grupo=$request->grupo;
         $persona->nombres=$request->nombre;
         $persona->apellidos=$request->apellido;
