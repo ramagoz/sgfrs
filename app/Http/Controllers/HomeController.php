@@ -45,9 +45,6 @@ public function index()
                     return redirect('empresa');
                     break;
                 case 5:
-                    return redirect('empresa');
-                    break;
-                case 6:
                     return redirect('oficial');
                     break;
             }
