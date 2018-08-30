@@ -22,11 +22,11 @@ class RrhhControlador extends Controller
     }
     public function postEmpleadoCargado(Request $request)
     {   
-        $usuario=DB::table('users')->where('email',$request->correo)->all();
+        $usuario=DB::table('users')->select('id') ->where('email',$request->correo)->get();
         /*$usuario=DB::table('users')->get();*/
-        //var_dump($usuario);
-        $persona->id_usuario=$usuario->email;
-        $persona=new Persona();
+        var_dump($usuario);
+        /*$persona=new Persona();
+        $persona->id_usuario=$usuario->id;
         //$persona->id_usuario=7;
         $persona->id_grupo=$request->grupo;
         $persona->nombres=$request->nombre;
