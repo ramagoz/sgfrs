@@ -286,7 +286,9 @@ class RrhhControlador extends Controller
     }
     public function getPendientesFirmaEmpresa()
     {
-        return view('rrhh.pendientes_firma_empresa');
+        $recibos = DB::table('recibos')->get();
+
+        return view('rrhh.pendientes_firma_empresa')->with('recibos',$recibos);
     }
     public function getPendientesFirmaEmpleados()
     {
