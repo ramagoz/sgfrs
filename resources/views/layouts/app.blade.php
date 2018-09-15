@@ -12,6 +12,7 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('https://code.jquery.com/jquery-3.3.1.min.js') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
@@ -20,10 +21,12 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     {!! Html::style('css/datatables.min.css') !!}
+
 </head>
 <body>
- {!! Html::script('https://code.jquery.com/jquery-3.3.1.min.js') !!}
- {!! Html::script('js/datatables.min.js') !!}
+{!! Html::script('https://code.jquery.com/jquery-3.3.1.min.js') !!}
+{!! Html::script('js/datatables.min.js') !!}
+
 @section('script')    
     <script type="text/javascript">
     $(document).ready(function() 
