@@ -1,6 +1,5 @@
 @extends('layouts.app')
 @section('content')
-<link href="{{ asset('https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css')}}" rel="stylesheet">
 {{-- Dentro de section va el contenido de la vista--}}
 	@include('layouts.menu_rrhh')
 
@@ -21,14 +20,6 @@
 
 	</table>
 
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-    
- 	<script type="text/javascript">
-    $(document).ready(function() 
-    {
-    $('#example').DataTable();
-    } );
-	</script>
+
 
 @endsection
