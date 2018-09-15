@@ -14,74 +14,6 @@
         Recursos Humanos
     </strong>
 </p>
-<!--formulario de carga html
-		<form action="/rrhh/empleado_cargado" method="POST">
-			{{ csrf_field() }}
-
-				 <table >
-					
-					<tr>
-						<th>Nombres:</th>
-						<td><input type="text" name="nombre" id="nombre"></td>
-					</tr>
-					<tr>
-						<th>Apellidos:</th>
-						<td><input type="text" name="apellido" id="apellido"></td>
-					</tr>
-					<tr>
-						<th>Cédula:</th>
-						<td><input type="text" name="cedula" id="cedula"></td>
-					</tr>
-					<tr>
-						<th>Teléfono:</th>
-						<td><input type="text" name="telefono" id="telefono"></td>
-					</tr>
-					<tr>
-						<th>Célular:</th>
-						<td><input type="text" name="celular" id="celular"></td>
-					</tr>
-					<tr>
-						<th>Dpto:</th>
-						<td><input type="text" name="dpto" id="dpto"></td>
-					</tr>
-					<tr>
-						<th>Cargo:</th>
-						<td><input type="text" name="cargo" id="cargo"></td>
-					</tr>
-					<tr>
-						<th>Correo:</th>
-						<td><input type="email" name="correo" id="correo"></td>
-					</tr>
-					<tr>
-						<th>Estado:</th>
-						<td>
-						<select name="estado" id="estado">
-						<option value="1">Activo</option>
-						<option value="0">Inactivo</option>
-						</select>
-						</td>
-					</tr>
-					<tr>
-						<th>Grupos:</th>
-						<td>
-							<select>
-								@foreach($nombre_grupos as $grupo)
-					                <option>{{$grupo->nombre_grupo}}</option>
-					            @endforeach
-				            </select>
-						</td>
-					</tr>
-					<tr>
-						<th>Observación</th>
-						<td> <textarea name="observacion" id="observacion"></textarea></td>
-					</tr>
-
-				</table>
-
-				<button class="btn btn-primary" type="submit">Cargar</button>
-		</form>
-<!--formulario de carga boostrap-->
-
 
 <div class="container" align="center">
 
@@ -97,7 +29,7 @@
                 			</div>
               	</div>
               	<div class="form-group row">
-                		<label for="nombre" class="col-lg-2 col-form-label">Nombre:</label>
+                		<label for="nombre" class="col-lg-2 col-form-label">Nombres:</label>
                 			<div class="col-lg-10">
                   				<input class="form-control" id="nombre" name="nombre" type="text">
                 			</div>

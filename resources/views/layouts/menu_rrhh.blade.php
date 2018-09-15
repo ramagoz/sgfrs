@@ -1,5 +1,5 @@
 <link href="{{ asset('css/barra1.css') }}" rel="stylesheet">
-<link href="{{ asset('bootstrap4/css/bootstrap.css') }}" rel="stylesheet">
+
 <nav id='barra_menu'>
     <ul id='menu'>
         <li><a href="#">ABM Empleados</a>
