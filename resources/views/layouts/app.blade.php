@@ -20,6 +20,7 @@
 
 
     <!-- Styles -->
+
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
@@ -71,7 +72,9 @@
         </nav>
 
         <main class="py-4">
+
             @yield('content')
+
         </main>
     </div>
 
