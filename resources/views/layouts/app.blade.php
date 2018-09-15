@@ -18,10 +18,20 @@
     <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css">
 
     <!-- Styles -->
-
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    {!! Html::style('css/datatables.min.css') !!}
 </head>
 <body>
+ {!! Html::script('https://code.jquery.com/jquery-3.3.1.min.js') !!}
+ {!! Html::script('js/datatables.min.js') !!}
+@section('script')    
+    <script type="text/javascript">
+    $(document).ready(function() 
+    {
+    $('#example').DataTable();
+    } );
+    </script>
+@endsection
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
             <div class="container">
