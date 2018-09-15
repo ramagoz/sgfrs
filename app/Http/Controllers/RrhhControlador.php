@@ -50,13 +50,39 @@ class RrhhControlador extends Controller
     {
         return view('rrhh.baja_empleado');
     }
-    public function getModificacionEmpleado()
+    public function getModificacionEmpleado(Request $request, $id_usuario)
     {
-        return view('rrhh.modificacion_empleado');
+       # $id="13";
+        $persona =DB::table('personas')->where('id_usuario',$id_usuario)->get()->toArray();
+        $nombre_grupos = DB::table('grupos_recibos')->select('nombre_grupo','id_grupo')->get();
+        return view('rrhh.modificacion_empleado', compact('persona'),compact('nombre_grupos'));
+    }
+    public function getEmpleadoModificado(Request $request)
+    {   
+      
+        $persona =Persona::find($request->cedula);
+    
+        $persona->id_grupo   = $request->grupo;
+        $persona->nombres    = $request->nombre;
+        $persona->apellidos  = $request->apellido;
+        $persona->cedula     = $request->cedula;
+        $persona->cel        = $request->celular;
+        $persona->tel        = $request->telefono;
+        $persona->dpto       = $request->dpto;
+        $persona->cargo      = $request->cargo;
+        $persona->correo     = $request->correo;
+        $persona->estado     = $request->estado;
+        $persona->obs        = $request->observacion;
+       
+        $persona->save();
+        return view('rrhh.empleado_cargado');
+        
     }
     public function getBusquedaEmpleado()
     {
-        return view('rrhh.busqueda_empleado');
+        $datos_empleados = DB::table('personas')->get();
+        return view('rrhh.busqueda_empleado', compact('datos_empleados'));
+
     }
     public function getCrearNuevoPeriodo()
     {

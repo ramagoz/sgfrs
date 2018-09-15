@@ -31,7 +31,8 @@ Route::group(['middleware' => 'auth'], function()
 	Route::get('rrhh/alta_empleado', 'RrhhControlador@getAltaEmpleado');
 	Route::post('rrhh/empleado_cargado', 'RrhhControlador@postEmpleadoCargado');
 	Route::get('rrhh/baja_empleado', 'RrhhControlador@getBajaEmpleado');
-	Route::get('rrhh/modificacion_empleado', 'RrhhControlador@getModificacionEmpleado');
+	Route::get('rrhh/modificacion_empleado/{id_usuario}', 'RrhhControlador@getModificacionEmpleado');
+	Route::get('rrhh/empleado_modificado', 'RrhhControlador@getEmpleadoModificado');
 	Route::get('rrhh/busqueda_empleado', 'RrhhControlador@getBusquedaEmpleado');
 	Route::get('rrhh/crear_nuevo_periodo', 'RrhhControlador@getCrearNuevoPeriodo');
 	Route::post('rrhh/periodo_creado', 'RrhhControlador@getCrear');
