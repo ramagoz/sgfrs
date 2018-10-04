@@ -312,12 +312,34 @@ class RrhhControlador extends Controller
     }
     public function getPendientesFirmaEmpresa()
     {
-        $recibos = DB::table('recibos')->get();
+        $recibos = DB::table('recibos')
+        ->join('personas', 'recibos.cedula','=','personas.cedula')
+        ->where('recibos.id_estado_recibo', '1')
+        ->get();
+        /*
+        $id=0;
+        $recibos= array();
+        
+        foreach ($datos as $dato) 
+        {
+            $id=$id++;
+            $registro= array();
+            $registro=[
+            'id_recibo'=>$dato->id_recibo,
+            'año'=>$dato->id_recibo,
+            'mes'=>$dato->id_recibo,
+            'cedula'=>$dato->cedula,
+            'nombres'=>$dato->nombres,
+            'apellidos'=>$dato->apellidos
+            ];
+            array_push($recibos, $registro);
+        }*/
 
         return view('rrhh.pendientes_firma_empresa')->with('recibos',$recibos);
     }
     public function getVerRecibo($id)
     {
+        $id="/recibos/pendientes/"."20".substr($id, -2, 2)."/".substr($id, -4, 2)."/".$id.".pdf";
         return view('rrhh.ver_recibo')->with('id',$id);
     }
     /*public function getVerRecibo()
