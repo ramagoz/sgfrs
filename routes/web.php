@@ -48,8 +48,11 @@ Route::group(['middleware' => 'auth'], function()
 	Route::get('rrhh/ver_recibo/{id}', 'RrhhControlador@getVerRecibo');
 	//Route::get('rrhh/ver_recibo', 'RrhhControlador@getVerRecibo');
 	Route::get('rrhh/pendientes_firma_empleados', 'RrhhControlador@getPendientesFirmaEmpleados');
+	Route::get('rrhh/ver_recibo_pendientes_firma_empleados/{id}', 'RrhhControlador@getVerReciboPendientesFirmaEmpleados');
 	Route::get('rrhh/firmados_empresa_empleados', 'RrhhControlador@getFirmadosEmpresaEmpleados');
+	Route::get('rrhh/ver_recibo_firmados_empresa_empleados/{id}', 'RrhhControlador@getVerReciboFirmadoEmpresaEmpleado');
 	Route::get('rrhh/todos_los_recibos', 'RrhhControlador@getTodosLosRecibos');
+	Route::get('rrhh/ver_todos_los_recibos/{id}', 'RrhhControlador@getVerTodosLosRecibos');
 	Route::get('rrhh/informes_rrhh', 'RrhhControlador@getInformesRrhh');
 	Route::get('rrhh/cambiar_contraseña', 'RrhhControlador@getCambiarContraseña');
 

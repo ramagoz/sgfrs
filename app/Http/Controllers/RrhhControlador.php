@@ -195,8 +195,8 @@ class RrhhControlador extends Controller
     {
         $mes                = $request->mes; //se obtiene el mes del periodo a validar
         $año               = $request->año; //se obtiene el año del periodo a validar
-        $cantidad_empleados = DB::table('users')->where('id_rol', '1')->orWhere('id_rol', '2')->orWhere('id_rol', '4')->orWhere('id_rol', '5')->count();
-        $periodo            = 1; //se obtiene la cantidad de usuarios que son empleados
+        $cantidad_empleados = DB::table('users')->where('id_rol', '1')->orWhere('id_rol', '2')->orWhere('id_rol', '4')->orWhere('id_rol', '5')->count();//se obtiene la cantidad de usuarios que son empleados
+        $periodo            = 1; //por defecto al crear un perior el mismo se encuentra abierto, es decir con codigo 1
         $dir                = "C:/xampp/htdocs/sgfrs/public/recibos/nuevos/" . $año . "/" . $mes . "/"; //se define la direccion del directorio que sera validado
         $a                  = 0;
         $b                  = 0;
@@ -314,26 +314,8 @@ class RrhhControlador extends Controller
     {
         $recibos = DB::table('recibos')
         ->join('personas', 'recibos.cedula','=','personas.cedula')
-        ->where('recibos.id_estado_recibo', '1')
+        ->where('recibos.id_estado_recibo', '2')
         ->get();
-        /*
-        $id=0;
-        $recibos= array();
-        
-        foreach ($datos as $dato) 
-        {
-            $id=$id++;
-            $registro= array();
-            $registro=[
-            'id_recibo'=>$dato->id_recibo,
-            'año'=>$dato->id_recibo,
-            'mes'=>$dato->id_recibo,
-            'cedula'=>$dato->cedula,
-            'nombres'=>$dato->nombres,
-            'apellidos'=>$dato->apellidos
-            ];
-            array_push($recibos, $registro);
-        }*/
 
         return view('rrhh.pendientes_firma_empresa')->with('recibos',$recibos);
     }
@@ -342,21 +324,43 @@ class RrhhControlador extends Controller
         $id="/recibos/pendientes/"."20".substr($id, -2, 2)."/".substr($id, -4, 2)."/".$id.".pdf";
         return view('rrhh.ver_recibo')->with('id',$id);
     }
-    /*public function getVerRecibo()
-    {
-        return view('rrhh.ver_recibo');
-    }*/
     public function getPendientesFirmaEmpleados()
     {
-        return view('rrhh.pendientes_firma_empleados');
+        $recibos = DB::table('recibos')
+        ->join('personas', 'recibos.cedula','=','personas.cedula')
+        ->where('recibos.id_estado_recibo', '3')
+        ->get();
+
+        return view('rrhh.pendientes_firma_empleados')->with('recibos',$recibos);
+    }
+    public function getVerReciboPendientesFirmaEmpleados($id)
+    {
+        $id="/recibos/firmados_empresa/"."20".substr($id, -2, 2)."/".substr($id, -4, 2)."/".$id.".pdf";
+        return view('rrhh.ver_recibo_pendientes_firma_empleados')->with('id',$id);
     }
     public function getFirmadosEmpresaEmpleados()
     {
-        return view('rrhh.firmados_empresa_empleados');
+        $recibos = DB::table('recibos')
+        ->join('personas', 'recibos.cedula','=','personas.cedula')
+        ->where('recibos.id_estado_recibo', '4')
+        ->get();
+
+        return view('rrhh.firmados_empresa_empleados')->with('recibos',$recibos);
+
+    }
+    public function getVerReciboFirmadoEmpresaEmpleado($id)
+    {
+        $id="/recibos/firmados_empresa_empleados/"."20".substr($id, -2, 2)."/".substr($id, -4, 2)."/".$id.".pdf";
+        return view('rrhh.ver_recibo_firmados_empresa_empleados')->with('id',$id);
     }
     public function getTodosLosRecibos()
     {
-        return view('rrhh.todos_los_recibos');
+        $recibos = DB::table('recibos')
+        ->join('personas', 'recibos.cedula','=','personas.cedula')
+        ->where('recibos.id_estado_recibo', '4')
+        ->get();//me quede aqui, realizar una consulta que pueda listar todos los recibos del sistema y luego crear la vista correspondiente
+
+        return view('rrhh.todos_los_recibos')->with('recibos',$recibos);
     }
     public function getInformesRrhh()
     {
