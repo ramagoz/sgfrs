@@ -7,6 +7,6 @@
 <div align="center">
 <iframe src='{{$id}}' width="1200" height="400" style="border: none;" ></iframe>
 <br>
-<a class="btn btn-primary" href="{{ url('/rrhh/pendientes_firma_empresa' ) }}" role="button">Volver</a>
+<a class="btn btn-primary" href="{{ url('/rrhh/pendientes_firma_empleados' ) }}" role="button">Volver</a>
 </div>
 @endsection
