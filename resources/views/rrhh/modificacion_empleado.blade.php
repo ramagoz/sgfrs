@@ -71,8 +71,15 @@
                 		<label for="estado" class="col-lg-2 col-form-label">Estado:</label>
                 			<div class="col-lg-10">
                   				<select class="form-control" id="estado" name="estado" value="{{$persona->estado}}">
-						            <option value="1">Activo</option>
-						            <option value="0">Inactivo</option>
+						            @if ($persona->estado==1)
+                        <option value="1" selected="true">Activo</option>
+                        <option value="0" >Inactivo</option>
+                        @else
+                        <option value="1" >Activo</option>
+                        <option value="0" selected="true">Inactivo</option>
+                        @endif
+                        
+                        
 			        			</select>
                 			</div>
               	</div>
@@ -96,7 +103,7 @@
               	 <div class="form-group row">
                 		<label for="observacion" class="col-lg-2 col-form-label">Obs:</label>
                 			<div class="col-lg-10">
-                  				 <textarea class="form-control" id="observacion" name="observacion" rows="4">{{$persona->cedula}} </textarea>
+                  				 <textarea class="form-control" id="observacion" name="observacion" rows="4">{{$persona->obs}} </textarea>
                 			</div>
               	 </div>
 

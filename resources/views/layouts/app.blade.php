@@ -11,10 +11,11 @@
     <title>SISTEMA DE GESTIÓN Y FIRMA DE RECIBOS DE SUELDOS</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+   <!-- <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="{{ asset('https://code.jquery.com/jquery-3.3.1.min.js') }}" defer></script>
 
     <!-- Fonts -->
+   <!-- <script src="{{ asset('js/app.js') }}" defer></script>
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css">
 
@@ -22,22 +23,14 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    {!! Html::style('css/datatables.min.css') !!}
+   
 
 </head>
 <body>
-{!! Html::script('https://code.jquery.com/jquery-3.3.1.min.js') !!}
-{!! Html::script('js/datatables.min.js') !!}
 
-@section('script')    
-    <script type="text/javascript">
-    $(document).ready(function() 
-    {
-    $('#example').DataTable();
-    } );
-    </script>
-@endsection
-    <div id="app">
+
+
+   <div id="app">
         <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
@@ -90,7 +83,6 @@
 
         </main>
     </div>
-
 
 </body>
 </html>

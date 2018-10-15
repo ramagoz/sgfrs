@@ -30,10 +30,11 @@ Route::group(['middleware' => 'auth'], function()
 	Route::get('rrhh', 'RrhhControlador@getIndexRrhh');
 	Route::get('rrhh/alta_empleado', 'RrhhControlador@getAltaEmpleado');
 	Route::post('rrhh/empleado_cargado', 'RrhhControlador@postEmpleadoCargado');
-	Route::get('rrhh/baja_empleado', 'RrhhControlador@getBajaEmpleado');
-	Route::get('rrhh/modificacion_empleado/{id_usuario}', 'RrhhControlador@getModificacionEmpleado');
+	Route::get('rrhh/baja_empleado/{cedula}', 'RrhhControlador@getBajaEmpleado');
+	Route::get('rrhh/modificacion_empleado/{cedula}', 'RrhhControlador@getModificacionEmpleado');
 	Route::get('rrhh/empleado_modificado', 'RrhhControlador@getEmpleadoModificado');
 	Route::get('rrhh/busqueda_empleado', 'RrhhControlador@getBusquedaEmpleado');
+	Route::get('rrhh/datatable', 'RrhhControlador@datatable');
 	Route::get('rrhh/crear_nuevo_periodo', 'RrhhControlador@getCrearNuevoPeriodo');
 	Route::post('rrhh/periodo_creado', 'RrhhControlador@getCrear');
 	Route::get('rrhh/validar_recibos', 'RrhhControlador@getValidarRecibos');
@@ -52,6 +53,7 @@ Route::group(['middleware' => 'auth'], function()
 	Route::get('rrhh/todos_los_recibos', 'RrhhControlador@getTodosLosRecibos');
 	Route::get('rrhh/informes_rrhh', 'RrhhControlador@getInformesRrhh');
 	Route::get('rrhh/cambiar_contraseña', 'RrhhControlador@getCambiarContraseña');
+    
 
 	
 
