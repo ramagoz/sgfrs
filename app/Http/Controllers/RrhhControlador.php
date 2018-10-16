@@ -357,13 +357,42 @@ class RrhhControlador extends Controller
     {
         $recibos = DB::table('recibos')
         ->join('personas', 'recibos.cedula','=','personas.cedula')
-        ->where('recibos.id_estado_recibo', '4')
-        ->get();//me quede aqui, realizar una consulta que pueda listar todos los recibos del sistema y luego crear la vista correspondiente
+        ->where('recibos.id_estado_recibo', '2')
+        ->orWhere('recibos.id_estado_recibo', '3')
+        ->orWhere('recibos.id_estado_recibo', '4')
+        ->get();
 
         return view('rrhh.todos_los_recibos')->with('recibos',$recibos);
     }
+    public function getVerTodosLosRecibos($id)
+    {
+        $consulta = DB::table('recibos')
+        ->where('id_recibo',$id)
+        ->first();
+        switch ($consulta->id_estado_recibo) 
+        {
+            case 2:
+                $id="/recibos/pendientes/"."20".substr($id, -2, 2)."/".substr($id, -4, 2)."/".$id.".pdf";
+                return view('rrhh.ver_todos_los_recibos')->with('id',$id);
+            break;
+            case 3:
+                $id="/recibos/firmados_empresa/"."20".substr($id, -2, 2)."/".substr($id, -4, 2)."/".$id.".pdf";
+                return view('rrhh.ver_todos_los_recibos')->with('id',$id);
+            break;            
+            case 4:
+                $id="/recibos/firmados_empresa_empleados/"."20".substr($id, -2, 2)."/".substr($id, -4, 2)."/".$id.".pdf";
+                return view('rrhh.ver_todos_los_recibos')->with('id',$id);
+            break; 
+        }
+    }
     public function getInformesRrhh()
     {
+        $recibos = DB::table('recibos')->get();
+        foreach ($recibos as $recibo) 
+        {
+            echo $recibo->id_recibo;
+        }
+
         return view('rrhh.informes_rrhh');
     }
     public function getCambiarContraseña()
