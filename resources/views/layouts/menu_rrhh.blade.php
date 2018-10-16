@@ -2,12 +2,9 @@
 
 <nav id='barra_menu'>
     <ul id='menu'>
-        <li><a href="#">ABM Empleados</a>
+        <li><a href="">ABM Empleados</a>
             <ul>
-                <li><a href="/rrhh/alta_empleado">Alta</a></li>
-                <li><a href="/rrhh/baja_empleado">Baja</a></li>
-                <li><a href="/rrhh/modificacion_empleado">Modificación</a></li>
-                <li><a href="/rrhh/busqueda_empleado">Búsqueda</a></li>
+                <li><a href="/rrhh/busqueda_empleado">ABM Empleados</a></li>
             </ul>
          </li>   
         <li><a href="#">Trabajar con Recibos</a>

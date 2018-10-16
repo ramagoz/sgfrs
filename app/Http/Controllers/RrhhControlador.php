@@ -8,9 +8,25 @@ use App\Persona;
 use App\Recibo;
 use DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
+use Redirect;
+use DataTables;
 
 class RrhhControlador extends Controller
 {
+  
+    //redirige a la vista de busqueda de empleados
+    public function getBusquedaEmpleado()
+    {
+        return view('rrhh.busqueda_empleado');
+    }
+    //devuelve a la vista en formato json los datos de los empleados
+    //para ser procesado por el datatable
+    public function datatable()
+    {
+        return Datatables::of(Persona::query())->make(true);
+    }
+
     public function getIndexRrhh()
     {
         return view('rrhh.indexrrhh');
@@ -46,15 +62,21 @@ class RrhhControlador extends Controller
         $persona->save();
         return view('rrhh.empleado_cargado');
     }
-    public function getBajaEmpleado()
+    public function getBajaEmpleado(request $request)
     {
-        return view('rrhh.baja_empleado');
-    }
-    public function getModificacionEmpleado(Request $request, $id_usuario)
-    {
-       # $id="13";
-        $persona =DB::table('personas')->where('id_usuario',$id_usuario)->get()->toArray();
+
+        $persona =DB::table('personas')->where('cedula',$request->cedula)->get()->toArray();
         $nombre_grupos = DB::table('grupos_recibos')->select('nombre_grupo','id_grupo')->get();
+       
+        return view('rrhh.baja_empleado', compact('persona'),compact('nombre_grupos'));
+        
+    }
+    public function getModificacionEmpleado(request $request)
+    {  
+
+        $persona =DB::table('personas')->where('cedula',$request->cedula)->get()->toArray();
+        $nombre_grupos = DB::table('grupos_recibos')->select('nombre_grupo','id_grupo')->get();
+       
         return view('rrhh.modificacion_empleado', compact('persona'),compact('nombre_grupos'));
     }
     public function getEmpleadoModificado(Request $request)
@@ -78,12 +100,7 @@ class RrhhControlador extends Controller
         return view('rrhh.empleado_cargado');
         
     }
-    public function getBusquedaEmpleado()
-    {
-        $datos_empleados = DB::table('personas')->get();
-        return view('rrhh.busqueda_empleado', compact('datos_empleados'));
-
-    }
+    
     public function getCrearNuevoPeriodo()
     {
         return view('rrhh.crear_nuevo_periodo');
