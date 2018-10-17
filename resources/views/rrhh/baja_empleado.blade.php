@@ -71,7 +71,7 @@
               	<div class="form-group row">
                 		<label for="estado" class="col-lg-2 col-form-label">Estado:</label>
                 			<div class="col-lg-10">
-                  				<select class="form-control" id="estado" name="estado" value="{{$persona->estado}}"readonly >
+                  				<select class="form-control" id="estado" name="estado" value="{{$persona->estado}}" >
 						            @if ($persona->estado==1)
                         <option value="1" ">Activo</option>
                         <option value="0" selected="true">Inactivo</option>
@@ -87,13 +87,11 @@
 
               	 <div class="form-group row">
                 		<label for="grupo" class="col-lg-2 col-form-label">Grupo:</label>
-                			<div class="col-lg-10">
+                			<div class="col-lg-10" >
                   				<select class="form-control" id="grupo" name="grupo" readonly>
 						                   	 @foreach($nombre_grupos as $grupo)
 						                	 	@if("{{$persona->id_grupo}}"=="{{$grupo->id_grupo}}")
-						            				<option value="{{$grupo->id_grupo}}" selected="true" >{{$grupo->nombre_grupo}}</option>
-						            			@else
-						            				 <option value="{{$grupo->id_grupo}}">{{$grupo->nombre_grupo}} </option >
+						            				<option value="{{$persona->id_grupo}}" selected="true" >{{$grupo->nombre_grupo}}</option>
 						            			@endif
 						            		@endforeach
 						         
