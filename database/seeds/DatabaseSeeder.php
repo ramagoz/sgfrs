@@ -128,7 +128,8 @@ class DatabaseSeeder extends Seeder
         {
         $p = new Periodo;
         $p->estado_periodo = $periodos['estado_periodo'];
-        $p->fecha = $periodos['fecha'];
+        $p->mes = $periodos['mes'];
+        $p->año = $periodos['año'];
         $p->save();
         }
     }
@@ -355,16 +356,19 @@ class DatabaseSeeder extends Seeder
     array(
         array(
             'estado_periodo' => '1',
-            'fecha' => '2018-01-01'
+            'mes' => '01',
+            'año' => '2018'
             ),
         array(
             'estado_periodo' => '0',
-            'fecha' => '2018-02-01'
+            'mes' => '02',
+            'año' => '2018'
             ),
         array(
             'estado_periodo' => '0',
-            'fecha' => '2018-03-01'
-            )
+            'mes' => '03',
+            'año' => '2018'
+            ),
     );
     private $arrayImportaciones = 
     array(

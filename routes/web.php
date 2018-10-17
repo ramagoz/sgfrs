@@ -55,6 +55,7 @@ Route::group(['middleware' => 'auth'], function()
 	Route::get('rrhh/todos_los_recibos', 'RrhhControlador@getTodosLosRecibos');
 	Route::get('rrhh/ver_todos_los_recibos/{id}', 'RrhhControlador@getVerTodosLosRecibos');
 	Route::get('rrhh/informes_rrhh', 'RrhhControlador@getInformesRrhh');
+	Route::post('rrhh/ver_informes_rrhh', 'RrhhControlador@postVerInformesRrhh');
 	Route::get('rrhh/cambiar_contraseña', 'RrhhControlador@getCambiarContraseña');
     
 

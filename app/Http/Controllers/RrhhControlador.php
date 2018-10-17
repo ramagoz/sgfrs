@@ -109,7 +109,8 @@ class RrhhControlador extends Controller
     {
         $periodo                 = new Periodo();
         $periodo->estado_periodo = 0;
-        $periodo->fecha          = $request->año . '-' . $request->mes . '-01';
+        $periodo->mes          =  $request->mes;
+        $periodo->año          = $request->año;
         $periodo->save();
         $estructura_carpetas_nuevos                     = 'C:/xampp/htdocs/sgfrs/public/recibos/nuevos/' . $request->año . '/' . $request->mes;
         $estructura_carpetas_pendientes                 = 'C:/xampp/htdocs/sgfrs/public/recibos/pendientes/' . $request->año . '/' . $request->mes;
@@ -404,13 +405,27 @@ class RrhhControlador extends Controller
     }
     public function getInformesRrhh()
     {
-        $recibos = DB::table('recibos')->get();
-        foreach ($recibos as $recibo) 
+        $periodos = DB::table('periodos')->get();
+        
+        //debo capturar los años de periodos creado y luego los años deben ser listados en las vitsa de informes_rrhh, el usuario seleccion el año que reqiere el informe, a partir del año se debe empezar a calcular los meses que si existen y cual es el estado general del periodo
+        
+
+        return view('rrhh.informes_rrhh');
+    }
+    public function postVerInformesRrhh()
+    {
+       $recibos = DB::table('recibos')
+           ->join('periodos', 'recibos.id_periodo','=','periodos.id_periodo')
+           ->get();
+        echo $recibos;
+        /*foreach ($recibos as $recibo) 
         {
             echo $recibo->id_recibo;
         }
 
-        return view('rrhh.informes_rrhh');
+        carga en un array año, mes, id_estado_recibo, 
+        */
+
     }
     public function getCambiarContraseña()
     {
