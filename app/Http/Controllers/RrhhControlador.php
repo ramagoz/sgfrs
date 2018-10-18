@@ -405,27 +405,96 @@ class RrhhControlador extends Controller
     }
     public function getInformesRrhh()
     {
-        $periodos = DB::table('periodos')->get();
-        
-        //debo capturar los años de periodos creado y luego los años deben ser listados en las vitsa de informes_rrhh, el usuario seleccion el año que reqiere el informe, a partir del año se debe empezar a calcular los meses que si existen y cual es el estado general del periodo
-        
-
-        return view('rrhh.informes_rrhh');
+        $años = DB::table('periodos')
+        ->select('año')
+        ->groupBy('año')
+        ->orderBy('año','desc')
+        ->get();
+        return view('rrhh.informes_rrhh')->with('años',$años);
     }
-    public function postVerInformesRrhh()
+    public function postVerInformesRrhh(Request $request)
     {
+        
        $recibos = DB::table('recibos')
            ->join('periodos', 'recibos.id_periodo','=','periodos.id_periodo')
+           ->where('periodos.año',$request->año)
            ->get();
         echo $recibos;
-        /*foreach ($recibos as $recibo) 
+
+        $ene=0; $feb=0; $mar=0; $abr=0; $may=0; $jun=0; $jul=0; $ago=0; $set=0; $oct=0; $nov=0; $dic=0;
+        $ene_firmado_empresa=0;$feb_firmado_empresa=0;$mar_firmado_empresa=0;$abr_firmado_empresa=0;$may_firmado_empresa=0;$jun_firmado_empresa=0;$jul_firmado_empresa=0;$ago_firmado_empresa=0;$set_firmado_empresa=0;$oct_firmado_empresa=0;$nov_firmado_empresa=0;$dic_firmado_empresa=0;
+        $ene_firmado_empleado=0;$feb_firmado_empleado=0;$mar_firmado_empleado=0;$abr_firmado_empleado=0;$may_firmado_empleado=0;$jun_firmado_empleado=0;$jul_firmado_empleado=0;$ago_firmado_empleado=0;$set_firmado_empleado=0;$oct_firmado_empleado=0;$nov_firmado_empleado=0;$dic_firmado_empleado=0;
+        foreach ($recibos as $recibo) 
         {
-            echo $recibo->id_recibo;
+            switch ($recibo->mes) 
+            {
+                case 1:
+                    $ene=$ene++;
+                    $ene_firmado_empresa=$ene_firmado_empresa++;
+                    $ene_firmado_empleado=$ene_firmado_empleado++;
+                break;
+                case 2:
+                    $feb=$feb++;
+                    $feb_firmado_empresa=$feb_firmado_empresa++;
+                    $feb_firmado_empleado=$feb_firmado_empleado++;
+                break;
+                case 3:
+                    $mar=$mar++;
+                    $mar_firmado_empresa=$mar_firmado_empresa++;
+                    $mar_firmado_empleado=$mar_firmado_empleado++;
+                break;
+                case 4:
+                    $abr=$abr++;
+                    $abr_firmado_empresa=$abr_firmado_empresa++;
+                    $abr_firmado_empleado=$abr_firmado_empleado++;
+                break;
+                case 5:
+                    $may=$may++;
+                    $may_firmado_empresa=$may_firmado_empresa++;
+                    $may_firmado_empleado=$may_firmado_empleado++;
+                break;
+                case 6:
+                    $jun=$jun++;
+                    $jun_firmado_empresa=$jun_firmado_empresa++;
+                    $jun_firmado_empleado=$jun_firmado_empleado++;
+                break;
+                case 7:
+                    $jul=$jul++;
+                    $jul_firmado_empresa=$jul_firmado_empresa++;
+                    $jul_firmado_empleado=$jul_firmado_empleado++;
+                break;
+                case 8:
+                    $ago=$ago++;
+                    $ago_firmado_empresa=$ago_firmado_empresa++;
+                    $ago_firmado_empleado=$ago_firmado_empleado++;
+                break;
+                case 9:
+                    $set=$set++;
+                    $set_firmado_empresa=$set_firmado_empresa++;
+                    $set_firmado_empleado=$set_firmado_empleado++;
+                break;
+                case 10:
+                    $oct=$oct++;
+                    $oct_firmado_empresa=$oct_firmado_empresa++;
+                    $oct_firmado_empleado=$oct_firmado_empleado++;
+                break;
+                case 11:
+                    $nov=$nov++;
+                    $nov_firmado_empresa=$nov_firmado_empresa++;
+                    $nov_firmado_empleado=$nov_firmado_empleado++;
+                break;
+                case 12:
+                    $dic=$dic++;
+                    $dic_firmado_empresa=$dic_firmado_empresa++;
+                    $dic_firmado_empleado=$dic_firmado_empleado++;
+                break;
+            }
         }
+        
 
-        carga en un array año, mes, id_estado_recibo, 
-        */
 
+
+        return view('rrhh.resultado_informes_rrhh');
     }
     public function getCambiarContraseña()
     {
