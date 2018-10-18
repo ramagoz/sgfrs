@@ -11,10 +11,18 @@
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>  
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
         <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>  
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+            <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+                <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+    
+
 
 <style type="text/css">
   div.container {
-        width: 65%;
+        width: 70%;
     }
   </style>
     
@@ -24,6 +32,7 @@
     <p align="center"><strong>Usuario: </strong> {{ Auth::user()->name }}, esta conectado con el Rol de <strong>Recursos Humanos</strong></p>
         <div class="container">
             <a href="alta_empleado" button class="btn btn-success"><i class="glyphicon glyphicon-plus"></i>Alta de Usuario</button></a>
+            <p></p>
             <table class="table table-bordered" id="table">
                 
                <thead>
@@ -32,6 +41,10 @@
                      <th>Nombres</th>
                      <th>Apellidos</th>
                      <th>Correo</th>
+                     <th>Telefono</th>
+                     <th>Departamento</th>
+                     <th>Cargo</th>
+                     <th>Estado</th>
                      <th>Acciones</th>
                  </tr>
                           
@@ -40,6 +53,10 @@
 <script type="text/javascript">
      $(document).ready(function ()  {
      var datatable = $('#table').DataTable({
+       dom: 'Bfrtip',
+        buttons: [
+            'excel', 'pdf', 'print'
+        ],
         processing: true,
         serverSide: true,
         ajax: '{{ url('rrhh/datatable') }}',
@@ -67,12 +84,26 @@
                             "sSortDescending": ": Activar para ordenar la columna de manera descendente"
                         }
                     },
+                  createdRow: function ( row, data, index ) {
+                              if ( data.estado == 0 ) {
+                                $('td', row).eq(7).addClass('text-danger').text('Inactivo');
+                              } else {
+                                $('td', row).eq(7).addClass('text-success').text('Activo');
+                              }
+                            },
+                               
+    
         columns: [
                         { data: 'cedula', name: 'cedula' },
                         { data: 'nombres', name: 'nombres' },
                         { data: 'apellidos', name: 'apellidos'},
                         { data: 'correo', name: 'correo'},
+                        { data: 'tel', name: 'tel'},
+                        { data: 'dpto', name: 'dpto'},
+                        { data: 'cargo', name: 'cargo'},
+                        { data: 'estado', name: 'estado'},
                         {"defaultContent": "<button type='button' class='modif btn btn-success'>Editar<span class='glyphicon glyphicon-edit'></span> </button>"+" "+"<button type='button' class='baj btn btn-danger'>Baja<span class='glyphicon glyphicon-circle-arrow-down'></span> </button>"},
+                        
                         
                        
                         

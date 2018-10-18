@@ -101,6 +101,7 @@ class RrhhControlador extends Controller
         
     }
     
+    
     public function getCrearNuevoPeriodo()
     {
         return view('rrhh.crear_nuevo_periodo');
