@@ -415,12 +415,10 @@ class RrhhControlador extends Controller
     }
     public function postVerInformesRrhh(Request $request)
     {
-        
        $recibos = DB::table('recibos')
            ->join('periodos', 'recibos.id_periodo','=','periodos.id_periodo')
            ->where('periodos.año',$request->año)
            ->get();
-        echo $recibos;
 
         $ene=0; $feb=0; $mar=0; $abr=0; $may=0; $jun=0; $jul=0; $ago=0; $set=0; $oct=0; $nov=0; $dic=0;
         $ene_firmado_empresa=0;$feb_firmado_empresa=0;$mar_firmado_empresa=0;$abr_firmado_empresa=0;$may_firmado_empresa=0;$jun_firmado_empresa=0;$jul_firmado_empresa=0;$ago_firmado_empresa=0;$set_firmado_empresa=0;$oct_firmado_empresa=0;$nov_firmado_empresa=0;$dic_firmado_empresa=0;
@@ -430,72 +428,192 @@ class RrhhControlador extends Controller
             switch ($recibo->mes) 
             {
                 case 1:
-                    $ene=$ene++;
-                    $ene_firmado_empresa=$ene_firmado_empresa++;
-                    $ene_firmado_empleado=$ene_firmado_empleado++;
+                    $ene++;
+                    if ($recibo->id_estado_recibo==2) 
+                    {
+                        $ene_firmado_empresa++;
+                    }
+                    if ($recibo->id_estado_recibo==3) 
+                    {
+                        $ene_firmado_empleado++;
+                    }
                 break;
                 case 2:
-                    $feb=$feb++;
-                    $feb_firmado_empresa=$feb_firmado_empresa++;
-                    $feb_firmado_empleado=$feb_firmado_empleado++;
+                    $feb++;
+                    if ($recibo->id_estado_recibo==2) 
+                    {
+                        $feb_firmado_empresa++;
+                    }
+                    if ($recibo->id_estado_recibo==3) 
+                    {
+                        $feb_firmado_empleado++;
+                    }
                 break;
                 case 3:
-                    $mar=$mar++;
-                    $mar_firmado_empresa=$mar_firmado_empresa++;
-                    $mar_firmado_empleado=$mar_firmado_empleado++;
+                    $mar++;
+                    if ($recibo->id_estado_recibo==2) 
+                    {
+                        $mar_firmado_empresa++;
+                    }
+                    if ($recibo->id_estado_recibo==3) 
+                    {
+                        $mar_firmado_empleado++;
+                    }
                 break;
                 case 4:
                     $abr=$abr++;
-                    $abr_firmado_empresa=$abr_firmado_empresa++;
-                    $abr_firmado_empleado=$abr_firmado_empleado++;
+                    if ($recibo->id_estado_recibo==2) 
+                    {
+                        $abr_firmado_empresa++;
+                    }
+                    if ($recibo->id_estado_recibo==3) 
+                    {
+                        $abr_firmado_empleado++;
+                    } 
                 break;
                 case 5:
-                    $may=$may++;
-                    $may_firmado_empresa=$may_firmado_empresa++;
-                    $may_firmado_empleado=$may_firmado_empleado++;
+                    $may++;
+                    if ($recibo->id_estado_recibo==2) 
+                    {
+                        $may_firmado_empresa++;
+                    }
+                    if ($recibo->id_estado_recibo==3) 
+                    {
+                        $may_firmado_empleado++;
+                    }
                 break;
                 case 6:
-                    $jun=$jun++;
-                    $jun_firmado_empresa=$jun_firmado_empresa++;
-                    $jun_firmado_empleado=$jun_firmado_empleado++;
+                    $jun++;
+                    if ($recibo->id_estado_recibo==2) 
+                    {
+                        $jun_firmado_empresa++;
+                    }
+                    if ($recibo->id_estado_recibo==3) 
+                    {
+                        $jun_firmado_empleado++;
+                    }
                 break;
                 case 7:
-                    $jul=$jul++;
-                    $jul_firmado_empresa=$jul_firmado_empresa++;
-                    $jul_firmado_empleado=$jul_firmado_empleado++;
+                    $jul++;
+                    if ($recibo->id_estado_recibo==2) 
+                    {
+                        $jul_firmado_empresa++;
+                    }
+                    if ($recibo->id_estado_recibo==3) 
+                    {
+                        $jul_firmado_empleado++;
+                    }   
                 break;
                 case 8:
-                    $ago=$ago++;
-                    $ago_firmado_empresa=$ago_firmado_empresa++;
-                    $ago_firmado_empleado=$ago_firmado_empleado++;
+                    $ago++;
+                    if ($recibo->id_estado_recibo==2) 
+                    {
+                        $ago_firmado_empresa++;
+                    }
+                    if ($recibo->id_estado_recibo==3) 
+                    {
+                        $ago_firmado_empleado++;
+                    }  
                 break;
                 case 9:
-                    $set=$set++;
-                    $set_firmado_empresa=$set_firmado_empresa++;
-                    $set_firmado_empleado=$set_firmado_empleado++;
+                    $set++;
+                    if ($recibo->id_estado_recibo==2) 
+                    {
+                        $set_firmado_empresa++;
+                    }
+                    if ($recibo->id_estado_recibo==3) 
+                    {
+                        $set_firmado_empleado++;
+                    }         
                 break;
                 case 10:
-                    $oct=$oct++;
-                    $oct_firmado_empresa=$oct_firmado_empresa++;
-                    $oct_firmado_empleado=$oct_firmado_empleado++;
+                    $oct++;
+                    if ($recibo->id_estado_recibo==2) 
+                    {
+                        $oct_firmado_empresa++;
+                    }
+                    if ($recibo->id_estado_recibo==3) 
+                    {
+                        $oct_firmado_empleado++;
+                    }
+                                       
                 break;
                 case 11:
-                    $nov=$nov++;
-                    $nov_firmado_empresa=$nov_firmado_empresa++;
-                    $nov_firmado_empleado=$nov_firmado_empleado++;
+                    $nov++;
+                    if ($recibo->id_estado_recibo==2) 
+                    {
+                        $nov_firmado_empresa++;
+                    }
+                    if ($recibo->id_estado_recibo==3) 
+                    {
+                        $nov_firmado_empleado++;
+                    }                                       
                 break;
                 case 12:
-                    $dic=$dic++;
-                    $dic_firmado_empresa=$dic_firmado_empresa++;
-                    $dic_firmado_empleado=$dic_firmado_empleado++;
+                    $dic++;
+                    if ($recibo->id_estado_recibo==2) 
+                    {
+                        $dic_firmado_empresa++;
+                    }
+                    if ($recibo->id_estado_recibo==3) 
+                    {
+                        $dic_firmado_empleado++;
+                    }                    
                 break;
             }
         }
-        
 
+        return view('rrhh.resultado_informes_rrhh')
+        ->with('año',$request->año)
 
+        ->with('ene',$ene)
+        ->with('ene_firmado_empresa',$ene_firmado_empresa)
+        ->with('ene_firmado_empleado',$ene_firmado_empleado)
 
-        return view('rrhh.resultado_informes_rrhh');
+        ->with('feb',$feb)
+        ->with('feb_firmado_empresa',$ene_firmado_empresa)
+        ->with('feb_firmado_empleado',$ene_firmado_empleado)
+
+        ->with('mar',$mar)
+        ->with('mar_firmado_empresa',$mar_firmado_empresa)
+        ->with('mar_firmado_empleado',$mar_firmado_empleado)
+
+        ->with('abr',$abr)
+        ->with('abr_firmado_empresa',$abr_firmado_empresa)
+        ->with('abr_firmado_empleado',$abr_firmado_empleado)
+
+        ->with('may',$may)
+        ->with('may_firmado_empresa',$may_firmado_empresa)
+        ->with('may_firmado_empleado',$may_firmado_empleado)
+
+        ->with('jun',$jun)
+        ->with('jun_firmado_empresa',$jun_firmado_empresa)
+        ->with('jun_firmado_empleado',$jun_firmado_empleado)
+
+        ->with('jul',$jul)
+        ->with('jul_firmado_empresa',$jul_firmado_empresa)
+        ->with('jul_firmado_empleado',$jul_firmado_empleado)
+
+        ->with('ago',$ago)
+        ->with('ago_firmado_empresa',$ago_firmado_empresa)
+        ->with('ago_firmado_empleado',$ago_firmado_empleado)
+
+        ->with('set',$set)
+        ->with('set_firmado_empresa',$set_firmado_empresa)
+        ->with('set_firmado_empleado',$set_firmado_empleado)
+
+        ->with('oct',$oct)
+        ->with('oct_firmado_empresa',$oct_firmado_empresa)
+        ->with('oct_firmado_empleado',$oct_firmado_empleado)
+
+        ->with('nov',$nov)
+        ->with('nov_firmado_empresa',$nov_firmado_empresa)
+        ->with('nov_firmado_empleado',$nov_firmado_empleado)
+
+        ->with('dic',$dic)
+        ->with('dic_firmado_empresa',$dic_firmado_empresa)
+        ->with('dic_firmado_empleado',$dic_firmado_empleado)
+        ;
     }
     public function getCambiarContraseña()
     {
