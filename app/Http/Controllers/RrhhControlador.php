@@ -108,20 +108,32 @@ class RrhhControlador extends Controller
     }
     public function getCrear(Request $request)
     {
-        $periodo                 = new Periodo();
-        $periodo->estado_periodo = 0;
-        $periodo->mes          =  $request->mes;
-        $periodo->año          = $request->año;
-        $periodo->save();
-        $estructura_carpetas_nuevos                     = 'C:/xampp/htdocs/sgfrs/public/recibos/nuevos/' . $request->año . '/' . $request->mes;
-        $estructura_carpetas_pendientes                 = 'C:/xampp/htdocs/sgfrs/public/recibos/pendientes/' . $request->año . '/' . $request->mes;
-        $estructura_carpetas_firmados_empresa           = 'C:/xampp/htdocs/sgfrs/public/recibos/firmados_empresa/' . $request->año . '/' . $request->mes;
-        $estructura_carpetas_firmados_empresa_empleados = 'C:/xampp/htdocs/sgfrs/public/recibos/firmados_empresa_empleados/' . $request->año . '/' . $request->mes;
-        mkdir($estructura_carpetas_nuevos, 0777, true);
-        mkdir($estructura_carpetas_pendientes, 0777, true);
-        mkdir($estructura_carpetas_firmados_empresa, 0777, true);
-        mkdir($estructura_carpetas_firmados_empresa_empleados, 0777, true);
-        return view('rrhh.periodo_creado');
+        //controla si el periodo que se intenta crear existe, si existe devolver un mensajes de error y sino crea el mismo
+        
+        $consulta=DB::table('periodos') ->where('año',$request->año)
+        ->where('mes',$request->mes)->get();
+
+        if ($consulta=='[]')
+        {
+            $periodo                 = new Periodo();
+            $periodo->estado_periodo = 0;
+            $periodo->mes          =  $request->mes;
+            $periodo->año          = $request->año;
+            $periodo->save();
+            $estructura_carpetas_nuevos                     = 'C:/xampp/htdocs/sgfrs/public/recibos/nuevos/' . $request->año . '/' . $request->mes;
+            $estructura_carpetas_pendientes                 = 'C:/xampp/htdocs/sgfrs/public/recibos/pendientes/' . $request->año . '/' . $request->mes;
+            $estructura_carpetas_firmados_empresa           = 'C:/xampp/htdocs/sgfrs/public/recibos/firmados_empresa/' . $request->año . '/' . $request->mes;
+            $estructura_carpetas_firmados_empresa_empleados = 'C:/xampp/htdocs/sgfrs/public/recibos/firmados_empresa_empleados/' . $request->año . '/' . $request->mes;
+            mkdir($estructura_carpetas_nuevos, 0777, true);
+            mkdir($estructura_carpetas_pendientes, 0777, true);
+            mkdir($estructura_carpetas_firmados_empresa, 0777, true);
+            mkdir($estructura_carpetas_firmados_empresa_empleados, 0777, true);
+            return view('rrhh.periodo_creado');
+                
+        } else {
+                echo 'Este periodo ya existe';
+        }
+                
     }
     public function getValidarRecibos()
     {
@@ -326,8 +338,18 @@ class RrhhControlador extends Controller
         $grupo->oct          = $request->oct;
         $grupo->nov          = $request->nov;
         $grupo->dic          = $request->dic;
-        $grupo->save();
-        return back();
+        
+        try 
+        {
+            if ($grupo->save()) 
+            {
+                return back()->with('msj','Grupo creado correctamente!');
+            }else{
+                return back()->with('errormsj','Los datos no se guardaron, ha ocurrido un error!');
+            }//no esta funcionando el codigo para devolver errores de unicidad en la BD
+        } catch (Exception $e) {
+            return back()->with('errormsj',$e);
+        }
     }
     public function getPendientesFirmaEmpresa()
     {

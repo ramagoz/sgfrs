@@ -5,8 +5,16 @@
 	<h3 align="center">GRUPOS DE RECIBOS</h1>
 	<p align="center"><strong>Usuario: </strong> {{ Auth::user()->name }}, esta conectado con el Rol de <strong>Recursos Humanos</strong></p>
 
+@if (session()->has('msj') )
+	<div class="alert alert-success" role="alert" align="center">{{ session('msj') }}</div>
+@endif
+@if (session()->has('errormsj') )
+	<div class="alert alert-danger" role="alert" align="center">{{ session('errormsj') }}</div>
+@endif
+<!-- aqui me quede probando los mensajes de error-->
 <form action="/rrhh/grupos_recibos" method="POST">	
 {{ csrf_field() }}
+
 
 <table border="1" align="center">
 
@@ -57,29 +65,26 @@
 	@endforeach
 
 	<tr>
-		<td><input type="text" name="nombre_grupo" id="nombre_grupo" maxlength="18" size="18"></td></td>
-		<td><input type="text" name="ene" id="ene"  maxlength="1" size="1"></td></td>
-		<td><input type="text" name="feb" id="feb"  maxlength="1" size="1"></td></td>
-		<td><input type="text" name="mar" id="mar"  maxlength="1" size="1"></td></td>
-		<td><input type="text" name="abr" id="abr"  maxlength="1" size="1"></td></td>
-		<td><input type="text" name="may" id="may"  maxlength="1" size="1"></td></td>
-		<td><input type="text" name="jun" id="jun"  maxlength="1" size="1"></td></td>
-		<td><input type="text" name="jul" id="jul"  maxlength="1" size="1"></td></td>
-		<td><input type="text" name="ago" id="ago"  maxlength="1" size="1"></td></td>
-		<td><input type="text" name="set" id="set"  maxlength="1" size="1"></td></td>
-		<td><input type="text" name="oct" id="oct"  maxlength="1" size="1"></td></td>
-		<td><input type="text" name="nov" id="nov"  maxlength="1" size="1"></td></td>
-		<td><input type="text" name="dic" id="dic"  maxlength="1" size="1"></td></td>
-	</tr>
-	
-	<div align="center">
-	<tr>
-		<td>
-		<button class="btn btn-primary" type="submit">Crear Nuevo Grupo</button>
-		</td>
+		<td><input type="text" name="nombre_grupo" id="nombre_grupo" maxlength="18" size="18" required value="{{ old('nombre_grupo') }}"></td></td>
+		<td><input type="text" name="ene" id="ene"  maxlength="1" size="1" required ></td></td>
+		<td><input type="text" name="feb" id="feb"  maxlength="1" size="1" required></td></td>
+		<td><input type="text" name="mar" id="mar"  maxlength="1" size="1" required></td></td>
+		<td><input type="text" name="abr" id="abr"  maxlength="1" size="1" required></td></td>
+		<td><input type="text" name="may" id="may"  maxlength="1" size="1" required></td></td>
+		<td><input type="text" name="jun" id="jun"  maxlength="1" size="1" required></td></td>
+		<td><input type="text" name="jul" id="jul"  maxlength="1" size="1" required></td></td>
+		<td><input type="text" name="ago" id="ago"  maxlength="1" size="1" required></td></td>
+		<td><input type="text" name="set" id="set"  maxlength="1" size="1" required></td></td>
+		<td><input type="text" name="oct" id="oct"  maxlength="1" size="1" required></td></td>
+		<td><input type="text" name="nov" id="nov"  maxlength="1" size="1" required></td></td>
+		<td><input type="text" name="dic" id="dic"  maxlength="1" size="1" required></td></td>
 	</tr>
 </div>
+
 </form>
 </table>
-
+<br>
+<div align="center">
+<button class="btn btn-primary" type="submit" align="center">Crear Nuevo Grupo</button>
+</div>
 @endsection

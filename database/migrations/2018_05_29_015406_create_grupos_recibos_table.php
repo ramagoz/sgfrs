@@ -15,7 +15,7 @@ class CreateGruposRecibosTable extends Migration
     {
         Schema::create('grupos_recibos', function (Blueprint $table) {
             $table->increments('id_grupo');
-            $table->string('nombre_grupo');
+            $table->string('nombre_grupo')->unique();
             $table->tinyInteger('ene');
             $table->tinyInteger('feb');
             $table->tinyInteger('mar');
