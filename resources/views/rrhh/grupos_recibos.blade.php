@@ -11,7 +11,7 @@
 @if (session()->has('errormsj') )
 	<div class="alert alert-danger" role="alert" align="center">{{ session('errormsj') }}</div>
 @endif
-<!-- aqui me quede probando los mensajes de error-->
+
 <form action="/rrhh/grupos_recibos" method="POST">	
 {{ csrf_field() }}
 
@@ -66,7 +66,7 @@
 
 	<tr>
 		<td><input type="text" name="nombre_grupo" id="nombre_grupo" maxlength="18" size="18" required value="{{ old('nombre_grupo') }}"></td></td>
-		<td><input type="text" name="ene" id="ene"  maxlength="1" size="1" required ></td></td>
+		<td><input type="text" name="ene" id="ene"  maxlength="1" size="1" required value="{{ old('nombre_grupo') }}" ></td></td>
 		<td><input type="text" name="feb" id="feb"  maxlength="1" size="1" required></td></td>
 		<td><input type="text" name="mar" id="mar"  maxlength="1" size="1" required></td></td>
 		<td><input type="text" name="abr" id="abr"  maxlength="1" size="1" required></td></td>

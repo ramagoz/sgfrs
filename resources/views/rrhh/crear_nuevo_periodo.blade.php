@@ -6,7 +6,14 @@
 	<p align="center"><strong>Usuario: </strong> {{ Auth::user()->name }}, esta conectado con el Rol de <strong>Recursos Humanos</strong></p>
 	<br>
 
-	<form action="/rrhh/periodo_creado" method="POST">	
+@if (session()->has('msj') )
+	<div class="alert alert-success" role="alert" align="center">{{ session('msj') }}</div>
+@endif
+@if (session()->has('errormsj') )
+	<div class="alert alert-danger" role="alert" align="center">{{ session('errormsj') }}</div>
+@endif
+
+	<form action="/rrhh/crear_nuevo_periodo" method="POST">	
 	{{csrf_field()}}
 
 	<div align="center" id="prueba">
