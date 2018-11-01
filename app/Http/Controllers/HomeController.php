@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 use App\User;
+use DB;
+use App\Persona;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -26,8 +28,13 @@ public function index()
     {
          if (Auth::check()) 
         {
-            $rol = Auth::user()->id_rol;
-            switch ($rol) 
+            $id = Auth::user()->id;
+            $roles= DB::table('personas')->where('id_usuario',$id)->get()->toArray();
+        foreach ($roles as $role) {
+
+            $rol = $role->id_usuario;
+        }
+       switch ($rol) 
             {
                 case 0:
                     return redirect('sin_rol');

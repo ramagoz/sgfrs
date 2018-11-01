@@ -80,7 +80,6 @@ class DatabaseSeeder extends Seeder
         $p->name = $users['name'];
         $p->email = $users['email'];
         $p->password = $users['password'];
-        $p->id_rol = $users['id_rol'];
         $p->save();
         }
     }
@@ -159,6 +158,7 @@ class DatabaseSeeder extends Seeder
         $p->cedula = $personas['cedula'];
         $p->id_usuario = $personas['id_usuario'];
         $p->id_grupo = $personas['id_grupo'];
+        $p->id_rol = $personas['id_rol'];
         $p->nombres = $personas['nombres'];
         $p->apellidos = $personas['apellidos'];
         $p->tel = $personas['tel'];
@@ -259,37 +259,37 @@ class DatabaseSeeder extends Seeder
             'name' => 'AAAA',
             'email' => 'a@a.c',
             'password' => '$2y$10$bsZ1EpQwakjKIPlXUEbQwe.x2MusZu5jjgvo7yy80IdyPaH9tIBey',
-            'id_rol' => '3'
+            
             ),
         array(
             'name' => 'BBBB',
             'email' => 'b@b.c',
             'password' => '$2y$10$bsZ1EpQwakjKIPlXUEbQwe.x2MusZu5jjgvo7yy80IdyPaH9tIBey',
-            'id_rol' => '2'
+          
             ),
         array(
             'name' => 'CCCC',
             'email' => 'c@c.c',
             'password' => '$2y$10$bsZ1EpQwakjKIPlXUEbQwe.x2MusZu5jjgvo7yy80IdyPaH9tIBey',
-            'id_rol' => '5'
+         
             ),
         array(
             'name' => 'DDDD',
             'email' => 'd@d.c',
             'password' => '$2y$10$bsZ1EpQwakjKIPlXUEbQwe.x2MusZu5jjgvo7yy80IdyPaH9tIBey',
-            'id_rol' => '1'
+           
             ),
         array(
             'name' => 'EEEE',
             'email' => 'e@e.c',
             'password' => '$2y$10$bsZ1EpQwakjKIPlXUEbQwe.x2MusZu5jjgvo7yy80IdyPaH9tIBey',
-            'id_rol' => '1'
+           
             ),
         array(
             'name' => 'FFFF',
             'email' => 'f@f.c',
             'password' => '$2y$10$bsZ1EpQwakjKIPlXUEbQwe.x2MusZu5jjgvo7yy80IdyPaH9tIBey',
-            'id_rol' => '1'
+          
             )
     );
     private $arrayGrupos_recibos = 
@@ -400,9 +400,10 @@ class DatabaseSeeder extends Seeder
     private $arrayPersonas = 
     array(
         array(
-            'cedula' => '0000000',
+            'cedula' => '1000000',
             'id_usuario' => '0',
             'id_grupo' => '1',
+            'id_rol'=>'3',
             'nombres' => 'AAAA',
             'apellidos' => 'AAAA',
             'tel' => '123',
@@ -417,6 +418,7 @@ class DatabaseSeeder extends Seeder
             'cedula' => '1111111',
             'id_usuario' => '1',
             'id_grupo' => '1',
+            'id_rol'=>'2',
             'nombres' => 'BBBB',
             'apellidos' => 'BBBB',
             'tel' => '123',
@@ -431,6 +433,7 @@ class DatabaseSeeder extends Seeder
             'cedula' => '2222222',
             'id_usuario' => '2',
             'id_grupo' => '1',
+            'id_rol'=>'5',
             'nombres' => 'CCCC',
             'apellidos' => 'CCCC',
             'tel' => '123',
@@ -445,6 +448,7 @@ class DatabaseSeeder extends Seeder
             'cedula' => '3333333',
             'id_usuario' => '3',
             'id_grupo' => '1',
+            'id_rol'=>'1',
             'nombres' => 'DDDD',
             'apellidos' => 'DDDD',
             'tel' => '123',
@@ -459,6 +463,7 @@ class DatabaseSeeder extends Seeder
             'cedula' => '4444444',
             'id_usuario' => '4',
             'id_grupo' => '2',
+            'id_rol'=>'1',
             'nombres' => 'EEEE',
             'apellidos' => 'EEEE',
             'tel' => '123',
@@ -473,6 +478,7 @@ class DatabaseSeeder extends Seeder
             'cedula' => '5555555',
             'id_usuario' => '5',
             'id_grupo' => '2',
+            'id_rol'=>'1',
             'nombres' => 'FFFF',
             'apellidos' => 'FFFF',
             'tel' => '123',
