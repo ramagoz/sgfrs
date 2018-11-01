@@ -6,12 +6,12 @@
 	<p align="center"><strong>Usuario: </strong> {{ Auth::user()->name }}, esta conectado con el Rol de <strong>Recursos Humanos</strong></p>
 	<br>
 
-@if (session()->has('msj') )
-	<div class="alert alert-success" role="alert" align="center">{{ session('msj') }}</div>
-@endif
-@if (session()->has('errormsj') )
-	<div class="alert alert-danger" role="alert" align="center">{{ session('errormsj') }}</div>
-@endif
+	@isset($msj)
+		<div class="alert alert-success" role="alert" align="center">{{ $msj }}</div>
+	@endisset
+	@isset($errormsj)
+		<div class="alert alert-danger" role="alert" align="center">{{ $errormsj }}</div>
+	@endisset
 
 	<form action="/rrhh/crear_nuevo_periodo" method="POST">	
 	{{csrf_field()}}
@@ -45,5 +45,26 @@
 			<button class="btn btn-primary" type="submit">Crear nuevo periodo</button>
 	</div>
 	</form>
+
+		<br>
+		<div align="center">
+		<h4> <strong>Periodos creados</strong></h4>
+		<table border="1" align="center">
+		<tr><th>Mes</th><th>Año</th><th>Estado Periodo</th></tr>
+		@foreach($periodos as $periodo)
+		<tr>
+			<td>{{ $periodo->mes }}</td>
+			<td>{{ $periodo->año }}</td>
+			<td>
+				@if ($periodo->estado_periodo==0)
+				Abierto
+				@else
+				Cerrado
+				@endif
+			</td>
+		</tr>
+		@endforeach
+		</table>
+		</div>
 
 @endsection

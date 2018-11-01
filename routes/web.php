@@ -39,8 +39,10 @@ Route::group(['middleware' => 'auth'], function()
 	Route::post('rrhh/crear_nuevo_periodo', 'RrhhControlador@getCrear');
 	Route::get('rrhh/validar_recibos', 'RrhhControlador@getValidarRecibos');
 	Route::post('rrhh/validar_recibos', 'RrhhControlador@postValidarRecibos');
+
 	Route::get('rrhh/importar_recibos', 'RrhhControlador@getImportarRecibos');
-	Route::post('rrhh/recibos_importados', 'RrhhControlador@getRecibosImportados');
+	Route::post('rrhh/importar_recibos', 'RrhhControlador@getRecibosImportados');
+	
 	Route::get('rrhh/empleados_sin_recibos', 'RrhhControlador@getEmpleadosSinRecibos');
 	Route::get('rrhh/corregir_recibos', 'RrhhControlador@getCorregirRecibos');
 

@@ -104,7 +104,8 @@ class RrhhControlador extends Controller
     
     public function getCrearNuevoPeriodo()
     {
-        return view('rrhh.crear_nuevo_periodo');
+        $periodos = DB::table('periodos')->select('mes','año','estado_periodo')->get();
+        return view('rrhh.crear_nuevo_periodo')->with('periodos',$periodos);
     }
     public function getCrear(Request $request)
     {
@@ -128,11 +129,12 @@ class RrhhControlador extends Controller
             mkdir($estructura_carpetas_pendientes, 0777, true);
             mkdir($estructura_carpetas_firmados_empresa, 0777, true);
             mkdir($estructura_carpetas_firmados_empresa_empleados, 0777, true);
-            
-            return back()->with('msj','Periodo creado correctamente! Mes: '.$request->mes.'  -   Año: '.$request->año);
+            $periodos = DB::table('periodos')->select('mes','año','estado_periodo')->get();
+            return view('rrhh.crear_nuevo_periodo')->with('msj','Periodo creado correctamente! Mes: '.$request->mes.'  -   Año: '.$request->año)->with('periodos',$periodos);
                 
         } else {
-            return back()->with('errormsj','Este mes y año de periodo ya existe. Mes: '.$request->mes.'  -   Año: '.$request->año);
+            $periodos = DB::table('periodos')->select('mes','año','estado_periodo')->get();
+            return view('rrhh.crear_nuevo_periodo')->with('errormsj','Este mes y año de periodo ya existe. Mes: '.$request->mes.'  -   Año: '.$request->año)->with('periodos',$periodos);
         }
                 
     }
@@ -221,11 +223,6 @@ class RrhhControlador extends Controller
             $resultado[5] = $e; //aqui se guardan la cantidad de archivos que fueron procesados
             return view('rrhh.validar_recibos')->with('msj','Se procedio correctamente con la validación del periodo seleccionado. Mes: '.$request->mes.'  -  Año: '.$request->año)->with('resultados', $resultado)->with('mes',$request->mes)->with('año',$request->año); //se envia los resultados de la validacion a la vista
         }
-        
-
-
-
-
     }
     public function getImportarRecibos()
     {
@@ -233,89 +230,92 @@ class RrhhControlador extends Controller
     }
     public function getRecibosImportados(Request $request)
     {
-        $mes                = $request->mes; //se obtiene el mes del periodo a validar
-        $año               = $request->año; //se obtiene el año del periodo a validar
-        $cantidad_empleados = DB::table('users')->where('id_rol', '1')->orWhere('id_rol', '2')->orWhere('id_rol', '4')->orWhere('id_rol', '5')->count();//se obtiene la cantidad de usuarios que son empleados
-        $periodo            = 1; //por defecto al crear un perior el mismo se encuentra abierto, es decir con codigo 1
-        $dir                = "C:/xampp/htdocs/sgfrs/public/recibos/nuevos/" . $año . "/" . $mes . "/"; //se define la direccion del directorio que sera validado
-        $a                  = 0;
-        $b                  = 0;
-        $c                  = 0;
-        $d                  = 0;
-        $e                  = 0; //contadores de datos
-        foreach (scandir($dir) as $f) //esta funcion permite leer el nombre de los archivos contenidos segun directorio especificado y los guarda en la variable $f por cada pasada de la iteraccion hasta leer todos los archivos del directorio
+        $consulta = DB::table('periodos')->where('mes',$request->mes)->where('año',$request->año)->where('estado_periodo','0')->get();
+
+        if ($consulta=='[]') 
         {
-            if ($f !== '.' and $f !== '..') // se descarta los elementos "." y ".." ya que no son archivos
+            return view('rrhh.importar_recibos')->with('errormsj','No existe este periodo o ya se encuentra cerrado. Periodo Mes: '.$request->mes.'  -  Año: '.$request->año);
+        } else {
+            $mes= $request->mes; //se obtiene el mes del periodo a validar
+            $año= $request->año; //se obtiene el año del periodo a validar
+            $cantidad_empleados = DB::table('users')->where('id_rol', '1')->orWhere('id_rol', '2')->orWhere('id_rol', '4')->orWhere('id_rol', '5')->count();//se obtiene la cantidad de usuarios que son empleados
+            $periodo            = 1; //por defecto al crear un perior el mismo se encuentra abierto, es decir con codigo 1
+            $dir= "C:/xampp/htdocs/sgfrs/public/recibos/nuevos/" . $año . "/" . $mes . "/"; //se define la direccion del directorio que sera validado
+            $a= 0;$b= 0;$c= 0;$d= 0;$e = 0; //contadores de datos
+            foreach (scandir($dir) as $f) //esta funcion permite leer el nombre de los archivos contenidos segun directorio especificado y los guarda en la variable $f por cada pasada de la iteraccion hasta leer todos los archivos del directorio
             {
-                $e++; //contador de cantidad de archivos procesados
-                if (strtolower(substr($f, -4)) == '.pdf') //se controlar si la extension del archivo es .pdf
+                if ($f !== '.' and $f !== '..') // se descarta los elementos "." y ".." ya que no son archivos
                 {
-                    if (substr($f, -9, 3) == "-" . $mes and substr($f, -6, 2) == substr($año, -2))
-                    //se verifica si el mes y año corresponde con el que se quiere importar
+                    $e++; //contador de cantidad de archivos procesados
+                    if (strtolower(substr($f, -4)) == '.pdf') //se controlar si la extension del archivo es .pdf
                     {
-                        $cedula  = substr($f, 0, (strlen($f) - 9));
-                        $persona = Persona::find($cedula);
-                        if (!empty($persona)) //se verificar que el numero de cedula corresponda con algun usuario del sistema (luego faltaria validar que el numero de cedula solo sea para usuarios que tienen el rol de empleado)
+                        if (substr($f, -9, 3) == "-" . $mes and substr($f, -6, 2) == substr($año, -2))
+                        //se verifica si el mes y año corresponde con el que se quiere importar
                         {
-                            $recibos[$a] = $f;
-                            $a++;
-                            $Recibo                   = new Recibo();
-                            $Recibo->id_recibo        = substr($f, 0, -4);
-                            $Recibo->id_estado_recibo = 2;
-                            $Recibo->cedula           = $cedula;
-                            $Recibo->id_periodo       = $periodo;
-                            $Recibo->save();
-                            rename($dir . $f, "C:/xampp/htdocs/sgfrs/public/recibos/pendientes/" . $año . "/" . $mes . "/" . $f);
+                            $cedula  = substr($f, 0, (strlen($f) - 9));
+                            $persona = Persona::find($cedula);
+                            if (!empty($persona)) //se verificar que el numero de cedula corresponda con algun usuario del sistema (luego faltaria validar que el numero de cedula solo sea para usuarios que tienen el rol de empleado)
+                            {
+                                $recibos[$a] = $f;
+                                $a++;
+                                $Recibo                   = new Recibo();
+                                $Recibo->id_recibo        = substr($f, 0, -4);
+                                $Recibo->id_estado_recibo = 2;
+                                $Recibo->cedula           = $cedula;
+                                $Recibo->id_periodo       = $periodo;
+                                $Recibo->save();
+                                rename($dir . $f, "C:/xampp/htdocs/sgfrs/public/recibos/pendientes/" . $año . "/" . $mes . "/" . $f);
+                            } else {
+    //aqui se guardan los recibos que el numero de cedula no corresponde
+                                $recibo_error_cedula[$d] = $f;
+                                $d++;
+                            }
                         } else {
-//aqui se guardan los recibos que el numero de cedula no corresponde
-                            $recibo_error_cedula[$d] = $f;
-                            $d++;
+    //aqui se guardan los recibos que estan mal su periodo
+                            $recibo_error_periodo[$b] = $f;
+                            $b++;
                         }
                     } else {
-//aqui se guardan los recibos que estan mal su periodo
-                        $recibo_error_periodo[$b] = $f;
-                        $b++;
+    //aqui se guardan los recibos que estan mal su extension
+                        $recibo_error_extension[$c] = $f;
+                        $c++;
                     }
-                } else {
-//aqui se guardan los recibos que estan mal su extension
-                    $recibo_error_extension[$c] = $f;
-                    $c++;
                 }
             }
+            if ($a > 0) //aqui se guardan la cantidad de recibos correctos que fueron procesados
+            {
+                $resultado[0] = count($recibos);
+            } else {
+                $resultado[0] = 0;
+            }
+            if ($b > 0) //aqui se guardan la cantidad de recibos con error de periodo
+            {
+                $resultado[1] = count($recibo_error_periodo);
+            } else {
+                $resultado[1] = 0;
+            }
+            if ($c > 0) //aqui se guardan la cantidad de recibos con error de extension
+            {
+                $resultado[2] = count($recibo_error_extension);
+            } else {
+                $resultado[2] = 0;
+            }
+            if ($d > 0) //aqui se guardan la cantidad de recibos con número de cedula no encontrado en el sistema
+            {
+                $resultado[3] = count($recibo_error_cedula);
+            } else {
+                $resultado[3] = 0;
+            }
+            if ($a > 0) //aqui se guardan la cantidad de recibos con número de cedula no encontrado en el sistema
+            {
+                $recibos_correctos = count($recibos);
+                $resultado[4]      = $cantidad_empleados - $recibos_correctos;
+            } else {
+                $resultado[4] = 0;
+            }
+            $resultado[5] = $e; //aqui se guardan la cantidad de archivos que fueron procesados
+            return view('rrhh.importar_recibos')->with('msj','Se procedio correctamente con la importación del periodo seleccionado. Mes: '.$request->mes.'  -  Año: '.$request->año)->with('resultados', $resultado)->with('mes',$request->mes)->with('año',$request->año); //se envia los resultados de la validacion a la vista
         }
-        if ($a > 0) //aqui se guardan la cantidad de recibos correctos que fueron procesados
-        {
-            $resultado[0] = count($recibos);
-        } else {
-            $resultado[0] = 0;
-        }
-        if ($b > 0) //aqui se guardan la cantidad de recibos con error de periodo
-        {
-            $resultado[1] = count($recibo_error_periodo);
-        } else {
-            $resultado[1] = 0;
-        }
-        if ($c > 0) //aqui se guardan la cantidad de recibos con error de extension
-        {
-            $resultado[2] = count($recibo_error_extension);
-        } else {
-            $resultado[2] = 0;
-        }
-        if ($d > 0) //aqui se guardan la cantidad de recibos con número de cedula no encontrado en el sistema
-        {
-            $resultado[3] = count($recibo_error_cedula);
-        } else {
-            $resultado[3] = 0;
-        }
-        if ($a > 0) //aqui se guardan la cantidad de recibos con número de cedula no encontrado en el sistema
-        {
-            $recibos_correctos = count($recibos);
-            $resultado[4]      = $cantidad_empleados - $recibos_correctos;
-        } else {
-            $resultado[4] = 0;
-        }
-        $resultado[5] = $e; //aqui se guardan la cantidad de archivos que fueron procesados
-        return view('rrhh.recibos_importados')->with('resultados', $resultado); //se envia los resultados de la validacion a la vista
     }
     public function getEmpleadosSinRecibos()
     {
@@ -351,9 +351,11 @@ class RrhhControlador extends Controller
             $grupo->nov          = $request->nov;
             $grupo->dic          = $request->dic;
             $grupo->save();
-            return back()->with('msj','Grupo creado correctamente!');
+            $grupos = DB::table('grupos_recibos')->get();
+            return view('rrhh.grupos_recibos')->with('msj','Grupo creado correctamente!')->with('grupos',$grupos);
         } else {
-            return back()->with('errormsj','Ya existe un grupo con este nombre: '.$request->nombre_grupo.', intente con otro nombre.');
+            $grupos = DB::table('grupos_recibos')->get();
+            return view('rrhh.grupos_recibos')->with('errormsj','Ya existe un grupo con este nombre: '.$request->nombre_grupo.', intente con otro nombre.')->with('grupos',$grupos);
         }
 
     }

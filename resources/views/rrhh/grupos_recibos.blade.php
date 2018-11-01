@@ -5,12 +5,12 @@
 	<h3 align="center">GRUPOS DE RECIBOS</h1>
 	<p align="center"><strong>Usuario: </strong> {{ Auth::user()->name }}, esta conectado con el Rol de <strong>Recursos Humanos</strong></p>
 
-@if (session()->has('msj') )
-	<div class="alert alert-success" role="alert" align="center">{{ session('msj') }}</div>
-@endif
-@if (session()->has('errormsj') )
-	<div class="alert alert-danger" role="alert" align="center">{{ session('errormsj') }}</div>
-@endif
+	@isset($msj)
+		<div class="alert alert-success" role="alert" align="center">{{ $msj }}</div>
+	@endisset
+	@isset($errormsj)
+		<div class="alert alert-danger" role="alert" align="center">{{ $errormsj }}</div>
+	@endisset
 
 <form action="/rrhh/grupos_recibos" method="POST">	
 {{ csrf_field() }}
