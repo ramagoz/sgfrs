@@ -332,21 +332,16 @@ class DatabaseSeeder extends Seeder
     array(
         array(
             'id_estado_recibo' => '1',
-            'ubicacion_recibo' => 'c:/recibos/nuevos',
-            'estado' => 'nuevo'
-            ),
-        array(
-            'id_estado_recibo' => '2',
             'ubicacion_recibo' => 'c:/recibos/pendientes',
             'estado' => 'pendiente'
             ),
         array(
-            'id_estado_recibo' => '3',
+            'id_estado_recibo' => '2',
             'ubicacion_recibo' => 'c:/recibos/firmados_empresa',
             'estado' => 'firmado_empresa'
             ),
         array(
-            'id_estado_recibo' => '4',
+            'id_estado_recibo' => '3',
             'ubicacion_recibo' => 'c:/recibos/firmados_empresa_empleados',
             'estado' => 'firmado_empresa_empleado'
             )
@@ -512,73 +507,73 @@ class DatabaseSeeder extends Seeder
     array(
         array(
             'id_recibo' => '1111111-0118',
-            'id_estado_recibo' => '4',
+            'id_estado_recibo' => '3',
             'cedula' => '1111111',
             'id_periodo' => '1'
             ),
         array(
             'id_recibo' => '2222222-0118',
-            'id_estado_recibo' => '4',
+            'id_estado_recibo' => '3',
             'cedula' => '2222222',
             'id_periodo' => '1'
             ),
         array(
             'id_recibo' => '3333333-0118',
-            'id_estado_recibo' => '4',
+            'id_estado_recibo' => '3',
             'cedula' => '3333333',
             'id_periodo' => '1'
             ),
         array(
             'id_recibo' => '4444444-0118',
-            'id_estado_recibo' => '4',
+            'id_estado_recibo' => '3',
             'cedula' => '4444444',
             'id_periodo' => '1'
             ),
         array(
             'id_recibo' => '5555555-0118',
-            'id_estado_recibo' => '4',
+            'id_estado_recibo' => '3',
             'cedula' => '5555555',
             'id_periodo' => '1'
             ),
         array(
             'id_recibo' => '2222222-0218',
-            'id_estado_recibo' => '4',
+            'id_estado_recibo' => '2',
             'cedula' => '2222222',
             'id_periodo' => '2'
             ),
         array(
             'id_recibo' => '3333333-0218',
-            'id_estado_recibo' => '4',
+            'id_estado_recibo' => '2',
             'cedula' => '3333333',
             'id_periodo' => '2'
             ),
         array(
             'id_recibo' => '4444444-0218',
-            'id_estado_recibo' => '4',
+            'id_estado_recibo' => '2',
             'cedula' => '4444444',
             'id_periodo' => '2'
             ),
         array(
             'id_recibo' => '5555555-0218',
-            'id_estado_recibo' => '4',
+            'id_estado_recibo' => '2',
             'cedula' => '5555555',
             'id_periodo' => '2'
             ),
         array(
             'id_recibo' => '3333333-0318',
-            'id_estado_recibo' => '4',
+            'id_estado_recibo' => '1',
             'cedula' => '3333333',
             'id_periodo' => '3'
             ),
         array(
             'id_recibo' => '4444444-0318',
-            'id_estado_recibo' => '4',
+            'id_estado_recibo' => '1',
             'cedula' => '4444444',
             'id_periodo' => '3'
             ),
         array(
             'id_recibo' => '5555555-0318',
-            'id_estado_recibo' => '4',
+            'id_estado_recibo' => '1',
             'cedula' => '5555555',
             'id_periodo' => '3'
             )

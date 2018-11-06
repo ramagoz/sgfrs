@@ -4,11 +4,11 @@
 	@include('layouts.menu_rrhh')
 	<h3 align="center">INFORMES PARA RRHH</h1>
 	<p align="center"><strong>Usuario: </strong> {{ Auth::user()->name }}, esta conectado con el Rol de <strong>Recursos Humanos</strong></p>
+	<div align="center">
 	<table id="example" class="display" style="width:90%" align="center" border="1">
 		<thead>
 		<tr><th>Año</th><th>Mes</th><th>Total Recibos</th><th>Firmados Empresa</th><th>Pendientes Firma Empresa</th><th>Firmados Empleados</th><th>Pendientes Firma Empleados</th><th>Estado Periodo</th></tr>
 		</thead>
-
 		<tbody>
 				<tr>
 					<td>{{ $año }}</td>
@@ -19,9 +19,9 @@
 					<td>{{ $ene_firmado_empleado }}</td>
 					<td>{{ $ene-$ene_firmado_empleado }}</td>
 					<td>
-						@if ( $ene==0)
+						@if ( $existencia_ene==0)
 							Periodo no creado
-						@elseif ( $ene ==($ene_firmado_empleado))
+						@elseif ( $ene > 0 and $ene ==$ene_firmado_empleado)
 							Periodo Cerrado
 						@else
 							Periodo Abierto
@@ -39,9 +39,9 @@
 					<td>{{ $feb_firmado_empleado }}</td>
 					<td>{{ $feb-$feb_firmado_empleado }}</td>
 					<td>
-						@if ( $feb==0)
+						@if ( $existencia_feb==0)
 							Periodo no creado
-						@elseif ( $feb ==($feb_firmado_empleado))
+						@elseif ( $feb > 0 and $feb ==$feb_firmado_empleado)
 							Periodo Cerrado
 						@else
 							Periodo Abierto
@@ -57,10 +57,9 @@
 					<td>{{ $mar_firmado_empleado }}</td>
 					<td>{{ $mar-$mar_firmado_empleado }}</td>
 					<td>
-						@if ( $mar==0)
+						@if ( $existencia_mar==0)
 							Periodo no creado
-						@elseif ( $mar ==($mar_firmado_empleado))
-							Periodo Cerrado
+						@elseif ( $mar > 0 and $mar ==$mar_firmado_empleado)
 						@else
 							Periodo Abierto
 					 	@endif
@@ -75,9 +74,9 @@
 					<td>{{ $abr_firmado_empleado }}</td>
 					<td>{{ $abr-$abr_firmado_empleado }}</td>
 					<td>
-						@if ( $abr==0)
+						@if ($existencia_abr==0)
 							Periodo no creado
-						@elseif ( $abr ==($abr_firmado_empleado))
+						@elseif ( $abr > 0 and $abr ==$abr_firmado_empleado)
 							Periodo Cerrado
 						@else
 							Periodo Abierto
@@ -93,9 +92,9 @@
 					<td>{{ $may_firmado_empleado }}</td>
 					<td>{{ $may-$may_firmado_empleado }}</td>
 					<td>
-						@if ( $may==0)
+						@if ( $existencia_may==0)
 							Periodo no creado
-						@elseif ( $may ==($may_firmado_empleado))
+						@elseif ( $may > 0 and $may ==$may_firmado_empleado)
 							Periodo Cerrado
 						@else
 							Periodo Abierto
@@ -111,9 +110,9 @@
 					<td>{{ $jun_firmado_empleado }}</td>
 					<td>{{ $jun-$jun_firmado_empleado }}</td>
 					<td>
-						@if ( $jun==0)
+						@if ( $existencia_jun==0)
 							Periodo no creado
-						@elseif ( $jun ==($jun_firmado_empleado))
+						@elseif ( $jun > 0 and $jun ==$jun_firmado_empleado)
 							Periodo Cerrado
 						@else
 							Periodo Abierto
@@ -129,9 +128,9 @@
 					<td>{{ $jul_firmado_empleado }}</td>
 					<td>{{ $jul-$jul_firmado_empleado }}</td>
 					<td>
-						@if ( $jul==0)
+						@if ( $existencia_jul==0)
 							Periodo no creado
-						@elseif ( $jul ==($jul_firmado_empleado))
+						@elseif ( $jul > 0 and $jul ==$jul_firmado_empleado)
 							Periodo Cerrado
 						@else
 							Periodo Abierto
@@ -147,9 +146,9 @@
 					<td>{{ $ago_firmado_empleado }}</td>
 					<td>{{ $ago-$ago_firmado_empleado }}</td>
 					<td>
-						@if ( $ago==0)
+						@if ( $existencia_ago==0)
 							Periodo no creado
-						@elseif ( $ago ==($ago_firmado_empleado))
+						@elseif ( $ago > 0 and $ago ==$ago_firmado_empleado)
 							Periodo Cerrado
 						@else
 							Periodo Abierto
@@ -165,9 +164,9 @@
 					<td>{{ $set_firmado_empleado }}</td>
 					<td>{{ $set-$set_firmado_empleado }}</td>
 					<td>
-						@if ( $set==0)
+						@if ( $existencia_set==0)
 							Periodo no creado
-						@elseif ( $set ==($set_firmado_empleado))
+						@elseif ( $set > 0 and $set ==$set_firmado_empleado)
 							Periodo Cerrado
 						@else
 							Periodo Abierto
@@ -183,9 +182,9 @@
 					<td>{{ $oct_firmado_empleado }}</td>
 					<td>{{ $oct-$oct_firmado_empleado }}</td>
 					<td>
-						@if ( $oct==0)
+						@if ( $existencia_oct==0)
 							Periodo no creado
-						@elseif ( $oct ==($oct_firmado_empleado))
+						@elseif ( $oct > 0 and $oct ==$oct_firmado_empleado)
 							Periodo Cerrado
 						@else
 							Periodo Abierto
@@ -201,9 +200,9 @@
 					<td>{{ $nov_firmado_empleado }}</td>
 					<td>{{ $nov-$nov_firmado_empleado }}</td>
 					<td>
-						@if ( $nov==0)
+						@if ( $existencia_nov==0)
 							Periodo no creado
-						@elseif ( $nov ==($nov_firmado_empleado))
+						@elseif ( $nov > 0 and $nov ==$nov_firmado_empleado)
 							Periodo Cerrado
 						@else
 							Periodo Abierto
@@ -219,18 +218,18 @@
 					<td>{{ $dic_firmado_empleado }}</td>
 					<td>{{ $dic-$dic_firmado_empleado }}</td>
 					<td>
-						@if ( $dic==0)
+						@if ( $existencia_dic==0)
 							Periodo no creado
-						@elseif ( $dic ==($dic_firmado_empleado))
+						@elseif ( $dic > 0 and $dic ==$dic_firmado_empleado)
 							Periodo Cerrado
 						@else
 							Periodo Abierto
 					 	@endif
 					</td>
 				</tr>
-
 		</tbody>
-
 	</table>
-
+	<br>
+	<a class="btn btn-primary"  href="{{ url('/rrhh/informes_rrhh' ) }}" role="button">Volver</a>
+	</div>
 @endsection
