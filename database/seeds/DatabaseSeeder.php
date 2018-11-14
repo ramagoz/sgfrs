@@ -396,7 +396,7 @@ class DatabaseSeeder extends Seeder
     array(
         array(
             'cedula' => '1000000',
-            'id_usuario' => '0',
+            'id_usuario' => '1',
             'id_grupo' => '1',
             'id_rol'=>'3',
             'nombres' => 'AAAA',
@@ -411,7 +411,7 @@ class DatabaseSeeder extends Seeder
             ),
         array(
             'cedula' => '1111111',
-            'id_usuario' => '1',
+            'id_usuario' => '2',
             'id_grupo' => '1',
             'id_rol'=>'2',
             'nombres' => 'BBBB',
@@ -426,7 +426,7 @@ class DatabaseSeeder extends Seeder
             ),
         array(
             'cedula' => '2222222',
-            'id_usuario' => '2',
+            'id_usuario' => '3',
             'id_grupo' => '1',
             'id_rol'=>'5',
             'nombres' => 'CCCC',
@@ -441,7 +441,7 @@ class DatabaseSeeder extends Seeder
             ),
         array(
             'cedula' => '3333333',
-            'id_usuario' => '3',
+            'id_usuario' => '4',
             'id_grupo' => '1',
             'id_rol'=>'1',
             'nombres' => 'DDDD',
@@ -456,7 +456,7 @@ class DatabaseSeeder extends Seeder
             ),
         array(
             'cedula' => '4444444',
-            'id_usuario' => '4',
+            'id_usuario' => '5',
             'id_grupo' => '2',
             'id_rol'=>'1',
             'nombres' => 'EEEE',
@@ -471,7 +471,7 @@ class DatabaseSeeder extends Seeder
             ),
         array(
             'cedula' => '5555555',
-            'id_usuario' => '5',
+            'id_usuario' => '6',
             'id_grupo' => '2',
             'id_rol'=>'1',
             'nombres' => 'FFFF',

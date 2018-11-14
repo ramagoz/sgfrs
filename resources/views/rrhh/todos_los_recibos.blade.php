@@ -16,13 +16,13 @@
 			<td>{{  substr($recibo->id_recibo,-4,2) }}</td>
 			<td>
 			@switch($recibo->id_estado_recibo)
-				@case(2)
+				@case(1)
 				Pendiente de Firma Empresa
 				@break
-				@case(3)
+				@case(2)
 				Pendiente Firma Empleado
 				@break
-				@case(4)
+				@case(3)
 				Firmado Empresa y Empleado
 				@break
 			@endswitch()

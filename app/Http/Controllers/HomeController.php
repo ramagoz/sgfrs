@@ -27,13 +27,14 @@ class HomeController extends Controller
 public function index()
     {
          if (Auth::check()) 
-        {
+        {//no ingresa bien el usuario empresa
             $id = Auth::user()->id;
             $roles= DB::table('personas')->where('id_usuario',$id)->get()->toArray();
-        foreach ($roles as $role) {
+            foreach ($roles as $role) 
+            {
 
-            $rol = $role->id_usuario;
-        }
+                $rol = $role->id_rol;
+            }
        switch ($rol) 
             {
                 case 0:

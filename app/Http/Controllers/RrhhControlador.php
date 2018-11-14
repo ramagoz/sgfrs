@@ -363,7 +363,7 @@ class RrhhControlador extends Controller
     {
         $recibos = DB::table('recibos')
         ->join('personas', 'recibos.cedula','=','personas.cedula')
-        ->where('recibos.id_estado_recibo', '2')
+        ->where('recibos.id_estado_recibo', '1')
         ->get();
 
         return view('rrhh.pendientes_firma_empresa')->with('recibos',$recibos);
@@ -377,7 +377,7 @@ class RrhhControlador extends Controller
     {
         $recibos = DB::table('recibos')
         ->join('personas', 'recibos.cedula','=','personas.cedula')
-        ->where('recibos.id_estado_recibo', '3')
+        ->where('recibos.id_estado_recibo', '2')
         ->get();
 
         return view('rrhh.pendientes_firma_empleados')->with('recibos',$recibos);
@@ -391,7 +391,7 @@ class RrhhControlador extends Controller
     {
         $recibos = DB::table('recibos')
         ->join('personas', 'recibos.cedula','=','personas.cedula')
-        ->where('recibos.id_estado_recibo', '4')
+        ->where('recibos.id_estado_recibo', '3')
         ->get();
 
         return view('rrhh.firmados_empresa_empleados')->with('recibos',$recibos);
@@ -406,9 +406,9 @@ class RrhhControlador extends Controller
     {
         $recibos = DB::table('recibos')
         ->join('personas', 'recibos.cedula','=','personas.cedula')
-        ->where('recibos.id_estado_recibo', '2')
+        ->where('recibos.id_estado_recibo', '1')
+        ->orWhere('recibos.id_estado_recibo', '2')
         ->orWhere('recibos.id_estado_recibo', '3')
-        ->orWhere('recibos.id_estado_recibo', '4')
         ->get();
 
         return view('rrhh.todos_los_recibos')->with('recibos',$recibos);
