@@ -22,11 +22,13 @@ Route::group(['middleware' => 'auth'], function()
 
 	Route::get('empresa/recibos_pendientes_empresa', 'EmpresaControlador@getRecibosPendientesEmpresa');
 	Route::get('empresa/ver_recibo_pendiente_firma_empresa/{id}', 'EmpresaControlador@getVerRecibo');
+	Route::post('empresa/recibos_pendientes_empleados', 'EmpresaControlador@postFirmaMasivaRecibosPendientesEmpleados');
 
 	Route::get('empresa/recibos_pendientes_empleados', 'EmpresaControlador@getRecibosPendientesEmpleados');
+	Route::get('empresa/ver_recibo_firmado_empresa/{id}', 'EmpresaControlador@getFirmarReciboPendienteEmpresa');
 	Route::get('empresa/ver_recibo_pendiente_firma_empleado/{id}', 'EmpresaControlador@getVerReciboPendienteFirmaEmpleado');
 
-	Route::get('empresa/recibos_firmados_empresa', 'EmpresaControlador@getRecibosFirmadosEmpresa');
+	Route::get('empresa/recibos_firmados_empresa_empleados', 'EmpresaControlador@getRecibosFirmadosEmpresaEmpleados');
 	Route::get('empresa/informes_empresa', 'EmpresaControlador@getInformesEmpresa');
 	Route::get('empresa/cambiar_contraseña', 'EmpresaControlador@getCambiarContraseña');
 

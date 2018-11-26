@@ -15,7 +15,7 @@
                 <li><a href="/empresa/recibos_pendientes_empleados">Recibos Pendientes Empleados</a></li>
             </ul>
         </li>
-        <li><a href="/empresa/recibos_firmados_empresa">Recibos Firmados</a></li> 
+        <li><a href="/empresa/recibos_firmados_empresa_empleados">Recibos Firmados</a></li> 
          <li><a href="/empresa/informes_empresa">Informes</a></li> 
          <li><a href="#">Más</a>
             <ul>

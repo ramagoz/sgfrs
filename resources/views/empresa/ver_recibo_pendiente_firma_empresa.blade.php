@@ -8,5 +8,6 @@
 <iframe src='{{$id}}' width="1200" height="400" style="border: none;" ></iframe>
 <br>
 <a class="btn btn-primary" href="{{ url('/empresa/recibos_pendientes_empresa' ) }}" role="button">Volver</a>
+<a class="btn btn-success" href="{{ url('/empresa/ver_recibo_firmado_empresa/'.$id_recibo) }}" role="button">Firmar</a>
 </div>
 @endsection
