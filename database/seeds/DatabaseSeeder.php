@@ -597,52 +597,52 @@ class DatabaseSeeder extends Seeder
     private $arrayFirma_empresas = 
     array(
         array(
-            'cedula' => '0000000',
-            'id_recibo' => 'recibo-1111111-0118'
+            'cedula' => '1000000',
+            'id_recibo' => '1111111-0118'
             ),
         array(
-            'cedula' => '0000000',
-            'id_recibo' => 'recibo-2222222-0118'
+            'cedula' => '1000000',
+            'id_recibo' => '2222222-0118'
             ),
         array(
-            'cedula' => '0000000',
-            'id_recibo' => 'recibo-33333333-0118'
+            'cedula' => '1000000',
+            'id_recibo' => '33333333-0118'
             ),
         array(
-            'cedula' => '0000000',
-            'id_recibo' => 'recibo-4444444-0118'
+            'cedula' => '1000000',
+            'id_recibo' => '4444444-0118'
             ),
         array(
-            'cedula' => '0000000',
+            'cedula' => '1000000',
             'id_recibo' => 'recibo-5555555-0118'
             ),
         array(
-            'cedula' => '0000000',
-            'id_recibo' => 'recibo-2222222-0218'
+            'cedula' => '1000000',
+            'id_recibo' => '2222222-0218'
             ),
         array(
-            'cedula' => '0000000',
-            'id_recibo' => 'recibo-3333333-0218'
+            'cedula' => '1000000',
+            'id_recibo' => '3333333-0218'
             ),
         array(
-            'cedula' => '0000000',
-            'id_recibo' => 'recibo-4444444-0218'
+            'cedula' => '1000000',
+            'id_recibo' => '4444444-0218'
             ),
         array(
-            'cedula' => '0000000',
-            'id_recibo' => 'recibo-5555555-0218'
+            'cedula' => '1000000',
+            'id_recibo' => '5555555-0218'
             ),
         array(
-            'cedula' => '0000000',
-            'id_recibo' => 'recibo-3333333-0318'
+            'cedula' => '1000000',
+            'id_recibo' => '3333333-0318'
             ),
         array(
-            'cedula' => '0000000',
-            'id_recibo' => 'recibo-4444444-0318'
+            'cedula' => '1000000',
+            'id_recibo' => '4444444-0318'
             ),
         array(
-            'cedula' => '0000000',
-            'id_recibo' => 'recibo-5555555-0318'
+            'cedula' => '1000000',
+            'id_recibo' => '5555555-0318'
             )
     );
 /*

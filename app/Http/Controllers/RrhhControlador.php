@@ -153,7 +153,7 @@ class RrhhControlador extends Controller
             $mes= $request->mes; //se obtiene el mes del periodo a validar
             $año= $request->año; //se obtiene el año del periodo a validar
             $cantidad_empleados = DB::table('personas')->where('id_rol', '1')->orWhere('id_rol', '2')->orWhere('id_rol', '4')->orWhere('id_rol', '5')->count();
-            $periodo= 1; //se obtiene la cantidad de usuarios que son empleados
+            //se obtiene la cantidad de usuarios que son empleados
             $dir= "C:/xampp/htdocs/sgfrs/public/recibos/nuevos/" . $año . "/" . $mes . "/"; //se define la direccion del directorio que sera validado
             $a= 0;$b= 0;$c= 0;$d= 0;$e= 0; //contadores de datos
             foreach (scandir($dir) as $f) //esta funcion permite leer el nombre de los archivos contenidos segun directorio especificado y los guarda en la variable $f por cada pasada de la iteraccion hasta leer todos los archivos del directorio
@@ -239,7 +239,6 @@ class RrhhControlador extends Controller
             $mes= $request->mes; //se obtiene el mes del periodo a validar
             $año= $request->año; //se obtiene el año del periodo a validar
             $cantidad_empleados = DB::table('personas')->where('id_rol', '1')->orWhere('id_rol', '2')->orWhere('id_rol', '4')->orWhere('id_rol', '5')->count();//se obtiene la cantidad de usuarios que son empleados
-            $periodo            = 1; //por defecto al crear un perior el mismo se encuentra abierto, es decir con codigo 1
             $dir= "C:/xampp/htdocs/sgfrs/public/recibos/nuevos/" . $año . "/" . $mes . "/"; //se define la direccion del directorio que sera validado
             $a= 0;$b= 0;$c= 0;$d= 0;$e = 0; //contadores de datos
             foreach (scandir($dir) as $f) //esta funcion permite leer el nombre de los archivos contenidos segun directorio especificado y los guarda en la variable $f por cada pasada de la iteraccion hasta leer todos los archivos del directorio
@@ -260,9 +259,9 @@ class RrhhControlador extends Controller
                                 $a++;
                                 $Recibo                   = new Recibo();
                                 $Recibo->id_recibo        = substr($f, 0, -4);
-                                $Recibo->id_estado_recibo = 2;
+                                $Recibo->id_estado_recibo = 1;
                                 $Recibo->cedula           = $cedula;
-                                $Recibo->id_periodo       = $periodo;
+                                $Recibo->id_periodo       = $consulta->id_periodo;
                                 $Recibo->save();
                                 rename($dir . $f, "C:/xampp/htdocs/sgfrs/public/recibos/pendientes/" . $año . "/" . $mes . "/" . $f);
                             } else {
@@ -400,7 +399,7 @@ class RrhhControlador extends Controller
     public function getVerReciboFirmadoEmpresaEmpleado($id)
     {
         $id="/recibos/firmados_empresa_empleados/"."20".substr($id, -2, 2)."/".substr($id, -4, 2)."/".$id.".pdf";
-        return view('rrhh.ver_recibo_firmados_empresa_empleados')->with('id',$id);
+        return view('rrhh.ver_recibo_firmado_empresa_empleado')->with('id',$id);
     }
     public function getTodosLosRecibos()
     {
@@ -420,15 +419,15 @@ class RrhhControlador extends Controller
         ->first();
         switch ($consulta->id_estado_recibo) 
         {
-            case 2:
+            case 1:
                 $id="/recibos/pendientes/"."20".substr($id, -2, 2)."/".substr($id, -4, 2)."/".$id.".pdf";
                 return view('rrhh.ver_todos_los_recibos')->with('id',$id);
             break;
-            case 3:
+            case 2:
                 $id="/recibos/firmados_empresa/"."20".substr($id, -2, 2)."/".substr($id, -4, 2)."/".$id.".pdf";
                 return view('rrhh.ver_todos_los_recibos')->with('id',$id);
             break;            
-            case 4:
+            case 3:
                 $id="/recibos/firmados_empresa_empleados/"."20".substr($id, -2, 2)."/".substr($id, -4, 2)."/".$id.".pdf";
                 return view('rrhh.ver_todos_los_recibos')->with('id',$id);
             break; 

@@ -29,7 +29,11 @@ Route::group(['middleware' => 'auth'], function()
 	Route::get('empresa/ver_recibo_pendiente_firma_empleado/{id}', 'EmpresaControlador@getVerReciboPendienteFirmaEmpleado');
 
 	Route::get('empresa/recibos_firmados_empresa_empleados', 'EmpresaControlador@getRecibosFirmadosEmpresaEmpleados');
+	Route::get('empresa/ver_recibo_firmado_empresa_empleado/{id}', 'EmpresaControlador@getVerReciboFirmadoEmpresaEmpleado');
+
 	Route::get('empresa/informes_empresa', 'EmpresaControlador@getInformesEmpresa');
+	Route::post('empresa/resultado_informes_empresa', 'EmpresaControlador@postVerInformesEmpresa');
+
 	Route::get('empresa/cambiar_contraseña', 'EmpresaControlador@getCambiarContraseña');
 
 //Sección rutas rrhh----------------------------------------------
@@ -59,15 +63,19 @@ Route::group(['middleware' => 'auth'], function()
 	
 	Route::get('rrhh/pendientes_firma_empresa', 'RrhhControlador@getPendientesFirmaEmpresa');
 	Route::get('rrhh/ver_recibo/{id}', 'RrhhControlador@getVerRecibo');
-	//Route::get('rrhh/ver_recibo', 'RrhhControlador@getVerRecibo');
+
+
 	Route::get('rrhh/pendientes_firma_empleados', 'RrhhControlador@getPendientesFirmaEmpleados');
 	Route::get('rrhh/ver_recibo_pendientes_firma_empleados/{id}', 'RrhhControlador@getVerReciboPendientesFirmaEmpleados');
+
 	Route::get('rrhh/firmados_empresa_empleados', 'RrhhControlador@getFirmadosEmpresaEmpleados');
-	Route::get('rrhh/ver_recibo_firmados_empresa_empleados/{id}', 'RrhhControlador@getVerReciboFirmadoEmpresaEmpleado');
+	Route::get('rrhh/ver_recibo_firmado_empresa_empleado/{id}', 'RrhhControlador@getVerReciboFirmadoEmpresaEmpleado');
 	Route::get('rrhh/todos_los_recibos', 'RrhhControlador@getTodosLosRecibos');
 	Route::get('rrhh/ver_todos_los_recibos/{id}', 'RrhhControlador@getVerTodosLosRecibos');
+
 	Route::get('rrhh/informes_rrhh', 'RrhhControlador@getInformesRrhh');
 	Route::post('rrhh/resultado_informes_rrhh', 'RrhhControlador@postVerInformesRrhh');
+
 	Route::get('rrhh/cambiar_contraseña', 'RrhhControlador@getCambiarContraseña');
     
 
@@ -92,8 +100,19 @@ Route::group(['middleware' => 'auth'], function()
 //Sección rutas empleado----------------------------------------------
 
 	Route::get('empleado', 'EmpleadoControlador@getIndexEmpleado');
+
 	Route::get('empleado/recibos_pendientes', 'EmpleadoControlador@getRecibosPendientes');
+	Route::post('empleado/recibos_firmados', 'EmpleadoControlador@postFirmaMasivaRecibosPendientesEmpleado');
+
+	Route::get('empleado/ver_recibo_pendiente_firma_empleado/{id}', 'EmpleadoControlador@getVerReciboPendienteFirmaEmpleado');
+	Route::get('empleado/ver_recibo_firmado_empresa/{id}', 'EmpleadoControlador@getFirmarReciboPendienteEmpleado');
+	Route::get('empleado/ver_recibo_firmado_empleado/{id}', 'EmpleadoControlador@getFirmarReciboPendienteEmpleado');
+
 	Route::get('empleado/recibos_firmados', 'EmpleadoControlador@getRecibosFirmados');
+	Route::get('empleado/ver_recibo_firmado_empresa_empleado/{id}', 'EmpleadoControlador@getVerReciboFirmadoEmpresaEmpleado/{id}');
+
+
+
 	Route::get('empleado/contactar_rrhh', 'EmpleadoControlador@getContactarRrhh');
 	Route::get('empleado/cambiar_contraseña', 'EmpleadoControlador@getCambiarContraseña');
 

@@ -18,7 +18,7 @@
 			<td>{{ $recibo->cedula }}</td>
 			<td>{{ $recibo->nombres }}</td>
 			<td>{{ $recibo->apellidos }}</td>
-			<td><a class="btn btn-primary" href="{{ url('/rrhh/ver_recibo_firmados_empresa_empleados/'.$recibo->id_recibo ) }}" role="button">VER</a></td>
+			<td><a class="btn btn-primary" href="{{ url('/rrhh/ver_recibo_firmado_empresa_empleado/'.$recibo->id_recibo ) }}" role="button">VER</a></td>
 		</tr>
 		</tbody>
 	@endforeach
