@@ -13,6 +13,11 @@ Route::get('/sin_rol', function()
 
 Route::group(['middleware' => 'auth'], function() 
 {
+//Salir del Sistema
+	Route::get('/salir','HomeController@getSalirSistema');
+
+//Sección de rol----------------------------------------------
+	Route::post('auth/rol_seleccionado', 'HomeController@postRolSeleccionado');
 //Sección rutas empresa----------------------------------------------
 	Route::get('empresa', 'EmpresaControlador@getIndexEmpresa');
 	Route::get('empresa/alta_oficial', 'EmpresaControlador@getAltaOficial');
@@ -77,9 +82,7 @@ Route::group(['middleware' => 'auth'], function()
 	Route::post('rrhh/resultado_informes_rrhh', 'RrhhControlador@postVerInformesRrhh');
 
 	Route::get('rrhh/cambiar_contraseña', 'RrhhControlador@getCambiarContraseña');
-    
-
-	
+ 
 
 //Sección rutas oficial----------------------------------------------
 
@@ -99,7 +102,7 @@ Route::group(['middleware' => 'auth'], function()
 
 //Sección rutas empleado----------------------------------------------
 
-	Route::get('empleado', 'EmpleadoControlador@getIndexEmpleado');
+	Route::get('empleado', 'EmpleadoControlador@getRecibosPendientes');
 
 	Route::get('empleado/recibos_pendientes', 'EmpleadoControlador@getRecibosPendientes');
 	Route::post('empleado/recibos_firmados', 'EmpleadoControlador@postFirmaMasivaRecibosPendientesEmpleado');

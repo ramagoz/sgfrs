@@ -214,7 +214,7 @@ class DatabaseSeeder extends Seeder
     }
         private function seedFirma_empresa()
     {
-    	DB::table('firma_empresas')->delete();
+    	DB::table('firma_empresa')->delete();
 
         foreach( $this->arrayFirma_empresas as $firma_empresas) 
         {

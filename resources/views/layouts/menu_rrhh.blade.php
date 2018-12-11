@@ -32,7 +32,9 @@
          </li> 
          <li><a href="#">Más</a>
             <ul>
+                <li><a href="/home">Cambiar de rol</a></li>
                 <li><a href="/rrhh/cambiar_contraseña">Cambiar contraseña</a></li>
+                <li><a href="/salir">Salir del Sistema</a></li>
             </ul>
          </li> 
     </ul>

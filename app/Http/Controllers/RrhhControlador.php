@@ -163,8 +163,9 @@ class RrhhControlador extends Controller
                     $e++; //contador de cantidad de archivos procesados
                     if (strtolower(substr($f, -4)) == '.pdf') //se controlar si la extension del archivo es .pdf
                     {
-                        if (substr($f, -9, 3) == "-" . $mes and substr($f, -6, 2) == substr($año, -2))
-                        //se verifica si el mes y año corresponde con el que se quiere importar
+                        if (substr($f, -9, 3) == "-".$mes )
+                            //and substr($f, -6, 2) == substr($año, -2))
+                        //se verifica si el mes y año corresponde con el que se quiere validar
                         {
                             $cedula  = substr($f, 0, (strlen($f) - 9));
                             $persona = Persona::find($cedula);
@@ -213,13 +214,14 @@ class RrhhControlador extends Controller
             } else {
                 $resultado[3] = 0;
             }
-            if ($a > 0) //aqui se guardan la cantidad de recibos con número de cedula no encontrado en el sistema
+            if ($a > 0) //aqui se guardan la cantidad empleados en el sistema que no tienen recibos creados
             {
                 $recibos_correctos = count($recibos);
                 $resultado[4]      = $cantidad_empleados - $recibos_correctos;
             } else {
                 $resultado[4] = 0;
             }
+
             $resultado[5] = $e; //aqui se guardan la cantidad de archivos que fueron procesados
             return view('rrhh.validar_recibos')->with('msj','Se procedio correctamente con la validación del periodo seleccionado. Mes: '.$request->mes.'  -  Año: '.$request->año)->with('resultados', $resultado)->with('mes',$request->mes)->with('año',$request->año); //se envia los resultados de la validacion a la vista
         }
@@ -231,6 +233,10 @@ class RrhhControlador extends Controller
     public function getRecibosImportados(Request $request)
     {
         $consulta = DB::table('periodos')->where('mes',$request->mes)->where('año',$request->año)->where('estado_periodo','0')->get();
+        foreach ($consulta as $result) 
+        {
+            $id_periodo= $result->id_periodo;
+        }
 
         if ($consulta=='[]') 
         {
@@ -257,11 +263,11 @@ class RrhhControlador extends Controller
                             {
                                 $recibos[$a] = $f;
                                 $a++;
-                                $Recibo                   = new Recibo();
-                                $Recibo->id_recibo        = substr($f, 0, -4);
+                                $Recibo= new Recibo();
+                                $Recibo->id_recibo= substr($f, 0, -4);
                                 $Recibo->id_estado_recibo = 1;
-                                $Recibo->cedula           = $cedula;
-                                $Recibo->id_periodo       = $consulta->id_periodo;
+                                $Recibo->cedula= $cedula;
+                                $Recibo->id_periodo= $id_periodo;
                                 $Recibo->save();
                                 rename($dir . $f, "C:/xampp/htdocs/sgfrs/public/recibos/pendientes/" . $año . "/" . $mes . "/" . $f);
                             } else {

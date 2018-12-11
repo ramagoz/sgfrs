@@ -13,7 +13,7 @@ class CreateFirmaEmpresasTable extends Migration
      */
     public function up()
     {
-        Schema::create('firma_empresas', function (Blueprint $table) {
+        Schema::create('firma_empresa', function (Blueprint $table) {
             $table->string('cedula')->references('cedula')->on('personas');
             $table->string('id_recibo')->references('id_recibo')->on('recibos');
         });
@@ -26,6 +26,6 @@ class CreateFirmaEmpresasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('firma_empresas');
+        Schema::dropIfExists('firma_empresa');
     }
 }

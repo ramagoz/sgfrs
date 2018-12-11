@@ -19,7 +19,11 @@
          <li><a href="/empresa/informes_empresa">Informes</a></li> 
          <li><a href="#">Más</a>
             <ul>
+                @if (Session::get('rol_usuario') ==4 )
+                <li><a href="/home">Cambiar de rol</a></li>
+                @endif
                 <li><a href="/empresa/cambiar_contraseña">Cambiar contraseña</a></li>
+                <li><a href="/salir">Salir del Sistema</a></li>
             </ul>
          </li> 
     </ul>
