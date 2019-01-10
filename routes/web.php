@@ -19,7 +19,7 @@ Route::group(['middleware' => 'auth'], function()
 //Sección de rol----------------------------------------------
 	Route::post('auth/rol_seleccionado', 'HomeController@postRolSeleccionado');
 //Sección rutas empresa----------------------------------------------
-	Route::get('empresa', 'EmpresaControlador@getIndexEmpresa');
+	Route::get('empresa', 'EmpresaControlador@getRecibosPendientesEmpresa');
 	Route::get('empresa/alta_oficial', 'EmpresaControlador@getAltaOficial');
 	Route::get('empresa/baja_oficial', 'EmpresaControlador@getBajaOficial');
 	Route::get('empresa/modificacion_oficial', 'EmpresaControlador@getModificacionOficial');

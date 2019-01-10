@@ -21,7 +21,7 @@
 					<td>
 						@if ( $existencia_ene==0)
 							Periodo no creado
-						@elseif ( $ene > 0 and $ene ==$ene_firmado_empleado)
+						@elseif ( $ene > 0 and $cantidad_empleados ==$ene_firmado_empleado)
 							Periodo Cerrado
 						@else
 							Periodo Abierto
@@ -41,7 +41,7 @@
 					<td>
 						@if ( $existencia_feb==0)
 							Periodo no creado
-						@elseif ( $feb > 0 and $feb ==$feb_firmado_empleado)
+						@elseif ( $feb > 0 and $cantidad_empleados ==$feb_firmado_empleado)
 							Periodo Cerrado
 						@else
 							Periodo Abierto
@@ -59,7 +59,7 @@
 					<td>
 						@if ( $existencia_mar==0)
 							Periodo no creado
-						@elseif ( $mar > 0 and $mar ==$mar_firmado_empleado)
+						@elseif ( $mar > 0 and $cantidad_empleados ==$mar_firmado_empleado)
 						@else
 							Periodo Abierto
 					 	@endif
@@ -76,7 +76,7 @@
 					<td>
 						@if ($existencia_abr==0)
 							Periodo no creado
-						@elseif ( $abr > 0 and $abr ==$abr_firmado_empleado)
+						@elseif ( $abr > 0 and $cantidad_empleados ==$abr_firmado_empleado)
 							Periodo Cerrado
 						@else
 							Periodo Abierto
@@ -94,7 +94,7 @@
 					<td>
 						@if ( $existencia_may==0)
 							Periodo no creado
-						@elseif ( $may > 0 and $may ==$may_firmado_empleado)
+						@elseif ( $may > 0 and $cantidad_empleados ==$may_firmado_empleado)
 							Periodo Cerrado
 						@else
 							Periodo Abierto
@@ -112,7 +112,7 @@
 					<td>
 						@if ( $existencia_jun==0)
 							Periodo no creado
-						@elseif ( $jun > 0 and $jun ==$jun_firmado_empleado)
+						@elseif ( $jun > 0 and $cantidad_empleados ==$jun_firmado_empleado)
 							Periodo Cerrado
 						@else
 							Periodo Abierto
@@ -130,7 +130,7 @@
 					<td>
 						@if ( $existencia_jul==0)
 							Periodo no creado
-						@elseif ( $jul > 0 and $jul ==$jul_firmado_empleado)
+						@elseif ( $jul > 0 and $cantidad_empleados ==$jul_firmado_empleado)
 							Periodo Cerrado
 						@else
 							Periodo Abierto
@@ -148,7 +148,7 @@
 					<td>
 						@if ( $existencia_ago==0)
 							Periodo no creado
-						@elseif ( $ago > 0 and $ago ==$ago_firmado_empleado)
+						@elseif ( $ago > 0 and $cantidad_empleados ==$ago_firmado_empleado)
 							Periodo Cerrado
 						@else
 							Periodo Abierto
@@ -166,7 +166,7 @@
 					<td>
 						@if ( $existencia_set==0)
 							Periodo no creado
-						@elseif ( $set > 0 and $set ==$set_firmado_empleado)
+						@elseif ( $set > 0 and $cantidad_empleados ==$set_firmado_empleado)
 							Periodo Cerrado
 						@else
 							Periodo Abierto
@@ -184,7 +184,7 @@
 					<td>
 						@if ( $existencia_oct==0)
 							Periodo no creado
-						@elseif ( $oct > 0 and $oct ==$oct_firmado_empleado)
+						@elseif ( $oct > 0 and $cantidad_empleados ==$oct_firmado_empleado)
 							Periodo Cerrado
 						@else
 							Periodo Abierto
@@ -202,7 +202,7 @@
 					<td>
 						@if ( $existencia_nov==0)
 							Periodo no creado
-						@elseif ( $nov > 0 and $nov ==$nov_firmado_empleado)
+						@elseif ( $nov > 0 and $cantidad_empleados ==$nov_firmado_empleado)
 							Periodo Cerrado
 						@else
 							Periodo Abierto
@@ -220,7 +220,7 @@
 					<td>
 						@if ( $existencia_dic==0)
 							Periodo no creado
-						@elseif ( $dic > 0 and $dic ==$dic_firmado_empleado)
+						@elseif ( $dic > 0 and $cantidad_empleados ==$dic_firmado_empleado)
 							Periodo Cerrado
 						@else
 							Periodo Abierto
