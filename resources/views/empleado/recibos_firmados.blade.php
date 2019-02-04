@@ -28,5 +28,8 @@
 	@isset($msj)
 		<div class="alert alert-success" role="alert" align="center">{{ $msj }}</div>
 	@endisset
+	@isset($msj_error)
+		<div class="alert alert-warning" role="alert" align="center">{{ $msj_error }}</div>
+	@endisset
 
 @endsection

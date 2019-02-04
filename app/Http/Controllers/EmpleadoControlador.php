@@ -85,7 +85,7 @@ class EmpleadoControlador extends Controller
         ->get();
         if ($recibos=='[]')
         {
-            return view('empleado.recibos_firmados')->with('recibos',$recibos)->with('msj','No se encontraron recibos firmados');;
+            return view('empleado.recibos_firmados')->with('recibos',$recibos)->with('msj_error','No se encontraron recibos firmados');;
         }else
         {
             return view('empleado.recibos_firmados')->with('recibos',$recibos);

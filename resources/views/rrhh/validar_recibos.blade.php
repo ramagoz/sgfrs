@@ -51,7 +51,7 @@
 		<div align="center">
 		<h4> Periodo,  Mes: {{ $mes }} - Año: {{ $año }}</h4>
 		<table border="1" align="center">
-		<tr><td><strong>Total de archivos procesadoss: </strong></td><td>{{$resultados[5] }}</td></tr>
+		<tr><td><strong>Total de archivos procesados: </strong></td><td>{{$resultados[5] }}</td></tr>
 		<tr><td><strong>Cantidad de recibos correctos procesados: </strong></td><td>{{$resultados[0] }}</td></tr>
 		<tr><td><strong>Cantidad de recibos con error de periodo: </strong></td><td>{{$resultados[1] }}</td></tr>
 		<tr><td><strong>Cantidad de recibos con error de extension: </strong></td><td>{{$resultados[2] }}</td></tr>

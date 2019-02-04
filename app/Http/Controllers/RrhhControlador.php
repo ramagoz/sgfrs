@@ -190,8 +190,9 @@ class RrhhControlador extends Controller
                     $e++; //contador de cantidad de archivos procesados
                     if (strtolower(substr($f, -4)) == '.pdf') //se controlar si la extension del archivo es .pdf
                     {
-                        if (substr($f, -9, 3) == "-" . $mes and substr($f, -6, 2) == substr($año, -2))
-                        //se verifica si el mes y año corresponde con el que se quiere importar
+                        if (substr($f, -9, 3) == "-".$mes )
+                            //and substr($f, -6, 2) == substr($año, -2))
+                        //se verifica si el mes y año corresponde con el que se quiere validar
                         {
                             $cedula  = substr($f, 0, (strlen($f) - 9));
                             $persona = Persona::find($cedula);
@@ -240,13 +241,14 @@ class RrhhControlador extends Controller
             } else {
                 $resultado[3] = 0;
             }
-            if ($a > 0) //aqui se guardan la cantidad de recibos con número de cedula no encontrado en el sistema
+            if ($a > 0) //aqui se guardan la cantidad empleados en el sistema que no tienen recibos creados
             {
                 $recibos_correctos = count($recibos);
                 $resultado[4]      = $cantidad_empleados - $recibos_correctos;
             } else {
                 $resultado[4] = 0;
             }
+
             $resultado[5] = $e; //aqui se guardan la cantidad de archivos que fueron procesados
             return view('rrhh.validar_recibos')->with('msj','Se procedio correctamente con la validación del periodo seleccionado. Mes: '.$request->mes.'  -  Año: '.$request->año)->with('resultados', $resultado)->with('mes',$request->mes)->with('año',$request->año); //se envia los resultados de la validacion a la vista
         }
@@ -258,6 +260,10 @@ class RrhhControlador extends Controller
     public function getRecibosImportados(Request $request)
     {
         $consulta = DB::table('periodos')->where('mes',$request->mes)->where('año',$request->año)->where('estado_periodo','0')->get();
+        foreach ($consulta as $result) 
+        {
+            $id_periodo= $result->id_periodo;
+        }
 
         if ($consulta=='[]') 
         {
@@ -284,11 +290,11 @@ class RrhhControlador extends Controller
                             {
                                 $recibos[$a] = $f;
                                 $a++;
-                                $Recibo                   = new Recibo();
-                                $Recibo->id_recibo        = substr($f, 0, -4);
+                                $Recibo= new Recibo();
+                                $Recibo->id_recibo= substr($f, 0, -4);
                                 $Recibo->id_estado_recibo = 1;
-                                $Recibo->cedula           = $cedula;
-                                $Recibo->id_periodo       = $consulta->id_periodo;
+                                $Recibo->cedula= $cedula;
+                                $Recibo->id_periodo= $id_periodo;
                                 $Recibo->save();
                                 rename($dir . $f, "C:/xampp/htdocs/sgfrs/public/recibos/pendientes/" . $año . "/" . $mes . "/" . $f);
                             } else {
@@ -391,8 +397,13 @@ class RrhhControlador extends Controller
         ->join('personas', 'recibos.cedula','=','personas.cedula')
         ->where('recibos.id_estado_recibo', '1')
         ->get();
-
-        return view('rrhh.pendientes_firma_empresa')->with('recibos',$recibos);
+        if ($recibos=='[]')
+        {
+            return view('rrhh.pendientes_firma_empresa')->with('recibos',$recibos)->with('msj','No existen recibos pendientes de firma por la empresa!');
+        }else
+        {
+             return view('rrhh.pendientes_firma_empresa')->with('recibos',$recibos);
+        }
     }
     public function getVerRecibo($id)
     {
@@ -401,12 +412,17 @@ class RrhhControlador extends Controller
     }
     public function getPendientesFirmaEmpleados()
     {
-        $recibos = DB::table('recibos')
+         $recibos = DB::table('recibos')
         ->join('personas', 'recibos.cedula','=','personas.cedula')
         ->where('recibos.id_estado_recibo', '2')
         ->get();
-
-        return view('rrhh.pendientes_firma_empleados')->with('recibos',$recibos);
+        if ($recibos=='[]')
+        {
+            return view('rrhh.pendientes_firma_empleados')->with('recibos',$recibos)->with('msj','No existen recibos pendientes de firma por la empresa!');
+        }else
+        {
+             return view('rrhh.pendientes_firma_empleados')->with('recibos',$recibos);
+        }
     }
     public function getVerReciboPendientesFirmaEmpleados($id)
     {
@@ -419,9 +435,13 @@ class RrhhControlador extends Controller
         ->join('personas', 'recibos.cedula','=','personas.cedula')
         ->where('recibos.id_estado_recibo', '3')
         ->get();
-
-        return view('rrhh.firmados_empresa_empleados')->with('recibos',$recibos);
-
+        if ($recibos=='[]')
+        {
+            return view('rrhh.firmados_empresa_empleados')->with('recibos',$recibos)->with('msj','No existen recibos firmados por la empresa y empleados!');
+        }else
+        {
+             return view('rrhh.firmados_empresa_empleados')->with('recibos',$recibos);
+        }
     }
     public function getVerReciboFirmadoEmpresaEmpleado($id)
     {
@@ -436,8 +456,13 @@ class RrhhControlador extends Controller
         ->orWhere('recibos.id_estado_recibo', '2')
         ->orWhere('recibos.id_estado_recibo', '3')
         ->get();
-
-        return view('rrhh.todos_los_recibos')->with('recibos',$recibos);
+        if ($recibos=='[]')
+        {
+            return view('rrhh.todos_los_recibos')->with('recibos',$recibos)->with('msj','No existen recibos firmados por la empresa y empleados!');
+        }else
+        {
+             return view('rrhh.todos_los_recibos')->with('recibos',$recibos);
+        }
     }
     public function getVerTodosLosRecibos($id)
     {
@@ -467,7 +492,13 @@ class RrhhControlador extends Controller
         ->groupBy('año')
         ->orderBy('año','desc')
         ->get();
-        return view('rrhh.informes_rrhh')->with('años',$años);
+        if ($años=='[]')
+        {
+            return view('rrhh.informes_rrhh')->with('años',$años)->with('msj','No existen periodos creados!');
+        }else
+        {
+            return view('rrhh.informes_rrhh')->with('años',$años)->with('boton','boton');
+        }
     }
     public function postVerInformesRrhh(Request $request)
     {
@@ -475,6 +506,7 @@ class RrhhControlador extends Controller
            ->join('periodos', 'recibos.id_periodo','=','periodos.id_periodo')
            ->where('periodos.año',$request->año)
            ->get();
+        $cantidad_empleados = DB::table('personas')->where('id_rol', '1')->orWhere('id_rol', '2')->orWhere('id_rol', '4')->orWhere('id_rol', '5')->count();
 
         $ene=0; $feb=0; $mar=0; $abr=0; $may=0; $jun=0; 
         $jul=0; $ago=0; $set=0; $oct=0; $nov=0; $dic=0;
@@ -678,7 +710,7 @@ class RrhhControlador extends Controller
             }
         }
         return view('rrhh.resultado_informes_rrhh')
-        ->with('año',$request->año)
+        ->with('año',$request->año)->with('cantidad_empleados',$cantidad_empleados)
 
         ->with('ene',$ene)
         ->with('ene_firmado_empresa',$ene_firmado_empresa)
@@ -739,7 +771,7 @@ class RrhhControlador extends Controller
         ->with('dic_firmado_empresa',$dic_firmado_empresa)
         ->with('dic_firmado_empleado',$dic_firmado_empleado)
         ->with('existencia_dic',$existencia_dic)
-        ;//los informes no son correctos
+        ;
     }
     public function getCambiarContraseña()
     {

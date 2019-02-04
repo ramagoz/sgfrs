@@ -26,5 +26,7 @@
 	@endforeach
 
 	</table>
-
+	@if(isset($msj_error))
+		<div class="alert alert-warning" role="alert" align="center">{{ $msj_error }}</div>
+	@endif
 @endsection

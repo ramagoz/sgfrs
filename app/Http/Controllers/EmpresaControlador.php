@@ -93,8 +93,13 @@ class EmpresaControlador extends Controller
         ->join('personas', 'recibos.cedula','=','personas.cedula')
         ->where('recibos.id_estado_recibo', '2')
         ->get();
-
-    	return view('empresa.recibos_pendientes_empleados')->with('recibos',$recibos);
+        if ($recibos=='[]')
+        {
+            return view('empresa.recibos_pendientes_empleados')->with('recibos',$recibos)->with('msj_error','No existen recibos pendientes de firma por los empleados!');
+        }else
+        {
+            return view('empresa.recibos_pendientes_empleados')->with('recibos',$recibos);
+        }
     }
     public function getVerReciboPendienteFirmaEmpleado($id)
     {
@@ -104,12 +109,18 @@ class EmpresaControlador extends Controller
 
      public function getRecibosFirmadosEmpresaEmpleados()
     {
+        
         $recibos = DB::table('recibos')
         ->join('personas', 'recibos.cedula','=','personas.cedula')
         ->where('recibos.id_estado_recibo', '3')
         ->get();
-
-    	return view('empresa.recibos_firmados_empresa_empleados')->with('recibos',$recibos);
+        if ($recibos=='[]')
+        {
+            return view('empresa.recibos_firmados_empresa_empleados')->with('recibos',$recibos)->with('msj','No existen recibos firmados por la empresa!');
+        }else
+        {
+            return view('empresa.recibos_firmados_empresa_empleados')->with('recibos',$recibos);
+        }
     }
     public function getVerReciboFirmadoEmpresaEmpleado($id)
     {
@@ -131,6 +142,7 @@ class EmpresaControlador extends Controller
            ->join('periodos', 'recibos.id_periodo','=','periodos.id_periodo')
            ->where('periodos.año',$request->año)
            ->get();
+        $cantidad_empleados = DB::table('personas')->where('id_rol', '1')->orWhere('id_rol', '2')->orWhere('id_rol', '4')->orWhere('id_rol', '5')->count();
 
         $ene=0; $feb=0; $mar=0; $abr=0; $may=0; $jun=0; 
         $jul=0; $ago=0; $set=0; $oct=0; $nov=0; $dic=0;
@@ -334,7 +346,7 @@ class EmpresaControlador extends Controller
             }
         }
         return view('empresa.resultado_informes_empresa')
-        ->with('año',$request->año)
+        ->with('año',$request->año)->with('cantidad_empleados',$cantidad_empleados)
 
         ->with('ene',$ene)
         ->with('ene_firmado_empresa',$ene_firmado_empresa)

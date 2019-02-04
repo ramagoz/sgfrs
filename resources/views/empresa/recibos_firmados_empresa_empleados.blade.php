@@ -2,7 +2,7 @@
 @section('content')
 {{-- Dentro de section va el contenido de la vista--}}
 	@include('layouts.menu_empresa')
-	<h3 align="center">RECIBOS FIRMADOS EMPRESA</h1>
+	<h3 align="center">RECIBOS FIRMADOS EMPRESA Y EMPLEADOS</h1>
 	<p align="center"><strong>Usuario: </strong> {{ Auth::user()->name }}, esta conectado con el Rol de <strong>Empresa</strong></p>
 	<table id="example" class="display" style="width:90%" align="center" border="1">
 		<thead>
@@ -23,5 +23,7 @@
 	@endforeach
 
 	</table>
-
+	@if(isset($msj))
+		<div class="alert alert-warning" role="alert" align="center">{{ $msj }}</div>
+	@endif
 @endsection

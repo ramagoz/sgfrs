@@ -21,8 +21,10 @@
         <li><a href="/oficial/auditoria">Auditoria</a></li>
          <li><a href="#">Más</a>
             <ul>
+                <li><a href="/home">Cambiar de rol</a></li>
                 <li><a href="/oficial/cambiar_contraseña">Cambiar contraseña</a></li>
                 <li><a href="/oficial/restablecer_contraseña">Restablecer contraseña usuario</a></li>
+                <li><a href="/salir">Salir del Sistema</a></li>
             </ul>
          </li> 
     </ul>
