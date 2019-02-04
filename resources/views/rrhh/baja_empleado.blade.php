@@ -10,7 +10,7 @@
   </style>
 <div class="container" align="center">
 
- <form action="{{url('/rrhh/empleado_modificado')}}" id="formulario-form" method="get"  role="form"> {{ csrf_field() }}
+ <form action="{{url('/rrhh/empleado_baja')}}" id="formulario-form" method="get"  role="form"> {{ csrf_field() }}
     <div class="row justify-content-md-center">
     	@foreach($persona as $persona)
           <!--Primera columna de Carga de Datos-->
@@ -109,7 +109,7 @@
 		  </div>
 		@endforeach
 	</div>
-	  <button class="btn btn-success" type="submit">Dar de Baja Usuario</button>
+	  <button class="btn btn-danger" type="submit">Dar de Baja Usuario</button>
  </form>
 </div>
 

@@ -77,6 +77,7 @@ class DatabaseSeeder extends Seeder
         foreach( $this->arrayUsers as $users) 
         {
         $p = new User;
+        $p->id = $users['id'];
         $p->name = $users['name'];
         $p->email = $users['email'];
         $p->password = $users['password'];
@@ -214,7 +215,7 @@ class DatabaseSeeder extends Seeder
     }
         private function seedFirma_empresa()
     {
-    	DB::table('firma_empresas')->delete();
+    	DB::table('firma_empresa')->delete();
 
         foreach( $this->arrayFirma_empresas as $firma_empresas) 
         {
@@ -256,36 +257,42 @@ class DatabaseSeeder extends Seeder
     private $arrayUsers = 
     array(
         array(
+            'id'=>'1',
             'name' => 'AAAA',
             'email' => 'a@a.c',
             'password' => '$2y$10$bsZ1EpQwakjKIPlXUEbQwe.x2MusZu5jjgvo7yy80IdyPaH9tIBey',
             
             ),
         array(
+             'id'=>'2',
             'name' => 'BBBB',
             'email' => 'b@b.c',
             'password' => '$2y$10$bsZ1EpQwakjKIPlXUEbQwe.x2MusZu5jjgvo7yy80IdyPaH9tIBey',
           
             ),
         array(
+             'id'=>'3',
             'name' => 'CCCC',
             'email' => 'c@c.c',
             'password' => '$2y$10$bsZ1EpQwakjKIPlXUEbQwe.x2MusZu5jjgvo7yy80IdyPaH9tIBey',
          
             ),
         array(
+             'id'=>'4',
             'name' => 'DDDD',
             'email' => 'd@d.c',
             'password' => '$2y$10$bsZ1EpQwakjKIPlXUEbQwe.x2MusZu5jjgvo7yy80IdyPaH9tIBey',
            
             ),
         array(
+             'id'=>'5',
             'name' => 'EEEE',
             'email' => 'e@e.c',
             'password' => '$2y$10$bsZ1EpQwakjKIPlXUEbQwe.x2MusZu5jjgvo7yy80IdyPaH9tIBey',
            
             ),
         array(
+             'id'=>'6',
             'name' => 'FFFF',
             'email' => 'f@f.c',
             'password' => '$2y$10$bsZ1EpQwakjKIPlXUEbQwe.x2MusZu5jjgvo7yy80IdyPaH9tIBey',

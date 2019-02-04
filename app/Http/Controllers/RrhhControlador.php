@@ -40,6 +40,7 @@ class RrhhControlador extends Controller
     public function postEmpleadoCargado(Request $request)
     {
        /*consulta a la tabla de usuario y trae el resultado que coinncide con el correo que se cargo para relacionar tabla de usuario con la tabla de persona*/
+       /*
         $usuario = DB::table('users')->where('email', $request->correo)->get()->toArray();
         foreach ($usuario as $users) {
 
@@ -60,7 +61,10 @@ class RrhhControlador extends Controller
         $persona->estado     = $request->estado;
         $persona->obs        = $request->observacion;
         $persona->save();
-        return view('rrhh.empleado_cargado');
+        return view('rrhh.empleado_cargado');*/
+
+        
+
     }
     public function getBajaEmpleado(request $request)
     {
@@ -97,7 +101,30 @@ class RrhhControlador extends Controller
         $persona->obs        = $request->observacion;
        
         $persona->save();
-        return view('rrhh.empleado_cargado');
+       # return view('rrhh.empleado_cargado');
+        return view('/rrhh/busqueda_empleado')->with('msj','Los datos del usuario con CI Nro. '.$request->cedula.' se actualizaron correctamente!!!');
+        
+    }
+     public function getEmpleadoBaja(Request $request)
+    {   
+      
+        $persona =Persona::find($request->cedula);
+    
+        $persona->id_grupo   = $request->grupo;
+        $persona->nombres    = $request->nombre;
+        $persona->apellidos  = $request->apellido;
+        $persona->cedula     = $request->cedula;
+        $persona->cel        = $request->celular;
+        $persona->tel        = $request->telefono;
+        $persona->dpto       = $request->dpto;
+        $persona->cargo      = $request->cargo;
+        $persona->correo     = $request->correo;
+        $persona->estado     = $request->estado;
+        $persona->obs        = $request->observacion;
+       
+        $persona->save();
+       # return view('rrhh.empleado_cargado');
+        return view('/rrhh/busqueda_empleado')->with('msjbaja','El usuario con CI Nro. '.$request->cedula.' se dio de baja del Sistema !!!');
         
     }
     
