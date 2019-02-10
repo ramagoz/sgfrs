@@ -70,7 +70,6 @@
                      <th>Correo</th>
                      <th>Telefono</th>
                      <th>Departamento</th>
-                     <th>Cargo</th>
                      <th>Estado</th>
                      <th>Acciones</th>
                  </tr>                       
@@ -112,9 +111,9 @@
                     },
                   createdRow: function ( row, data, index ) {
                               if ( data.estado == 0 ) {
-                                $('td', row).eq(7).addClass('text-danger').text('Inactivo');
+                                $('td', row).eq(6).addClass('text-danger').text('Inactivo');
                               } else {
-                                $('td', row).eq(7).addClass('text-success').text('Activo');
+                                $('td', row).eq(6).addClass('text-success').text('Activo');
                               }
                             },                             
         columns: [
@@ -124,7 +123,6 @@
                         { data: 'correo', name: 'correo'},
                         { data: 'tel', name: 'tel'},
                         { data: 'dpto', name: 'dpto'},
-                        { data: 'cargo', name: 'cargo'},
                         { data: 'estado', name: 'estado'},
                         {"defaultContent": "<button type='button' class='modif btn btn-success'>Editar<span class='glyphicon glyphicon-edit'></span> </button>"+" "+"<button type='button' class='baj btn btn-danger'>Baja<span class='glyphicon glyphicon-circle-arrow-down'></span> </button>"},              
                  ]

@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Grupo_recibo;
 use App\Periodo;
 use App\Persona;
 use App\Recibo;
 use DB;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Input;
-use Redirect;
 use DataTables;
+use App\User;
+use Illuminate\Support\Facades\Hash;
+
+
+
 
 class RrhhControlador extends Controller
 {
@@ -37,10 +41,33 @@ class RrhhControlador extends Controller
         $nombre_grupos = DB::table('grupos_recibos')->select('nombre_grupo','id_grupo')->get();
         return view('rrhh.alta_empleado', compact('nombre_grupos'));
     }
+
+     public function getAltaUsuario(){
+        return view('rrhh.alta_usuario');
+
+     }
+
+    public function postUsuariocreado(Request $request)
+    {
+    $user = new User();
+    $user->name = $request->nombre;
+    $user->email = $request->correo;
+    $user->password = Hash::make($request->password);
+    $user->save();
+    return view('rrhh.busqueda_empleado');
+
+    }
     public function postEmpleadoCargado(Request $request)
     {
+       //creacion de usuario
+         $user = new User();
+            $user->name = $request->nombre;
+            $user->email = $request->correo;
+            $user->password = Hash::make($request->cedula);
+            $user->save();
+
        /*consulta a la tabla de usuario y trae el resultado que coinncide con el correo que se cargo para relacionar tabla de usuario con la tabla de persona*/
-       /*
+        
         $usuario = DB::table('users')->where('email', $request->correo)->get()->toArray();
         foreach ($usuario as $users) {
 
@@ -49,6 +76,8 @@ class RrhhControlador extends Controller
 
         $persona             = new Persona();
         $persona->id_usuario = $id;
+        $id_rol='1';
+        $persona->id_rol   = $id_rol;
         $persona->id_grupo   = $request->grupo;
         $persona->nombres    = $request->nombre;
         $persona->apellidos  = $request->apellido;
@@ -61,11 +90,12 @@ class RrhhControlador extends Controller
         $persona->estado     = $request->estado;
         $persona->obs        = $request->observacion;
         $persona->save();
-        return view('rrhh.empleado_cargado');*/
+        return view('rrhh.busqueda_empleado');
 
         
 
     }
+
     public function getBajaEmpleado(request $request)
     {
 

@@ -53,36 +53,43 @@ class HomeController extends Controller
             {
                 $rol = $role->id_rol;
             }
-       switch ($rol) 
-            {
-                case 0:
-                    Session::put('rol_usuario', $rol);
-                    return redirect('sin_rol');
-                    break;
-                case 1:
-                    Session::put('rol_usuario', $rol);
-                    return redirect('empleado');
-                    break;
-                case 2:
-                    Session::put('rol_usuario', $rol);
-                    return view('auth/seleccionar_rol')->with('rol',$rol);
-                    break;
-                case 3:
-                    Session::put('rol_usuario', $rol);
-                    return redirect('empresa');
-                    break;
-                case 4:
-                    Session::put('rol_usuario', $rol);
-                    return view('auth/seleccionar_rol')->with('rol',$rol);
-                    break;
-                case 5:
-                    Session::put('rol_usuario', $rol);
-                    return view('auth/seleccionar_rol')->with('rol',$rol);
-                    break;
-            }
-        }else{
+               switch ($rol) 
+                    {
+                        case 0:
+                            Session::put('rol_usuario', $rol);
+                            return redirect('sin_rol');
+                            break;
+                        case 1:
+                            Session::put('rol_usuario', $rol);
+                            return redirect('empleado');
+                            break;
+                        case 2:
+                            Session::put('rol_usuario', $rol);
+                            return view('auth/seleccionar_rol')->with('rol',$rol);
+                            break;
+                        case 3:
+                            Session::put('rol_usuario', $rol);
+                            return redirect('empresa');
+                            break;
+                        case 4:
+                            Session::put('rol_usuario', $rol);
+                            return view('auth/seleccionar_rol')->with('rol',$rol);
+                            break;
+                        case 5:
+                            Session::put('rol_usuario', $rol);
+                            return view('auth/seleccionar_rol')->with('rol',$rol);
+                            break;
+                    }
+                }
+        else{
             return view('login');
         }
+    }
+
+    public function getlogin()
+    {
+        return view('login');
+
     }
     public function getSalirSistema()
     {

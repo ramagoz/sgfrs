@@ -5,6 +5,7 @@
         <li><a href="">ABM Empleados</a>
             <ul>
                 <li><a href="/rrhh/busqueda_empleado">ABM Empleados</a></li>
+               <!--<li><a href="/rrhh/alta_usuario">Alta Usuario</a></li>-->
             </ul>
          </li>   
         <li><a href="#">Trabajar con Recibos</a>
