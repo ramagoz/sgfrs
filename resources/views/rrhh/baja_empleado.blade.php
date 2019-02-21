@@ -71,13 +71,11 @@
               	<div class="form-group row">
                 		<label for="estado" class="col-lg-2 col-form-label">Estado:</label>
                 			<div class="col-lg-10">
-                  				<select class="form-control" id="estado" name="estado" value="{{$persona->estado}}" >
+                  				<select class="form-control" id="estado" name="estado" value="{{$persona->estado}}" readonly>
 						            @if ($persona->estado==1)
-                        <option value="1" ">Activo</option>
                         <option value="0" selected="true">Inactivo</option>
                         @else
-                        <option value="1" >Activo</option>
-                        <option value="0" selected="true">Inactivo</option>
+                            <option value="0" selected="true">Inactivo</option>
                         @endif
                         
                         

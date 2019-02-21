@@ -80,6 +80,7 @@ class DatabaseSeeder extends Seeder
         $p->id = $users['id'];
         $p->name = $users['name'];
         $p->email = $users['email'];
+        $p->status= $users['status'];
         $p->password = $users['password'];
         $p->save();
         }
@@ -260,6 +261,7 @@ class DatabaseSeeder extends Seeder
             'id'=>'1',
             'name' => 'AAAA',
             'email' => 'a@a.c',
+            'status'=>'1',
             'password' => '$2y$10$bsZ1EpQwakjKIPlXUEbQwe.x2MusZu5jjgvo7yy80IdyPaH9tIBey',
             
             ),
@@ -267,6 +269,7 @@ class DatabaseSeeder extends Seeder
              'id'=>'2',
             'name' => 'BBBB',
             'email' => 'b@b.c',
+             'status'=>'1',
             'password' => '$2y$10$bsZ1EpQwakjKIPlXUEbQwe.x2MusZu5jjgvo7yy80IdyPaH9tIBey',
           
             ),
@@ -274,6 +277,7 @@ class DatabaseSeeder extends Seeder
              'id'=>'3',
             'name' => 'CCCC',
             'email' => 'c@c.c',
+             'status'=>'1',
             'password' => '$2y$10$bsZ1EpQwakjKIPlXUEbQwe.x2MusZu5jjgvo7yy80IdyPaH9tIBey',
          
             ),
@@ -281,6 +285,7 @@ class DatabaseSeeder extends Seeder
              'id'=>'4',
             'name' => 'DDDD',
             'email' => 'd@d.c',
+             'status'=>'1',
             'password' => '$2y$10$bsZ1EpQwakjKIPlXUEbQwe.x2MusZu5jjgvo7yy80IdyPaH9tIBey',
            
             ),
@@ -288,6 +293,7 @@ class DatabaseSeeder extends Seeder
              'id'=>'5',
             'name' => 'EEEE',
             'email' => 'e@e.c',
+             'status'=>'1',
             'password' => '$2y$10$bsZ1EpQwakjKIPlXUEbQwe.x2MusZu5jjgvo7yy80IdyPaH9tIBey',
            
             ),
@@ -295,6 +301,7 @@ class DatabaseSeeder extends Seeder
              'id'=>'6',
             'name' => 'FFFF',
             'email' => 'f@f.c',
+             'status'=>'1',
             'password' => '$2y$10$bsZ1EpQwakjKIPlXUEbQwe.x2MusZu5jjgvo7yy80IdyPaH9tIBey',
           
             )
