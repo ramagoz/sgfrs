@@ -67,7 +67,7 @@
                   				<input class="form-control" id="correo" name="correo" type="email" value="{{$persona->correo}}">
                 			</div>
               	</div>
-              	<div class="form-group row">
+              	<!--<div class="form-group row">
                 		<label for="estado" class="col-lg-2 col-form-label">Estado:</label>
                 			<div class="col-lg-10">
                   				<select class="form-control" id="estado" name="estado" value="{{$persona->estado}}">
@@ -82,7 +82,7 @@
                         
 			        			</select>
                 			</div>
-              	</div>
+              	</div>-->
 
               	 <div class="form-group row">
                 		<label for="grupo" class="col-lg-2 col-form-label">Grupo:</label>

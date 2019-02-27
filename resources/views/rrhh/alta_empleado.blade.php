@@ -1,5 +1,7 @@
+
 @extends('layouts.app')
 @section('content')
+
 {{-- Dentro de section va el contenido de la vista--}}
 	@include('layouts.menu_rrhh')
 <h3 align="center">
@@ -16,6 +18,9 @@
 </p>
 
 <div class="container" align="center">
+  <!--Alerta si hubo modificacion de usuario-->
+ 
+
 
  <form action="/rrhh/empleado_cargado" id="formulario-form" method="post"  role="form"> {{ csrf_field() }}
     <div class="row justify-content-md-center">
@@ -25,19 +30,19 @@
 				<div class="form-group row">
                 		<label for="cedula" class="col-lg-2 col-form-label">Cédula:</label>
                 			<div class="col-lg-10">
-                  				<input class="form-control" id="cedula" name="cedula" type="text"> 
+                  				<input class="form-control" id="cedula" name="cedula" type="text" required> 
                 			</div>
               	</div>
               	<div class="form-group row">
                 		<label for="nombre" class="col-lg-2 col-form-label">Nombres:</label>
                 			<div class="col-lg-10">
-                  				<input class="form-control" id="nombre" name="nombre" type="text">
+                  				<input class="form-control" id="nombre" name="nombre" type="text" required>
                 			</div>
               	</div>
               	<div class="form-group row">
                 		<label for="apellido" class="col-lg-2 col-form-label">Apellidos:</label>
                 			<div class="col-lg-10">
-                  				<input class="form-control" id="apellido" name="apellido" type="text">
+                  				<input class="form-control" id="apellido" name="apellido" type="text" required>
                 			</div>
               	</div>
               	<div class="form-group row">
@@ -55,7 +60,7 @@
               	<div class="form-group row">
                 		<label for="dpto" class="col-lg-2 col-form-label">Dpto:</label>
                 			<div class="col-lg-10">
-                  				<input class="form-control" id="dpto" name="dpto" type="text">
+                  				<input class="form-control" id="dpto" name="dpto" type="text" >
                 			</div>
               	</div>
 				    
@@ -65,13 +70,13 @@
 			   <div class="form-group row">
                 		<label for="cargo" class="col-lg-2 col-form-label">Cargo:</label>
                 			<div class="col-lg-10">
-                  				<input class="form-control" id="cargo" name="cargo" type="text">
+                  				<input class="form-control" id="cargo" name="cargo" type="text" >
                 			</div>
               	</div>
               	<div class="form-group row">
                 		<label for="correo" class="col-lg-2 col-form-label">Correo:</label>
                 			<div class="col-lg-10">
-                  				<input class="form-control" id="correo" name="correo" type="email">
+                  				<input class="form-control" id="correo" name="correo" type="email" required>
                 			</div>
               	</div>
               	<div class="form-group row">
@@ -88,6 +93,7 @@
                 		<label for="grupo" class="col-lg-2 col-form-label">Grupo:</label>
                 			<div class="col-lg-10">
                   				<select class="form-control" id="grupo" name="grupo">
+                          
 						            @foreach($nombre_grupos as $grupo)
 						            <option value="{{$grupo->id_grupo}}">
 						                {{$grupo->nombre_grupo}}

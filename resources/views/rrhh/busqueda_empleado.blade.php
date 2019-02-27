@@ -30,6 +30,32 @@
         <div class="container">
     <br>
 <!--Alerta si hubo modificacion de usuario-->
+               @isset($errorpersona)
+                    <div class="alert alert-danger" role="alert">
+                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"  align="center"><span aria-hidden="true">&times;</span></button> {{ $errorpersona }}</div>
+                   <script type="text/javascript">
+                       window.setTimeout(function() {
+                                $(".alert").fadeTo(300, 0).slideUp(400, function(){
+                                    $(this).remove(); 
+                                });
+                            }, 20000);
+                   </script>
+                   @unset($errorpersona);
+                @endisset
+
+
+                @isset($erroruser)
+                    <div class="alert alert-danger" role="alert">
+                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"  align="center"><span aria-hidden="true">&times;</span></button> {{ $erroruser }}</div>
+                   <script type="text/javascript">
+                       window.setTimeout(function() {
+                                $(".alert").fadeTo(300, 0).slideUp(400, function(){
+                                    $(this).remove(); 
+                                });
+                            }, 20000);
+                   </script>
+                   @unset($erroruser);
+                @endisset
                 @isset($msj)
                     <div class="alert alert-success" role="alert">
                      <button type="button" class="close" data-dismiss="alert" aria-label="Close"  align="center"><span aria-hidden="true">&times;</span></button> {{ $msj }}</div>
@@ -38,7 +64,7 @@
                                 $(".alert").fadeTo(300, 0).slideUp(400, function(){
                                     $(this).remove(); 
                                 });
-                            }, 4000);
+                            }, 20000);
                    </script>
                    @unset($msj);
                 @endisset
@@ -51,13 +77,13 @@
                                 $(".alert").fadeTo(300, 0).slideUp(400, function(){
                                     $(this).remove(); 
                                 });
-                            }, 4000);
+                            }, 20000);
                    </script>
                    @unset($msjbaja);
                 @endisset
 
 <!--Boton de Alta de empleado-->
-            <a href="alta_empleado" button class="btn btn-success"><i class="glyphicon glyphicon-plus"></i>Alta de Usuario</button></a>
+            <a href="alta_empleado" button class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i>Alta de Usuario</button></a>
             <p></p>
 <!--Estructura de columnas para Datatables-->
             <table class="table table-bordered" id="table">
@@ -70,7 +96,6 @@
                      <th>Correo</th>
                      <th>Telefono</th>
                      <th>Departamento</th>
-                     <th>Cargo</th>
                      <th>Estado</th>
                      <th>Acciones</th>
                  </tr>                       
@@ -112,11 +137,14 @@
                     },
                   createdRow: function ( row, data, index ) {
                               if ( data.estado == 0 ) {
-                                $('td', row).eq(7).addClass('text-danger').text('Inactivo');
+                                $('td', row).eq(6).addClass('text-danger').text('Inactivo');
+                                $('td', row).eq(7).html("<button type='button' class='modif btn btn-info'>Editar<span class='glyphicon glyphicon-edit'></span> </button>"+" "+"<button type='button' class='baj btn btn-success'>Activar<span class='glyphicon glyphicon-circle-arrow-up'></span> </button>");
+
                               } else {
-                                $('td', row).eq(7).addClass('text-success').text('Activo');
+                                $('td', row).eq(6).addClass('text-success').text('Activo');
+                                $('td', row).eq(7).html("<button type='button' class='modif btn btn-info'>Editar<span class='glyphicon glyphicon-edit'></span> </button>"+" "+"<button type='button' class='baj btn btn-danger'>Desactivar<span class='glyphicon glyphicon-circle-arrow-down'></span> </button>");
                               }
-                            },                             
+                            },                            
         columns: [
                         { data: 'cedula', name: 'cedula' },
                         { data: 'nombres', name: 'nombres' },
@@ -124,7 +152,6 @@
                         { data: 'correo', name: 'correo'},
                         { data: 'tel', name: 'tel'},
                         { data: 'dpto', name: 'dpto'},
-                        { data: 'cargo', name: 'cargo'},
                         { data: 'estado', name: 'estado'},
                         {"defaultContent": "<button type='button' class='modif btn btn-success'>Editar<span class='glyphicon glyphicon-edit'></span> </button>"+" "+"<button type='button' class='baj btn btn-danger'>Baja<span class='glyphicon glyphicon-circle-arrow-down'></span> </button>"},              
                  ]

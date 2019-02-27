@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Grupo_recibo;
 use App\Periodo;
 use App\Persona;
 use App\Recibo;
 use DB;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Input;
-use Redirect;
 use DataTables;
+use App\User;
+use Illuminate\Support\Facades\Hash;
+
+
+
 
 class RrhhControlador extends Controller
 {
@@ -31,41 +35,68 @@ class RrhhControlador extends Controller
     {
         return view('rrhh.indexrrhh');
     }
+   
     public function getAltaEmpleado()
     {
         //Consulta DB para ver grupos disponibles los compacta en de array y los envia a la vista//
         $nombre_grupos = DB::table('grupos_recibos')->select('nombre_grupo','id_grupo')->get();
         return view('rrhh.alta_empleado', compact('nombre_grupos'));
     }
+
+    
     public function postEmpleadoCargado(Request $request)
     {
-       /*consulta a la tabla de usuario y trae el resultado que coinncide con el correo que se cargo para relacionar tabla de usuario con la tabla de persona*/
-       /*
-        $usuario = DB::table('users')->where('email', $request->correo)->get()->toArray();
-        foreach ($usuario as $users) {
+       //validacion si el usuario a cargar ya no existe
+        $validemail=DB::table('users')->where('email',$request->correo)->get();
+         if ($validemail=='[]') 
+             { // usuario no existe
+          $validcedula=DB::table('personas')->where('cedula',$request->cedula)->get();
+          if($validcedula=='[]') //persona no existe, se puede proceder a crear usuario y persona
+          {
+            //creacion de usuario
+                 $user = new User();
+                 $user->name = $request->nombre;
+                 $user->email = $request->correo;
+                 $user->status= '1';
+                 $user->password = Hash::make($request->cedula);
+                 $user->save();
+          //creacion de persona relacionada al usuario que se creo previamente.
+                 $usuario = DB::table('users')->where('email', $request->correo)->get()->toArray();
+                foreach ($usuario as $users) 
+                    {
+                        $id = $users->id;
+                    }
+                    $persona             = new Persona();
+                    $persona->id_usuario = $id;
+                    $id_rol='1';
+                    $persona->id_rol   = $id_rol;
+                    $persona->id_grupo   = $request->grupo;
+                    $persona->nombres    = $request->nombre;
+                    $persona->apellidos  = $request->apellido;
+                    $persona->cedula     = $request->cedula;
+                    $persona->cel        = $request->celular;
+                    $persona->tel        = $request->telefono;
+                    $persona->dpto       = $request->dpto;
+                    $persona->cargo      = $request->cargo;
+                    $persona->correo     = $request->correo;
+                    $persona->estado     = $request->estado;
+                    $persona->obs        = $request->observacion;
+                    $persona->save();
+                    return view('rrhh.busqueda_empleado')->with('$msj','Se un registro el usuario con CI Nro. '.$request->cedula);;
 
-            $id = $users->id;
-        }
+          }
+          else{
+                
+                return view('/rrhh/busqueda_empleado')->with('errorpersona','Ya existe un registro de usuario con CI Nro. '.$request->cedula);
+                }
 
-        $persona             = new Persona();
-        $persona->id_usuario = $id;
-        $persona->id_grupo   = $request->grupo;
-        $persona->nombres    = $request->nombre;
-        $persona->apellidos  = $request->apellido;
-        $persona->cedula     = $request->cedula;
-        $persona->cel        = $request->celular;
-        $persona->tel        = $request->telefono;
-        $persona->dpto       = $request->dpto;
-        $persona->cargo      = $request->cargo;
-        $persona->correo     = $request->correo;
-        $persona->estado     = $request->estado;
-        $persona->obs        = $request->observacion;
-        $persona->save();
-        return view('rrhh.empleado_cargado');*/
-
-        
+        }         
+          else{
+                 return view('/rrhh/busqueda_empleado')->with('erroruser','Ya existe un registro de usuario con el correo '.$request->correo);
+                }
 
     }
+
     public function getBajaEmpleado(request $request)
     {
 
@@ -97,9 +128,8 @@ class RrhhControlador extends Controller
         $persona->dpto       = $request->dpto;
         $persona->cargo      = $request->cargo;
         $persona->correo     = $request->correo;
-        $persona->estado     = $request->estado;
+       # $persona->estado     = $request->estado;
         $persona->obs        = $request->observacion;
-       
         $persona->save();
        # return view('rrhh.empleado_cargado');
         return view('/rrhh/busqueda_empleado')->with('msj','Los datos del usuario con CI Nro. '.$request->cedula.' se actualizaron correctamente!!!');
@@ -121,8 +151,21 @@ class RrhhControlador extends Controller
         $persona->correo     = $request->correo;
         $persona->estado     = $request->estado;
         $persona->obs        = $request->observacion;
-       
+
         $persona->save();
+       
+        #user baja
+        $iduser = DB::table('users')->where('email', $request->correo)->get()->toArray();
+                foreach ($iduser as $users) 
+                    {
+                        $id = $users->id;
+                    }
+
+         $user=User::find($id);
+         $user->status=   $request->estado;
+         $user->save();
+
+
        # return view('rrhh.empleado_cargado');
         return view('/rrhh/busqueda_empleado')->with('msjbaja','El usuario con CI Nro. '.$request->cedula.' se dio de baja del Sistema !!!');
         
