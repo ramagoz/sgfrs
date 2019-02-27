@@ -20,13 +20,13 @@ class CreatePersonasTable extends Migration
             $table->integer('id_rol')->foreign('id_rol')->references('id_rol')->on('roles');
             $table->string('nombres');
             $table->string('apellidos');
-            $table->string('tel');
+            $table->string('tel')->nullable();
             $table->string('cel');
-            $table->string('dpto');
-            $table->string('cargo');
+            $table->string('dpto')->nullable();
+            $table->string('cargo')->nullable();
             $table->string('correo');
             $table->boolean('estado');
-            $table->string('obs');
+            $table->string('obs')->nullable();
         });
     }
 
