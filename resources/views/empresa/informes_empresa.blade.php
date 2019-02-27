@@ -4,6 +4,8 @@
 	@include('layouts.menu_empresa')
 	<h3 align="center">INFORMES EMPRESA</h1>
 	<p align="center"><strong>Usuario: </strong> {{ Auth::user()->name }}, esta conectado con el Rol de <strong>Empresa</strong></p>
+
+	@if(isset($boton))
 	<form action="/empresa/resultado_informes_empresa" method="POST">	
 	{{csrf_field()}}
 
@@ -26,6 +28,10 @@
 			<button class="btn btn-primary" type="submit">Ver Informe</button>
 	</div>
 	</form>
-
+	@endif
+	
+	@if(isset($msj))
+		<div class="alert alert-warning" role="alert" align="center">{{ $msj }}</div>
+	@endif
 
 @endsection

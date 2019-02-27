@@ -183,6 +183,14 @@ class RrhhControlador extends Controller
             //se obtiene la cantidad de usuarios que son empleados
             $dir= "C:/xampp/htdocs/sgfrs/public/recibos/nuevos/" . $año . "/" . $mes . "/"; //se define la direccion del directorio que sera validado
             $a= 0;$b= 0;$c= 0;$d= 0;$e= 0; //contadores de datos
+
+
+            if (count(scandir($dir))==2)//busca si hay archivos en el directorio, no se cuenta . ni .. que viene por defecto
+            {
+                return view('rrhh.validar_recibos')->with('errormsj','No se encontraron recibos para validar, verifique que fueron cargados en la carpeta de nuevos recibos correspondientes al periodo seleccionado
+                    ');
+            }
+
             foreach (scandir($dir) as $f) //esta funcion permite leer el nombre de los archivos contenidos segun directorio especificado y los guarda en la variable $f por cada pasada de la iteraccion hasta leer todos los archivos del directorio
             {
                 if ($f !== '.' and $f !== '..') // se descarta los elementos "." y ".." ya que no son archivos
@@ -274,6 +282,12 @@ class RrhhControlador extends Controller
             $cantidad_empleados = DB::table('personas')->where('id_rol', '1')->orWhere('id_rol', '2')->orWhere('id_rol', '4')->orWhere('id_rol', '5')->count();//se obtiene la cantidad de usuarios que son empleados
             $dir= "C:/xampp/htdocs/sgfrs/public/recibos/nuevos/" . $año . "/" . $mes . "/"; //se define la direccion del directorio que sera validado
             $a= 0;$b= 0;$c= 0;$d= 0;$e = 0; //contadores de datos
+
+            if (count(scandir($dir))==2)//busca si hay archivos en el directorio, no se cuenta . ni .. que viene por defecto
+            {
+                return view('rrhh.validar_recibos')->with('errormsj','No se encontraron recibos para importar, verifique que fueron cargados en la carpeta de nuevos recibos correspondientes al periodo seleccionado
+                    ');
+            }
             foreach (scandir($dir) as $f) //esta funcion permite leer el nombre de los archivos contenidos segun directorio especificado y los guarda en la variable $f por cada pasada de la iteraccion hasta leer todos los archivos del directorio
             {
                 if ($f !== '.' and $f !== '..') // se descarta los elementos "." y ".." ya que no son archivos
