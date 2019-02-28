@@ -49,10 +49,12 @@ Route::group(['middleware' => 'auth'], function()
 	Route::get('rrhh/alta_empleado', 'RrhhControlador@getAltaEmpleado');
 	Route::post('/rrhh/usuario_creado', 'RrhhControlador@postUsuariocreado');
 	Route::post('rrhh/empleado_cargado', 'RrhhControlador@postEmpleadoCargado');
-	Route::get('rrhh/baja_empleado/{cedula}', 'RrhhControlador@getBajaEmpleado');
+	Route::get('rrhh/desactivar_empleado/{cedula}', 'RrhhControlador@getRecuperarGrupo');
+	Route::get('rrhh/activar_empleado/{cedula}', 'RrhhControlador@getRecuperarGrupo');
 	Route::get('rrhh/modificacion_empleado/{cedula}', 'RrhhControlador@getModificacionEmpleado');
 	Route::get('rrhh/empleado_modificado', 'RrhhControlador@getEmpleadoModificado');
-	Route::get('rrhh/empleado_baja', 'RrhhControlador@getEmpleadoBaja');
+	Route::get('rrhh/empleado_desactivar', 'RrhhControlador@getEmpleadoDesactivado');
+	Route::get('rrhh/empleado_activar', 'RrhhControlador@getEmpleadoActivado');
 	Route::get('rrhh/busqueda_empleado', 'RrhhControlador@getBusquedaEmpleado');
 	Route::get('rrhh/datatable', 'RrhhControlador@datatable');
 	Route::get('rrhh/crear_nuevo_periodo', 'RrhhControlador@getCrearNuevoPeriodo');

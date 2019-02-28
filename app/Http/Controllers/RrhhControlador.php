@@ -82,7 +82,7 @@ class RrhhControlador extends Controller
                     $persona->estado     = $request->estado;
                     $persona->obs        = $request->observacion;
                     $persona->save();
-                    return view('rrhh.busqueda_empleado')->with('$msj','Se un registro el usuario con CI Nro. '.$request->cedula);;
+                    return view('rrhh.busqueda_empleado')->with('$msjcargado','Se un registro el usuario con CI Nro. '.$request->cedula);
 
           }
           else{
@@ -97,13 +97,27 @@ class RrhhControlador extends Controller
 
     }
 
-    public function getBajaEmpleado(request $request)
+    public function getRecuperarGrupo(request $request)
     {
 
         $persona =DB::table('personas')->where('cedula',$request->cedula)->get()->toArray();
         $nombre_grupos = DB::table('grupos_recibos')->select('nombre_grupo','id_grupo')->get();
-       
-        return view('rrhh.baja_empleado', compact('persona'),compact('nombre_grupos'));
+
+
+      foreach ($persona as $person) 
+                    {
+                        $estado = $person->estado;
+
+                    }
+
+     if ($estado=='1')
+       {
+        return view('rrhh.desactivar_empleado', compact('persona'),compact('nombre_grupos'));
+        }
+    else
+    {
+        return view('rrhh.activar_empleado', compact('persona'),compact('nombre_grupos'));
+    }
         
     }
     public function getModificacionEmpleado(request $request)
@@ -135,7 +149,7 @@ class RrhhControlador extends Controller
         return view('/rrhh/busqueda_empleado')->with('msj','Los datos del usuario con CI Nro. '.$request->cedula.' se actualizaron correctamente!!!');
         
     }
-     public function getEmpleadoBaja(Request $request)
+     public function getEmpleadoDesactivado(Request $request)
     {   
       
         $persona =Persona::find($request->cedula);
@@ -167,7 +181,43 @@ class RrhhControlador extends Controller
 
 
        # return view('rrhh.empleado_cargado');
-        return view('/rrhh/busqueda_empleado')->with('msjbaja','El usuario con CI Nro. '.$request->cedula.' se dio de baja del Sistema !!!');
+        return view('/rrhh/busqueda_empleado')->with('msjbaja','El usuario con CI Nro. '.$request->cedula.' se desactivo del Sistema !!!');
+        
+    }
+
+     public function getEmpleadoActivado(Request $request)
+    {   
+      
+        $persona =Persona::find($request->cedula);
+    
+        $persona->id_grupo   = $request->grupo;
+        $persona->nombres    = $request->nombre;
+        $persona->apellidos  = $request->apellido;
+        $persona->cedula     = $request->cedula;
+        $persona->cel        = $request->celular;
+        $persona->tel        = $request->telefono;
+        $persona->dpto       = $request->dpto;
+        $persona->cargo      = $request->cargo;
+        $persona->correo     = $request->correo;
+        $persona->estado     = $request->estado;
+        $persona->obs        = $request->observacion;
+
+        $persona->save();
+       
+        #user baja
+        $iduser = DB::table('users')->where('email', $request->correo)->get()->toArray();
+                foreach ($iduser as $users) 
+                    {
+                        $id = $users->id;
+                    }
+
+         $user=User::find($id);
+         $user->status=   $request->estado;
+         $user->save();
+
+
+       # return view('rrhh.empleado_cargado');
+        return view('/rrhh/busqueda_empleado')->with('msjactivado','El usuario con CI Nro. '.$request->cedula.' se activo correctamente!!');
         
     }
     

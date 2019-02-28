@@ -7,7 +7,7 @@ use App\Recibo;
 use App\Grupo_recibo;
 use App\Periodo;
 use App\Persona;
-use DB;
+use DB;  
 
 
 class EmpresaControlador extends Controller
@@ -134,14 +134,7 @@ class EmpresaControlador extends Controller
         ->groupBy('año')
         ->orderBy('año','desc')
         ->get();
-
-        if ($años=='[]')
-        {
-            return view('empresa.informes_empresa')->with('años',$años)->with('msj','No existen periodos creados!');
-        }else
-        {
-            return view('empresa.informes_empresa')->with('años',$años)->with('boton','boton');
-        }
+    	return view('empresa.informes_empresa')->with('años',$años);
     }
     public function postVerInformesEmpresa(Request $request)
     {

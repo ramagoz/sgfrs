@@ -10,7 +10,7 @@
   </style>
 <div class="container" align="center">
 
- <form action="{{url('/rrhh/empleado_baja')}}" id="formulario-form" method="get"  role="form"> {{ csrf_field() }}
+ <form action="{{url('/rrhh/empleado_activar')}}" id="formulario-form" method="get"  role="form"> {{ csrf_field() }}
     <div class="row justify-content-md-center">
     	@foreach($persona as $persona)
           <!--Primera columna de Carga de Datos-->
@@ -72,10 +72,10 @@
                 		<label for="estado" class="col-lg-2 col-form-label">Estado:</label>
                 			<div class="col-lg-10">
                   				<select class="form-control" id="estado" name="estado" value="{{$persona->estado}}" readonly>
-						            @if ($persona->estado==1)
-                        <option value="0" selected="true">Inactivo</option>
+						            @if ($persona->estado==0)
+                        <option value="1" selected="true">Activo</option>
                         @else
-                            <option value="0" selected="true">Inactivo</option>
+                            <option value="1" selected="true">Activo</option>
                         @endif
                         
                         
@@ -107,7 +107,7 @@
 		  </div>
 		@endforeach
 	</div>
-	  <button class="btn btn-danger" type="submit">Dar de Baja Usuario</button>
+	  <button class="btn btn-success" type="submit">Activar Usuario</button>
  </form>
 </div>
 

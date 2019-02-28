@@ -56,9 +56,10 @@
                    </script>
                    @unset($erroruser);
                 @endisset
-                @isset($msj)
+
+                @isset($msjcargado)
                     <div class="alert alert-success" role="alert">
-                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"  align="center"><span aria-hidden="true">&times;</span></button> {{ $msj }}</div>
+                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"  align="center"><span aria-hidden="true">&times;</span></button> {{ $msjcargado }}</div>
                    <script type="text/javascript">
                        window.setTimeout(function() {
                                 $(".alert").fadeTo(300, 0).slideUp(400, function(){
@@ -66,7 +67,7 @@
                                 });
                             }, 20000);
                    </script>
-                   @unset($msj);
+                   @unset($msjcargado);
                 @endisset
 
                @isset($msjbaja)
@@ -82,6 +83,19 @@
                    @unset($msjbaja);
                 @endisset
 
+                    @isset($msjactivado)
+                    <div class="alert alert-success" role="alert">
+                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"  align="center"><span aria-hidden="true">&times;</span></button> {{ $msjactivado }}</div>
+                   <script type="text/javascript">
+                       window.setTimeout(function() {
+                                $(".alert").fadeTo(300, 0).slideUp(400, function(){
+                                    $(this).remove(); 
+                                });
+                            }, 20000);
+                   </script>
+                   @unset($msjactivado);
+                @endisset
+
 <!--Boton de Alta de empleado-->
             <a href="alta_empleado" button class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i>Alta de Usuario</button></a>
             <p></p>
@@ -94,8 +108,6 @@
                      <th>Nombres</th>
                      <th>Apellidos</th>
                      <th>Correo</th>
-                     <th>Telefono</th>
-                     <th>Departamento</th>
                      <th>Estado</th>
                      <th>Acciones</th>
                  </tr>                       
@@ -137,12 +149,12 @@
                     },
                   createdRow: function ( row, data, index ) {
                               if ( data.estado == 0 ) {
-                                $('td', row).eq(6).addClass('text-danger').text('Inactivo');
-                                $('td', row).eq(7).html("<button type='button' class='modif btn btn-info'>Editar<span class='glyphicon glyphicon-edit'></span> </button>"+" "+"<button type='button' class='baj btn btn-success'>Activar<span class='glyphicon glyphicon-circle-arrow-up'></span> </button>");
+                                $('td', row).eq(4).addClass('text-danger').text('Inactivo');
+                                $('td', row).eq(5).html("<button type='button' class='modif btn btn-info'>Editar<span class='glyphicon glyphicon-edit'></span> </button>"+" "+"<button type='button' class='act btn btn-success'>Activar<span class='glyphicon glyphicon-circle-arrow-up'></span> </button>");
 
                               } else {
-                                $('td', row).eq(6).addClass('text-success').text('Activo');
-                                $('td', row).eq(7).html("<button type='button' class='modif btn btn-info'>Editar<span class='glyphicon glyphicon-edit'></span> </button>"+" "+"<button type='button' class='baj btn btn-danger'>Desactivar<span class='glyphicon glyphicon-circle-arrow-down'></span> </button>");
+                                $('td', row).eq(4).addClass('text-success').text('Activo');
+                                $('td', row).eq(5).html("<button type='button' class='modif btn btn-info'>Editar<span class='glyphicon glyphicon-edit'></span> </button>"+" "+"<button type='button' class='baj btn btn-danger'>Desactivar<span class='glyphicon glyphicon-circle-arrow-down'></span> </button>");
                               }
                             },                            
         columns: [
@@ -150,8 +162,6 @@
                         { data: 'nombres', name: 'nombres' },
                         { data: 'apellidos', name: 'apellidos'},
                         { data: 'correo', name: 'correo'},
-                        { data: 'tel', name: 'tel'},
-                        { data: 'dpto', name: 'dpto'},
                         { data: 'estado', name: 'estado'},
                         {"defaultContent": "<button type='button' class='modif btn btn-success'>Editar<span class='glyphicon glyphicon-edit'></span> </button>"+" "+"<button type='button' class='baj btn btn-danger'>Baja<span class='glyphicon glyphicon-circle-arrow-down'></span> </button>"},              
                  ]
@@ -170,7 +180,14 @@
             $('#table').on('click', 'button.baj', function(){
                 var data = datatable.row( $(this).closest('tr') ).data();
                      var cedula=( data['cedula']);
-                     window.location.href = '{{url("rrhh/baja_empleado")}}'+'/'+cedula;
+                     window.location.href = '{{url("rrhh/desactivar_empleado")}}'+'/'+cedula;
+            });
+
+            /*Javascript para captura de la cedula y redirección a la ruta para baja de empleado*/
+            $('#table').on('click', 'button.act', function(){
+                var data = datatable.row( $(this).closest('tr') ).data();
+                     var cedula=( data['cedula']);
+                     window.location.href = '{{url("rrhh/activar_empleado")}}'+'/'+cedula;
             });
 
 /*Cierre de llave de javascript del datatables*/
