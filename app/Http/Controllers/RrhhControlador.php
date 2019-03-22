@@ -28,7 +28,10 @@ class RrhhControlador extends Controller
     //para ser procesado por el datatable
     public function datatable()
     {
-        return Datatables::of(Persona::query())->make(true);
+         $persona_rol= DB::table('personas')->where('id_rol', '1')->get();
+         //return Datatables::of(Persona::query())->make(true);
+         return Datatables::of($persona_rol)->make(true);
+
     }
 
     public function getIndexRrhh()
