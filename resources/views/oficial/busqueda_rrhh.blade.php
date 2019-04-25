@@ -173,21 +173,21 @@
             $('#table').on('click', 'button.modif', function(){
                 var data = datatable.row( $(this).closest('tr') ).data();
                      var cedula=( data['cedula']);
-                     window.location.href = '{{url("oficial/modificacion_empleado")}}'+'/'+cedula;
+                     window.location.href = '{{url("oficial/modificacion_rrhh")}}'+'/'+cedula;
             });
 
             /*Javascript para captura de la cedula y redirección a la ruta para baja de empleado*/
             $('#table').on('click', 'button.baj', function(){
                 var data = datatable.row( $(this).closest('tr') ).data();
                      var cedula=( data['cedula']);
-                     window.location.href = '{{url("oficial/desactivar_empleado")}}'+'/'+cedula;
+                     window.location.href = '{{url("oficial/desactivar_rrhh")}}'+'/'+cedula;
             });
 
             /*Javascript para captura de la cedula y redirección a la ruta para baja de empleado*/
             $('#table').on('click', 'button.act', function(){
                 var data = datatable.row( $(this).closest('tr') ).data();
                      var cedula=( data['cedula']);
-                     window.location.href = '{{url("oficial/activar_empleado")}}'+'/'+cedula;
+                     window.location.href = '{{url("oficial/activar_rrhh")}}'+'/'+cedula;
             });
 
 /*Cierre de llave de javascript del datatables*/

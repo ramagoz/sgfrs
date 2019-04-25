@@ -37,15 +37,15 @@ class OficialControlador extends Controller
 
      if ($estado=='1')
        {
-        return view('oficial.desactivar_empleado', compact('persona'),compact('nombre_grupos'));
+        return view('oficial.desactivar_rrhh', compact('persona'),compact('nombre_grupos'));
         }
     else
     {
-        return view('oficial.activar_empleado', compact('persona'),compact('nombre_grupos'));
+        return view('oficial.activar_rrhh', compact('persona'),compact('nombre_grupos'));
     }
    }
 
-     public function getModificacionEmpleado(request $request)
+     public function getModificacionRhh(request $request)
     {  
 
         $persona =DB::table('personas')->where('cedula',$request->cedula)->get()->toArray();
@@ -126,15 +126,116 @@ class OficialControlador extends Controller
         $nombre_grupos = DB::table('grupos_recibos')->select('nombre_grupo','id_grupo')->get();
         return view('oficial.alta_rrhh', compact('nombre_grupos'));
     }
+  
+    public function getModificacionRrhh(request $request)
+    {  
+
+        $persona =DB::table('personas')->where('cedula',$request->cedula)->get()->toArray();
+        $nombre_grupos = DB::table('grupos_recibos')->select('nombre_grupo','id_grupo')->get();
+       
+        return view('oficial.modificacion_rrhh', compact('persona'),compact('nombre_grupos'));
+    }
+
+    public function getRrhhModificado(Request $request)
+    {   
+      
+        $persona =Persona::find($request->cedula);
+    
+        $persona->id_grupo   = $request->grupo;
+        $persona->nombres    = $request->nombre;
+        $persona->apellidos  = $request->apellido;
+        $persona->cedula     = $request->cedula;
+        $persona->cel        = $request->celular;
+        $persona->tel        = $request->telefono;
+        $persona->dpto       = $request->dpto;
+        $persona->cargo      = $request->cargo;
+        $persona->correo     = $request->correo;
+       # $persona->estado     = $request->estado;
+        $persona->obs        = $request->observacion;
+        $persona->save();
+       # return view('rrhh.empleado_cargado');
+        return view('oficial.busqueda_rrhh')->with('msj','Los datos del usuario con CI Nro. '.$request->cedula.' se actualizaron correctamente!!!');
+        
+    }
+
+
+     public function getRrhhDesactivado(Request $request)
+    {   
+      
+        $persona =Persona::find($request->cedula);
+    
+        $persona->id_grupo   = $request->grupo;
+        $persona->nombres    = $request->nombre;
+        $persona->apellidos  = $request->apellido;
+        $persona->cedula     = $request->cedula;
+        $persona->cel        = $request->celular;
+        $persona->tel        = $request->telefono;
+        $persona->dpto       = $request->dpto;
+        $persona->cargo      = $request->cargo;
+        $persona->correo     = $request->correo;
+        $persona->estado     = $request->estado;
+        $persona->obs        = $request->observacion;
+
+        $persona->save();
+       
+        #user baja
+        $iduser = DB::table('users')->where('email', $request->correo)->get()->toArray();
+                foreach ($iduser as $users) 
+                    {
+                        $id = $users->id;
+                    }
+
+         $user=User::find($id);
+         $user->status=   $request->estado;
+         $user->save();
+
+
+       # return view('rrhh.empleado_cargado');
+        return view('/oficial/busqueda_rrhh')->with('msjbaja','El usuario con CI Nro. '.$request->cedula.' se desactivo del Sistema !!!');
+        
+    }
+
+     public function getRrhhActivado(Request $request)
+    {   
+      
+        $persona =Persona::find($request->cedula);
+    
+        $persona->id_grupo   = $request->grupo;
+        $persona->nombres    = $request->nombre;
+        $persona->apellidos  = $request->apellido;
+        $persona->cedula     = $request->cedula;
+        $persona->cel        = $request->celular;
+        $persona->tel        = $request->telefono;
+        $persona->dpto       = $request->dpto;
+        $persona->cargo      = $request->cargo;
+        $persona->correo     = $request->correo;
+        $persona->estado     = $request->estado;
+        $persona->obs        = $request->observacion;
+
+        $persona->save();
+       
+        #user baja
+        $iduser = DB::table('users')->where('email', $request->correo)->get()->toArray();
+                foreach ($iduser as $users) 
+                    {
+                        $id = $users->id;
+                    }
+
+         $user=User::find($id);
+         $user->status=   $request->estado;
+         $user->save();
+
+
+       # return view('rrhh.empleado_cargado');
+        return view('/oficial/busqueda_rrhh')->with('msjactivado','El usuario con CI Nro. '.$request->cedula.' se activo correctamente!!');
+        
+    }
 
     public function getBajaRrhh()
     {
     	return view('oficial.baja_rrhh');
     }
-    public function getModificacionRrhh()
-    {
-    	return view('oficial.modificacion_rrhh');
-    }
+
     public function getBusquedaRrhh()
     {
     	return view('oficial.busqueda_rrhh');
