@@ -3,18 +3,18 @@
     <ul id='menu'>
         <li><a href="#">ABM RRHH</a>
             <ul>
-                <li><a href="/oficial/alta_rrhh">Alta</a></li>
+               <!--<li><a href="/oficial/alta_rrhh">Alta</a></li>
                 <li><a href="/oficial/baja_rrhh">Baja</a></li>
-                <li><a href="/oficial/modificacion_rrhh">Modificación</a></li>
-                <li><a href="/oficial/busqueda_rrhh">Búsqueda</a></li>
+                <li><a href="/oficial/modificacion_rrhh">Modificación</a></li>-->
+                <li><a href="/oficial/busqueda_rrhh">ABM RRHH </a></li>
             </ul>
          </li>   
          <li><a href="#">ABM EMPRESA</a>
             <ul>
-                <li><a href="/oficial/alta_empresa">Alta</a></li>
+               <!-- <li><a href="/oficial/alta_empresa">Alta</a></li>
                 <li><a href="/oficial/baja_empresa">Baja</a></li>
-                <li><a href="/oficial/modificacion_empresa">Modificación</a></li>
-                <li><a href="/oficial/busqueda_empresa">Búsqueda</a></li>
+                <li><a href="/oficial/modificacion_empresa">Modificación</a></li>-->
+                <li><a href="/oficial/busqueda_empresa">ABM Empresa</a></li>
             </ul>
          </li> 
         <li><a href="/oficial/roles">Roles</a></li>

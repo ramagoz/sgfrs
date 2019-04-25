@@ -93,6 +93,15 @@ Route::group(['middleware' => 'auth'], function()
 //Sección rutas oficial----------------------------------------------
 
 	Route::get('oficial', 'OficialControlador@getIndexOficial');
+	Route::get('oficial/busqueda_rrhh', 'OficialControlador@getBusquedaRRHH');
+	Route::get('oficial/datatable', 'OficialControlador@datatable');
+	Route::get('oficial/desactivar_empleado/{cedula}', 'OficialControlador@getRecuperarGrupo');
+	Route::get('oficial/activar_empleado/{cedula}', 'OficialControlador@getRecuperarGrupo');
+	Route::get('oficial/modificacion_empleado/{cedula}', 'OficialControlador@getModificacionEmpleado');
+	Route::get('oficial/alta_rrhh', 'OficialControlador@getAltaRrhh');
+	Route::post('/oficial/usuario_creado', 'OficialControlador@postUsuariocreado');
+	Route::post('oficial/rrhh_cargado', 'OficialControlador@postRrhhCargado');
+//	------------------------------------------------------
 	Route::get('oficial/alta_rrhh', 'OficialControlador@getAltaRrhh');
 	Route::get('oficial/baja_rrhh', 'OficialControlador@getBajaRrhh');
 	Route::get('oficial/modificacion_rrhh', 'OficialControlador@getModificacionRrhh');
