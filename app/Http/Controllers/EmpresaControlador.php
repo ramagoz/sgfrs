@@ -134,7 +134,13 @@ class EmpresaControlador extends Controller
         ->groupBy('año')
         ->orderBy('año','desc')
         ->get();
-    	return view('empresa.informes_empresa')->with('años',$años);
+    	if ($años=='[]')
+        {
+            return view('empresa.informes_empresa')->with('años',$años)->with('msj','No existen periodos creados!');
+        }else
+        {
+            return view('empresa.informes_empresa')->with('años',$años)->with('boton','boton');
+        }
     }
     public function postVerInformesEmpresa(Request $request)
     {
@@ -409,9 +415,6 @@ class EmpresaControlador extends Controller
         ->with('existencia_dic',$existencia_dic)
         ;//los informes no son correctos
     }
-
-
-
 
      public function getCambiarContraseña()
     {
