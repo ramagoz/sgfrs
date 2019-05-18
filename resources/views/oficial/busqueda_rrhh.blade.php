@@ -97,7 +97,7 @@
                 @endisset
 
 <!--Boton de Alta de empleado-->
-            <a href="alta_rrhh" button class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i>Alta de Usuario</button></a>
+            <a href="alta_rrhh" button class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i>Alta de RRHH</button></a>
             <p></p>
 <!--Estructura de columnas para Datatables-->
             <table class="table table-bordered" id="table">
