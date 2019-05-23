@@ -32,6 +32,15 @@ class OficialControlador extends Controller
 
     }
 
+        public function datatablerol()
+    {
+         $persona_rol= DB::table('personas')->get();
+         //return Datatables::of(Persona::query())->make(true);
+         return Datatables::of($persona_rol)->make(true);
+
+    }
+
+
 
     public function getRecuperarGrupo(request $request)
     {
