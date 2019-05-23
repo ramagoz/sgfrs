@@ -207,10 +207,13 @@ class DatabaseSeeder extends Seeder
         foreach( $this->arrayAuditorias as $auditorias) 
         {
         $p = new Auditoria;
-        $p->cedula = $auditorias['cedula'];
-        $p->tipo_operacion = $auditorias['tipo_operacion'];
-        $p->descripcion = $auditorias['descripcion'];
         $p->fecha_hora = $auditorias['fecha_hora'];
+        $p->cedula = $auditorias['cedula'];
+        $p->rol = $auditorias['rol'];
+        $p->ip = $auditorias['ip'];
+        $p->equipo_usuario = $auditorias['equipo_usuario'];
+        $p->operacion = $auditorias['operacion'];
+        $p->descripcion = $auditorias['descripcion'];
         $p->save();
         }
     }
@@ -595,18 +598,14 @@ class DatabaseSeeder extends Seeder
     private $arrayAuditorias = 
     array(
         array(
+            'fecha_hora' => '2018-01-01',
             'cedula' => '0000000',
-            'tipo_operacion' => 'firma',
-            'descripcion' => 'firma recibo empleado ci 2222222',
-            'fecha_hora' => '2018-01-01'
-            ),
-        array(
-            'cedula' => '0000000',
-            'tipo_operacion' => 'firma',
-            'descripcion' => 'firma recibo empleado ci 3333333',
-            'fecha_hora' => '2018-01-01'
+            'rol' => '1',
+            'ip' => '192.168.0.1',
+            'equipo_usuario' => 'PC-USUARIO1',
+            'operacion' => 'inicio de sesión',
+            'descripcion' => 'ingreso al sistema'
             )
-        
     );
     private $arrayFirma_empresas = 
     array(

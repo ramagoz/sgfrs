@@ -15,10 +15,13 @@ class CreateAuditoriasTable extends Migration
     {
         Schema::create('auditorias', function (Blueprint $table) {
             $table->increments('id_auditoria');
-            $table->string('cedula')->references('cedula')->on('personas');
-            $table->string('tipo_operacion');
-            $table->string('descripcion');
             $table->dateTime('fecha_hora');
+            $table->string('cedula')->references('cedula')->on('personas');
+            $table->integer('rol');
+            $table->string('ip');
+            $table->string('equipo_usuario');
+            $table->string('operacion');
+            $table->string('descripcion');
         });
     }
 
