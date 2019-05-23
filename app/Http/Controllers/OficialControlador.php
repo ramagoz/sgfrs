@@ -56,6 +56,30 @@ class OficialControlador extends Controller
     }
    }
 
+
+   public function getRecuperarGrupoEmpresa(request $request)
+    {
+
+        $persona =DB::table('personas')->where('cedula',$request->cedula)->get()->toArray();
+        $nombre_grupos = DB::table('grupos_recibos')->select('nombre_grupo','id_grupo')->get();
+
+
+      foreach ($persona as $person) 
+                    {
+                        $estado = $person->estado;
+
+                    }
+
+     if ($estado=='1')
+       {
+        return view('oficial.desactivar_empresa', compact('persona'),compact('nombre_grupos'));
+        }
+    else
+    {
+        return view('oficial.activar_empresa', compact('persona'),compact('nombre_grupos'));
+    }
+   }
+
      public function getModificacionRhh(request $request)
     {  
 
@@ -130,12 +154,71 @@ class OficialControlador extends Controller
 
     }
 
+     public function postEmpresaCargado(Request $request)
+    {
+       //validacion si el usuario a cargar ya no existe
+        $validemail=DB::table('users')->where('email',$request->correo)->get();
+         if ($validemail=='[]') 
+             { // usuario no existe
+          $validcedula=DB::table('personas')->where('cedula',$request->cedula)->get();
+          if($validcedula=='[]') //persona no existe, se puede proceder a crear usuario y persona
+          {
+            //creacion de usuario
+                 $user = new User();
+                 $user->name = $request->nombre;
+                 $user->email = $request->correo;
+                 $user->status= '1';
+                 $user->password = Hash::make($request->cedula);
+                 $user->save();
+          //creacion de persona relacionada al usuario que se creo previamente.
+                 $usuario = DB::table('users')->where('email', $request->correo)->get()->toArray();
+                foreach ($usuario as $users) 
+                    {
+                        $id = $users->id;
+                    }
+                    $persona             = new Persona();
+                    $persona->id_usuario = $id;
+                    $persona->id_rol     = $request->rol;
+                    $id_grupo='1';
+                    $persona->id_grupo   = $id_grupo;
+                    $persona->nombres    = $request->nombre;
+                    $persona->apellidos  = $request->apellido;
+                    $persona->cedula     = $request->cedula;
+                    $persona->cel        = $request->celular;
+                    $persona->tel        = $request->telefono;
+                    $persona->dpto       = $request->dpto;
+                    $persona->cargo      = $request->cargo;
+                    $persona->correo     = $request->correo;
+                    $persona->estado     = $request->estado;
+                    $persona->obs        = $request->observacion;
+                    $persona->save();
+                    return view('oficial.busqueda_empresa')->with('$msjcargado','Se un registro el usuario con CI Nro. '.$request->cedula);
+
+          }
+          else{
+                
+                return view('/oficial/busqueda_empresa')->with('errorpersona','Ya existe un registro de usuario con CI Nro. '.$request->cedula);
+                }
+
+        }         
+          else{
+                 return view('/oficial/busqueda_empresa')->with('erroruser','Ya existe un registro de usuario con el correo '.$request->correo);
+                }
+
+    }
 
        public function getAltaRrhh()
     {
         //Consulta DB para ver grupos disponibles los compacta en de array y los envia a la vista//
         $nombre_grupos = DB::table('grupos_recibos')->select('nombre_grupo','id_grupo')->get();
         return view('oficial.alta_rrhh', compact('nombre_grupos'));
+    }
+
+     public function getAltaEmpresa()
+    {
+        //Consulta DB para ver grupos disponibles los compacta en de array y los envia a la vista//
+        $nombre_grupos = DB::table('grupos_recibos')->select('nombre_grupo','id_grupo')->get();
+        return view('oficial.alta_empresa', compact('nombre_grupos'));
     }
   
     public function getModificacionRrhh(request $request)
@@ -358,17 +441,9 @@ class OficialControlador extends Controller
     {
         return view('oficial.busqueda_empresa');
     }
-    public function getAltaEmpresa()
-    {
-    	return view('oficial.alta_empresa');
-    }
     public function getBajaEmpresa()
     {
     	return view('oficial.baja_empresa');
-    }
-    public function getModificacionEmpresa()
-    {
-    	return view('oficial.modificacion_empresa');
     }
     public function getRoles()
     {

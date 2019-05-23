@@ -75,18 +75,14 @@
               	</div>
 
               	 <div class="form-group row">
-                		<label for="grupo" class="col-lg-2 col-form-label">Grupo:</label>
-                			<div class="col-lg-10">
-                  				<select class="form-control" id="grupo" name="grupo">
-                          
-						            @foreach($nombre_grupos as $grupo)
-						            <option value="{{$grupo->id_grupo}}">
-						                {{$grupo->nombre_grupo}}
-						            </option>
-						            @endforeach
-						        </select>
-                			</div>
-              	 </div>
+                    <label for="estado" class="col-lg-2 col-form-label">Rol:</label>
+                      <div class="col-lg-10">
+                          <select class="form-control" id="rol" name="rol">
+                        <option value="3">Empresa Nivel 0</option>
+                        <option value="4">Empresa Nivel 1</option>
+                    </select>
+                      </div>
+                </div>
 
               	 <div class="form-group row">
                 		<label for="observacion" class="col-lg-2 col-form-label">Obs:</label>
