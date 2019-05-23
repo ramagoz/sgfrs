@@ -388,7 +388,7 @@ class OficialControlador extends Controller
 
 
        # return view('rrhh.empleado_cargado');
-        return view('/oficial/busqueda_rrhh')->with('msjactivado','El usuario con CI Nro. '.$request->cedula.' se activo correctamente!!');
+        return view('/oficial/busqueda_empresa')->with('msjactivado','El usuario con CI Nro. '.$request->cedula.' se activo correctamente!!');
         
     }
 
