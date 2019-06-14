@@ -32,6 +32,15 @@ class OficialControlador extends Controller
 
     }
 
+        public function datatablerol()
+    {
+         $persona_rol= DB::table('personas')->get();
+         //return Datatables::of(Persona::query())->make(true);
+         return Datatables::of($persona_rol)->make(true);
+
+    }
+
+
 
     public function getRecuperarGrupo(request $request)
     {
@@ -388,7 +397,7 @@ class OficialControlador extends Controller
 
 
        # return view('rrhh.empleado_cargado');
-        return view('/oficial/busqueda_rrhh')->with('msjactivado','El usuario con CI Nro. '.$request->cedula.' se activo correctamente!!');
+        return view('/oficial/busqueda_empresa')->with('msjactivado','El usuario con CI Nro. '.$request->cedula.' se activo correctamente!!');
         
     }
 

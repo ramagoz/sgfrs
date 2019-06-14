@@ -96,6 +96,7 @@ Route::group(['middleware' => 'auth'], function()
 	Route::get('oficial/busqueda_rrhh', 'OficialControlador@getBusquedaRRHH');
 	Route::get('oficial/datatable', 'OficialControlador@datatable');
 	Route::get('oficial/datatableempresa', 'OficialControlador@datatableempresa');
+	Route::get('oficial/datatablerol', 'OficialControlador@datatablerol');
 	Route::get('oficial/activar_rrhh/{cedula}', 'OficialControlador@getRecuperarGrupo');
 	Route::get('oficial/activar_empresa/{cedula}', 'OficialControlador@getRecuperarGrupoEmpresa');
 	Route::get('oficial/modificacion_rrhh/{cedula}', 'OficialControlador@getModificacionRrhh');
