@@ -211,7 +211,6 @@ class DatabaseSeeder extends Seeder
         $p->cedula = $auditorias['cedula'];
         $p->rol = $auditorias['rol'];
         $p->ip = $auditorias['ip'];
-        $p->equipo_usuario = $auditorias['equipo_usuario'];
         $p->operacion = $auditorias['operacion'];
         $p->descripcion = $auditorias['descripcion'];
         $p->save();
@@ -602,7 +601,6 @@ class DatabaseSeeder extends Seeder
             'cedula' => '0000000',
             'rol' => '1',
             'ip' => '192.168.0.1',
-            'equipo_usuario' => 'PC-USUARIO1',
             'operacion' => 'inicio de sesión',
             'descripcion' => 'ingreso al sistema'
             )

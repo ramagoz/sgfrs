@@ -68,4 +68,5 @@
         </div>
     </div>
 </div>
+{{  Session::put('ip_usuario', $_SERVER['REMOTE_ADDR']) }}
 @endsection

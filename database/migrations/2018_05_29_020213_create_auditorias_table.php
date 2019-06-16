@@ -19,7 +19,6 @@ class CreateAuditoriasTable extends Migration
             $table->string('cedula')->references('cedula')->on('personas');
             $table->integer('rol');
             $table->string('ip');
-            $table->string('equipo_usuario');
             $table->string('operacion');
             $table->string('descripcion');
         });
