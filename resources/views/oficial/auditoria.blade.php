@@ -7,7 +7,7 @@
 
 <table id="example" class="display" style="width:90%" align="center" border="1">
 		<thead>
-		<tr><th>Id</th><th>Fecha y Hora</th><th>Cedula</th><th>Rol</th><th>IP</th><th>Equipo Usuario</th><th>Operación</th><th>Descripción</th></tr>
+		<tr><th>Id</th><th>Fecha y Hora</th><th>Cedula</th><th>Rol</th><th>IP</th><th>Operación</th><th>Descripción</th></tr>
 		</thead>
 
 	@foreach ($registros as $registro)
@@ -18,7 +18,6 @@
 			<td>{{ $registro->cedula }}</td>
 			<td>{{ $registro->rol }}</td>
 			<td>{{ $registro->ip }}</td>
-			<td>{{ $registro->equipo_usuario }}</td>
 			<td>{{ $registro->operacion }}</td>
 			<td>{{ $registro->descripcion }}</td>
 		</tr>
