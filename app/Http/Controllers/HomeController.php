@@ -38,6 +38,8 @@ class HomeController extends Controller
             $rol = $role->id_rol;
             $cedula = $role->cedula;
         }
+         if (Auth::check()) 
+        {
                switch ($rol) 
                 {
                 case 0:
