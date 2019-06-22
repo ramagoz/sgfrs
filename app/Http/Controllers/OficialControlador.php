@@ -486,13 +486,9 @@ class OficialControlador extends Controller
     }
     public function getAuditoria()
     {
-        echo 'Nombre computadora cliente: '.gethostname();
-        echo "</br>";
-        echo "Dirección IP del cliente: ".$_SERVER['REMOTE_ADDR'];
-        echo "</br>";
-        echo 'Fecha y hora del servidor: '.date('d-m-Y H:i');
-        echo "</br>";
-    	return view('oficial.auditoria');
+        $registros = DB::table('auditorias')->get();
+
+    	return view('oficial.auditoria')->with('registros',$registros);
     }
     public function getRestablecerContraseña()
     {
