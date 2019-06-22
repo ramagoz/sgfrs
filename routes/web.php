@@ -101,9 +101,11 @@ Route::group(['middleware' => 'auth'], function()
 	Route::get('oficial/activar_empresa/{cedula}', 'OficialControlador@getRecuperarGrupoEmpresa');
 	Route::get('oficial/modificacion_rrhh/{cedula}', 'OficialControlador@getModificacionRrhh');
 	Route::get('oficial/modificacion_empresa/{cedula}', 'OficialControlador@getModificacionEmpresa');
+	Route::get('oficial/modificacion_rol/{cedula}', 'OficialControlador@getModificacionRol');
 	Route::post('/oficial/usuario_creado', 'OficialControlador@postUsuariocreado');
 	Route::post('oficial/rrhh_cargado', 'OficialControlador@postRrhhCargado');
 	Route::post('oficial/empresa_cargado', 'OficialControlador@postEmpresaCargado');
+	Route::get('oficial/rol_modificado', 'OficialControlador@getRolModificado');
 	Route::get('oficial/rrhh_modificado', 'OficialControlador@getRrhhModificado');
 	Route::get('oficial/empresa_modificado', 'OficialControlador@getEmpresaModificado');
 	Route::get('oficial/desactivar_rrhh/{cedula}', 'OficialControlador@getRecuperarGrupo');
