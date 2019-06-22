@@ -7,6 +7,7 @@ use App\Recibo;
 use App\Grupo_recibo;
 use App\Periodo;
 use App\Persona;
+use App\Auditoria;
 use DB;  
 
 
@@ -63,6 +64,16 @@ class EmpresaControlador extends Controller
         $dir_origen= "C:/xampp/htdocs/sgfrs/public/recibos/pendientes/20" . $año . "/" . $mes . "/";
         $dir_destino= "C:/xampp/htdocs/sgfrs/public/recibos/firmados_empresa/20" . $año . "/" . $mes . "/";
         rename($dir_origen.$id.'.pdf' , $dir_destino.$id.'.pdf');
+        //inicio codigo auditoria
+        $auditoria = new Auditoria();
+        $auditoria->fecha_hora = date('Y-m-d H:i:s');
+        $auditoria->cedula = session()->get('cedula_usuario');
+        $auditoria->rol = session()->get('rol_usuario');
+        $auditoria->ip = session()->get('ip_usuario');
+        $auditoria->operacion = "Firma de recibo";
+        $auditoria->descripcion = "Se procedio a la firma del siguiente recibo: ".$request->nombre_grupo;
+        $auditoria->save();
+        //fin codigo auditoria
         $id="/recibos/firmados_empresa/20". $año . "/" . $mes."/".$id.".pdf";
         return view('empresa.ver_recibo_firmado_empresa')->with('id',$id)->with('msj','Recibo firmado correctamente!');
     }

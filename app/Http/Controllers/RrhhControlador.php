@@ -7,6 +7,7 @@ use App\Grupo_recibo;
 use App\Periodo;
 use App\Persona;
 use App\Recibo;
+use App\Auditoria;
 use DB;
 use Illuminate\Http\Request;
 use DataTables;
@@ -252,6 +253,16 @@ class RrhhControlador extends Controller
             mkdir($estructura_carpetas_pendientes, 0777, true);
             mkdir($estructura_carpetas_firmados_empresa, 0777, true);
             mkdir($estructura_carpetas_firmados_empresa_empleados, 0777, true);
+            //inicio codigo auditoria
+            $auditoria = new Auditoria();
+            $auditoria->fecha_hora = date('Y-m-d H:i:s');
+            $auditoria->cedula = session()->get('cedula_usuario');
+            $auditoria->rol = session()->get('rol_usuario');
+            $auditoria->ip = session()->get('ip_usuario');
+            $auditoria->operacion = "Creación de nuevo periodo";
+            $auditoria->descripcion = "Se procedio a la creación del periodo ". $request->mes . '/' . $request->año;
+            $auditoria->save();
+            //fin codigo auditoria
             $periodos = DB::table('periodos')->select('mes','año','estado_periodo')->get();
             return view('rrhh.crear_nuevo_periodo')->with('msj','Periodo creado correctamente! Mes: '.$request->mes.'  -   Año: '.$request->año)->with('periodos',$periodos);
                 
@@ -407,6 +418,16 @@ class RrhhControlador extends Controller
                                 $Recibo->id_periodo= $id_periodo;
                                 $Recibo->save();
                                 rename($dir . $f, "C:/xampp/htdocs/sgfrs/public/recibos/pendientes/" . $año . "/" . $mes . "/" . $f);
+                                //inicio codigo auditoria
+                                $auditoria = new Auditoria();
+                                $auditoria->fecha_hora = date('Y-m-d H:i:s');
+                                $auditoria->cedula = session()->get('cedula_usuario');
+                                $auditoria->rol = session()->get('rol_usuario');
+                                $auditoria->ip = session()->get('ip_usuario');
+                                $auditoria->operacion = "Importación de recibos";
+                                $auditoria->descripcion = "Se procedio a la importación de recibos del periodo ". $mes . '/' . $año;
+                                $auditoria->save();
+                                //fin codigo auditoria
                             } else {
     //aqui se guardan los recibos que el numero de cedula no corresponde
                                 $recibo_error_cedula[$d] = $f;
@@ -493,6 +514,16 @@ class RrhhControlador extends Controller
             $grupo->nov          = $request->nov;
             $grupo->dic          = $request->dic;
             $grupo->save();
+            //inicio codigo auditoria
+            $auditoria = new Auditoria();
+            $auditoria->fecha_hora = date('Y-m-d H:i:s');
+            $auditoria->cedula = session()->get('cedula_usuario');
+            $auditoria->rol = session()->get('rol_usuario');
+            $auditoria->ip = session()->get('ip_usuario');
+            $auditoria->operacion = "Creación de grupo de recibos";
+            $auditoria->descripcion = "Se procedio a la creación del grupo de recibos con el nombre de: ".$request->nombre_grupo;
+            $auditoria->save();
+            //fin codigo auditoria
             $grupos = DB::table('grupos_recibos')->get();
             return view('rrhh.grupos_recibos')->with('msj','Grupo creado correctamente!')->with('grupos',$grupos);
         } else {
