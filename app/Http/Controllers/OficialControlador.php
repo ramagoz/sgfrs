@@ -34,10 +34,14 @@ class OficialControlador extends Controller
 
         public function datatablerol()
     {
-         $persona_rol= DB::table('personas')->get();
+        // $persona_rol= DB::table('personas')->get();
          //return Datatables::of(Persona::query())->make(true);
-         return Datatables::of($persona_rol)->make(true);
+        // return Datatables::of($persona_rol)->make(true);
 
+
+            $persona_rol = DB::table('personas')
+                 ->join('roles', 'personas.id_rol','=','roles.id_rol')->get();
+          return Datatables::of($persona_rol)->make(true);
     }
 
 
@@ -97,6 +101,15 @@ class OficialControlador extends Controller
        
         return view('oficial.modificacion_rrhh', compact('persona'),compact('nombre_grupos'));
     }
+     public function getModificacionRol(request $request)
+    {  
+
+        $persona =DB::table('personas')->where('cedula',$request->cedula)->get()->toArray();
+        $nombre_rol = DB::table('roles')->select('rol','id_rol')->get();
+       
+        return view('oficial.modificacion_rol', compact('persona'),compact('nombre_rol'));
+    }
+
 
      public function getAltaEmpleado()
     {
@@ -267,6 +280,19 @@ class OficialControlador extends Controller
         $persona->save();
        # return view('rrhh.empleado_cargado');
         return view('oficial.busqueda_rrhh')->with('msj','Los datos del usuario con CI Nro. '.$request->cedula.' se actualizaron correctamente!!!');
+        
+    }
+
+     public function getRolModificado(Request $request)
+    {   
+      
+        $persona =Persona::find($request->cedula);
+    
+        $persona->id_rol     = $request->rol;
+
+        $persona->save();
+       # return view('rrhh.empleado_cargado');
+        return view('oficial.roles')->with('msjrol','Los datos del usuario con CI Nro. '.$request->cedula.' se actualizaron correctamente!!!');
         
     }
 

@@ -29,36 +29,9 @@
         <div class="container">
     <br>
 <!--Alerta si hubo modificacion de usuario-->
-               @isset($errorpersona)
-                    <div class="alert alert-danger" role="alert">
-                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"  align="center"><span aria-hidden="true">&times;</span></button> {{ $errorpersona }}</div>
-                   <script type="text/javascript">
-                       window.setTimeout(function() {
-                                $(".alert").fadeTo(300, 0).slideUp(400, function(){
-                                    $(this).remove(); 
-                                });
-                            }, 20000);
-                   </script>
-                   @unset($errorpersona);
-                @endisset
-
-
-                @isset($erroruser)
-                    <div class="alert alert-danger" role="alert">
-                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"  align="center"><span aria-hidden="true">&times;</span></button> {{ $erroruser }}</div>
-                   <script type="text/javascript">
-                       window.setTimeout(function() {
-                                $(".alert").fadeTo(300, 0).slideUp(400, function(){
-                                    $(this).remove(); 
-                                });
-                            }, 20000);
-                   </script>
-                   @unset($erroruser);
-                @endisset
-
-                @isset($msjcargado)
+               @isset($msjrol)
                     <div class="alert alert-success" role="alert">
-                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"  align="center"><span aria-hidden="true">&times;</span></button> {{ $msjcargado }}</div>
+                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"  align="center"><span aria-hidden="true">&times;</span></button> {{ $msjrol }}</div>
                    <script type="text/javascript">
                        window.setTimeout(function() {
                                 $(".alert").fadeTo(300, 0).slideUp(400, function(){
@@ -66,36 +39,11 @@
                                 });
                             }, 20000);
                    </script>
-                   @unset($msjcargado);
-                @endisset
-
-               @isset($msjbaja)
-                    <div class="alert alert-danger" role="alert">
-                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"  align="center"><span aria-hidden="true">&times;</span></button> {{ $msjbaja }}</div>
-                   <script type="text/javascript">
-                       window.setTimeout(function() {
-                                $(".alert").fadeTo(300, 0).slideUp(400, function(){
-                                    $(this).remove(); 
-                                });
-                            }, 20000);
-                   </script>
-                   @unset($msjbaja);
-                @endisset
-
-                    @isset($msjactivado)
-                    <div class="alert alert-success" role="alert">
-                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"  align="center"><span aria-hidden="true">&times;</span></button> {{ $msjactivado }}</div>
-                   <script type="text/javascript">
-                       window.setTimeout(function() {
-                                $(".alert").fadeTo(300, 0).slideUp(400, function(){
-                                    $(this).remove(); 
-                                });
-                            }, 20000);
-                   </script>
-                   @unset($msjactivado);
+                   @unset($msjrol);
                 @endisset
 
 
+               
            
 <!--Estructura de columnas para Datatables-->
             <table class="table table-bordered" id="table">
@@ -106,7 +54,7 @@
                      <th>Nombres</th>
                      <th>Apellidos</th>
                      <th>Correo</th>
-                     <th>Estado</th>
+                     <th>Rol</th>
                      <th>Acciones</th>
                  </tr>                       
   <!--Javascript de Datatables-->                
@@ -145,49 +93,29 @@
                             "sSortDescending": ": Activar para ordenar la columna de manera descendente"
                         }
                     },
-                  createdRow: function ( row, data, index ) {
-                              if ( data.estado == 0 ) {
-                                $('td', row).eq(4).addClass('text-danger').text('Inactivo');
-                                $('td', row).eq(5).html("<button type='button' class='modif btn btn-warning'>Editar Rol<span class='glyphicon glyphicon-edit'></span> </button>");
-
-                              } else {
-                                $('td', row).eq(4).addClass('text-success').text('Activo');
-                                $('td', row).eq(5).html("<button type='button' class='modif btn btn-warning'>Editar Rol<span class='glyphicon glyphicon-edit'></span> </button>");
-                              }
-                            },                            
+                           
         columns: [
                         { data: 'cedula', name: 'cedula' },
                         { data: 'nombres', name: 'nombres' },
                         { data: 'apellidos', name: 'apellidos'},
                         { data: 'correo', name: 'correo'},
-                        { data: 'estado', name: 'estado'},
+                        { data: 'rol', name: 'rol'},
                         {"defaultContent": "<button type='button' class='modif btn btn-warning'>Editar<span class='glyphicon glyphicon-edit'></span> </button>"},              
                  ]
 
     });
 
-            /*Javascript para captura de la cedula y redirección a la ruta para modificación*/
+            /*Javascript para captura de la cedula y redirección a la ruta para modificacion rol*/
              
             $('#table').on('click', 'button.modif', function(){
                 var data = datatable.row( $(this).closest('tr') ).data();
                      var cedula=( data['cedula']);
-                     window.location.href = '{{url("oficial/modificacion_rol_empresa")}}'+'/'+cedula;
+                     window.location.href = '{{url("oficial/modificacion_rol")}}'+'/'+cedula;
             });
 
-            /*Javascript para captura de la cedula y redirección a la ruta para baja de empleado*/
-            $('#table').on('click', 'button.baj', function(){
-                var data = datatable.row( $(this).closest('tr') ).data();
-                     var cedula=( data['cedula']);
-                     window.location.href = '{{url("oficial/desactivar_empresa")}}'+'/'+cedula;
-            });
+         
 
-            /*Javascript para captura de la cedula y redirección a la ruta para baja de empleado*/
-            $('#table').on('click', 'button.act', function(){
-                var data = datatable.row( $(this).closest('tr') ).data();
-                     var cedula=( data['cedula']);
-                     window.location.href = '{{url("oficial/activar_empresa")}}'+'/'+cedula;
-            });
-
+        
 /*Cierre de llave de javascript del datatables*/
 });
 </script>

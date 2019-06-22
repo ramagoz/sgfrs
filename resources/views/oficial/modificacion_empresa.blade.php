@@ -1,4 +1,4 @@
-@extends('layouts.app')
+ @extends('layouts.app')
 @section('content')
 {{-- Dentro de section va el contenido de la vista--}}
 	@include('layouts.menu_oficial')
