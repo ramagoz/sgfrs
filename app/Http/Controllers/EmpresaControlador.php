@@ -71,7 +71,7 @@ class EmpresaControlador extends Controller
         $auditoria->rol = session()->get('rol_usuario');
         $auditoria->ip = session()->get('ip_usuario');
         $auditoria->operacion = "Firma de recibo";
-        $auditoria->descripcion = "Se procedio a la firma del siguiente recibo: ".$request->nombre_grupo;
+        $auditoria->descripcion = "Se procedio a la firma del siguiente recibo: ".$id;
         $auditoria->save();
         //fin codigo auditoria
         $id="/recibos/firmados_empresa/20". $año . "/" . $mes."/".$id.".pdf";
