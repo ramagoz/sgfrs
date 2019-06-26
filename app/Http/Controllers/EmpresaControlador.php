@@ -74,6 +74,7 @@ class EmpresaControlador extends Controller
         $auditoria->descripcion = "Se procedio a la firma del siguiente recibo: ".$id;
         $auditoria->save();
         //fin codigo auditoria
+        
         $id="/recibos/firmados_empresa/20". $año . "/" . $mes."/".$id.".pdf";
         return view('empresa.ver_recibo_firmado_empresa')->with('id',$id)->with('msj','Recibo firmado correctamente!');
     }
