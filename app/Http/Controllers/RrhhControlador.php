@@ -15,7 +15,7 @@ use App\User;
 use Illuminate\Support\Facades\Hash;
 
 
-
+//prueba de nuevo contribuidor
 
 class RrhhControlador extends Controller
 {
