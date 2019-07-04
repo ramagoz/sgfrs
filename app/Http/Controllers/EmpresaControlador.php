@@ -9,25 +9,143 @@ use App\Periodo;
 use App\Persona;
 use App\Auditoria;
 use DB;  
+use DataTables;
+use Illuminate\Support\Facades\Hash;
+use App\User;
+
 
 
 class EmpresaControlador extends Controller
 {
+      //devuelve a la vista en formato json los datos de los empleados
+    //para ser procesado por el datatable
+    public function datatable()
+    {
+         $persona_rol= DB::table('personas')->where('id_rol', '5')->get();
+         //return Datatables::of(Persona::query())->make(true);
+         return Datatables::of($persona_rol)->make(true);
+
+    }
+
     public function getIndexEmpresa()
     {
     	return view('empresa.indexempresa');
     }
+
+    public function getRecuperarGrupo(request $request)
+    {
+
+        $persona =DB::table('personas')->where('cedula',$request->cedula)->get()->toArray();
+        $nombre_grupos = DB::table('grupos_recibos')->select('nombre_grupo','id_grupo')->get();
+
+
+      foreach ($persona as $person) 
+                    {
+                        $estado = $person->estado;
+
+                    }
+
+     if ($estado=='1')
+       {
+        return view('empresa.desactivar_oficial', compact('persona'),compact('nombre_grupos'));
+        }
+    else
+    {
+        return view('empresa.activar_oficial', compact('persona'),compact('nombre_grupos'));
+    }
+   }
     public function getAltaOficial()
     {
-    	return view('empresa.alta_oficial');
+    	//Consulta DB para ver grupos disponibles los compacta en de array y los envia a la vista//
+        $nombre_grupos = DB::table('grupos_recibos')->select('nombre_grupo','id_grupo')->get();
+        return view('empresa.alta_oficial', compact('nombre_grupos'));
     }
+
+    public function postOficialCargado(Request $request)
+    {
+       //validacion si el usuario a cargar ya no existe
+        $validemail=DB::table('users')->where('email',$request->correo)->get();
+         if ($validemail=='[]') 
+             { // usuario no existe
+          $validcedula=DB::table('personas')->where('cedula',$request->cedula)->get();
+          if($validcedula=='[]') //persona no existe, se puede proceder a crear usuario y persona
+          {
+            //creacion de usuario
+                 $user = new User();
+                 $user->name = $request->nombre;
+                 $user->email = $request->correo;
+                 $user->status= '1';
+                 $user->password = Hash::make($request->cedula);
+                 $user->save();
+          //creacion de persona relacionada al usuario que se creo previamente.
+                 $usuario = DB::table('users')->where('email', $request->correo)->get()->toArray();
+                foreach ($usuario as $users) 
+                    {
+                        $id = $users->id;
+                    }
+                    $persona             = new Persona();
+                    $persona->id_usuario = $id;
+                    $id_rol='5';
+                    $persona->id_rol   = $id_rol;
+                    $persona->id_grupo   = $request->grupo;
+                    $persona->nombres    = $request->nombre;
+                    $persona->apellidos  = $request->apellido;
+                    $persona->cedula     = $request->cedula;
+                    $persona->cel        = $request->celular;
+                    $persona->tel        = $request->telefono;
+                    $persona->dpto       = $request->dpto;
+                    $persona->cargo      = $request->cargo;
+                    $persona->correo     = $request->correo;
+                    $persona->estado     = $request->estado;
+                    $persona->obs        = $request->observacion;
+                    $persona->save();
+                    return view('empresa.busqueda_oficial')->with('$msjcargado','Se un registro el usuario con CI Nro.'.$request->cedula);
+
+          }
+          else{
+                
+                return view('/empresa/busqueda_oficial')->with('errorpersona','Ya existe un registro de usuario con CI Nro. '.$request->cedula);
+                }
+
+        }         
+          else{
+                 return view('/empresa/busqueda_oficial')->with('erroruser','Ya existe un registro de usuario con el correo '.$request->correo);
+                }
+
+    }
+
      public function getBajaOficial()
     {
     	return view('empresa.baja_oficial');
     }
-     public function getModificacionOficial()
+     public function getModificacionOficial(Request $request)
     {
-    	return view('empresa.modificacion_oficial');
+    	$persona =DB::table('personas')->where('cedula',$request->cedula)->get()->toArray();
+        $nombre_grupos = DB::table('grupos_recibos')->select('nombre_grupo','id_grupo')->get();
+       
+        return view('empresa.modificacion_oficial', compact('persona'),compact('nombre_grupos'));
+
+      }
+      public function getOficialModificado(Request $request)
+    {   
+      
+        $persona =Persona::find($request->cedula);
+    
+        $persona->id_grupo   = $request->grupo;
+        $persona->nombres    = $request->nombre;
+        $persona->apellidos  = $request->apellido;
+        $persona->cedula     = $request->cedula;
+        $persona->cel        = $request->celular;
+        $persona->tel        = $request->telefono;
+        $persona->dpto       = $request->dpto;
+        $persona->cargo      = $request->cargo;
+        $persona->correo     = $request->correo;
+       # $persona->estado     = $request->estado;
+        $persona->obs        = $request->observacion;
+        $persona->save();
+       # return view('rrhh.empleado_cargado');
+        return view('/empresa/busqueda_oficial')->with('msj','Los datos del usuario con CI Nro. '.$request->cedula.' se actualizaron correctamente!!!');
+        
     }
      public function getBusquedaOficial()
     {

@@ -3,9 +3,6 @@
     <ul id='menu'>
         <li><a href="#">ABM Oficial de Seguridad</a>
             <ul>
-                <li><a href="/empresa/alta_oficial">Alta</a></li>
-                <li><a href="/empresa/baja_oficial">Baja</a></li>
-                <li><a href="/empresa/modificacion_oficial">Modificación</a></li>
                 <li><a href="/empresa/busqueda_oficial">Búsqueda</a></li>
             </ul>
          </li>   

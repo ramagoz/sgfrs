@@ -23,8 +23,11 @@ Route::group(['middleware' => 'auth'], function()
 //Sección rutas empresa----------------------------------------------
 	Route::get('empresa', 'EmpresaControlador@getRecibosPendientesEmpresa');
 	Route::get('empresa/alta_oficial', 'EmpresaControlador@getAltaOficial');
-	Route::get('empresa/baja_oficial', 'EmpresaControlador@getBajaOficial');
-	Route::get('empresa/modificacion_oficial', 'EmpresaControlador@getModificacionOficial');
+	Route::post('empresa/oficial_cargado', 'EmpresaControlador@postOficialCargado');
+	Route::get('empresa/desactivar_oficial/{cedula}', 'EmpresaControlador@getRecuperarGrupo');
+	Route::get('empresa/activar_oficial/{cedula}', 'EmpresaControlador@getRecuperarGrupo');
+	Route::get('empresa/modificacion_oficial/{cedula}', 'EmpresaControlador@getModificacionOficial');
+	Route::get('empresa/oficial_modificado', 'EmpresaControlador@getOficialModificado');
 	Route::get('empresa/busqueda_oficial', 'EmpresaControlador@getBusquedaOficial');
 
 	Route::get('empresa/recibos_pendientes_empresa', 'EmpresaControlador@getRecibosPendientesEmpresa');
@@ -42,6 +45,9 @@ Route::group(['middleware' => 'auth'], function()
 	Route::post('empresa/resultado_informes_empresa', 'EmpresaControlador@postVerInformesEmpresa');
 
 	Route::get('empresa/cambiar_contraseña', 'EmpresaControlador@getCambiarContraseña');
+
+	Route::get('empresa/datatable', 'EmpresaControlador@datatable');
+
 
 //Sección rutas rrhh----------------------------------------------
 
