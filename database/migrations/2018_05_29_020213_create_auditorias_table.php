@@ -20,7 +20,7 @@ class CreateAuditoriasTable extends Migration
             $table->integer('rol');
             $table->string('ip');
             $table->string('operacion');
-            $table->string('descripcion');
+            $table->string('descripcion',1000);
         });
     }
 
