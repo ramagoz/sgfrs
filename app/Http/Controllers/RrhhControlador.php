@@ -86,6 +86,26 @@ class RrhhControlador extends Controller
                     $persona->estado     = $request->estado;
                     $persona->obs        = $request->observacion;
                     $persona->save();
+                    //inicio codigo auditoria
+                    $auditoria = new Auditoria();
+                    $auditoria->fecha_hora = date('Y-m-d H:i:s');
+                    $auditoria->cedula = session()->get('cedula_usuario');
+                    $auditoria->rol = session()->get('rol_usuario');
+                    $auditoria->ip = session()->get('ip_usuario');
+                    $auditoria->operacion = "Alta de empleado";
+                    $auditoria->descripcion = "Se procedio a la alta en el sistema del usuario con rol de empleado con los siguientes datos:"."\n"
+                    ."número de cédula: ".$request->cedula."\n"
+                    ."Nombre: ".$request->nombre."\n"
+                    ."Apellido: ".$request->apellido."\n"
+                    ."Cel.: ".$request->celular."\n"
+                    ."Tel.: ".$request->telefono."\n"
+                    ."Correo: ".$request->correo."\n"
+                    ."Dpto.: ".$request->dpto."\n"
+                    ."Cargo: ".$request->cargo."\n"
+                    ."Obs.: ".$request->observacion;
+
+                    $auditoria->save();
+                    //fin codigo auditoria
                     return view('rrhh.busqueda_empleado')->with('$msjcargado','Se un registro el usuario con CI Nro. '.$request->cedula);
 
           }
@@ -149,7 +169,26 @@ class RrhhControlador extends Controller
        # $persona->estado     = $request->estado;
         $persona->obs        = $request->observacion;
         $persona->save();
-       # return view('rrhh.empleado_cargado');
+       //inicio codigo auditoria
+        $auditoria = new Auditoria();
+        $auditoria->fecha_hora = date('Y-m-d H:i:s');
+        $auditoria->cedula = session()->get('cedula_usuario');
+        $auditoria->rol = session()->get('rol_usuario');
+        $auditoria->ip = session()->get('ip_usuario');
+        $auditoria->operacion = "Modificación datos empleado";
+        $auditoria->descripcion = "Se procedio a la modificación de datos del usuario con rol de empleado, datos actualizados:"."\n"
+        ."número de cédula: ".$request->cedula."\n"
+        ."Nombre: ".$request->nombre."\n"
+        ."Apellido: ".$request->apellido."\n"
+        ."Cel.: ".$request->celular."\n"
+        ."Tel.: ".$request->telefono."\n"
+        ."Correo: ".$request->correo."\n"
+        ."Dpto.: ".$request->dpto."\n"
+        ."Cargo: ".$request->cargo."\n"
+        ."Obs.: ".$request->observacion;
+        $auditoria->save();
+        //fin codigo auditoria
+
         return view('/rrhh/busqueda_empleado')->with('msj','Los datos del usuario con CI Nro. '.$request->cedula.' se actualizaron correctamente!!!');
         
     }
@@ -157,20 +196,6 @@ class RrhhControlador extends Controller
     {   
       
         $persona =Persona::find($request->cedula);
-    
-        $persona->id_grupo   = $request->grupo;
-        $persona->nombres    = $request->nombre;
-        $persona->apellidos  = $request->apellido;
-        $persona->cedula     = $request->cedula;
-        $persona->cel        = $request->celular;
-        $persona->tel        = $request->telefono;
-        $persona->dpto       = $request->dpto;
-        $persona->cargo      = $request->cargo;
-        $persona->correo     = $request->correo;
-        $persona->estado     = $request->estado;
-        $persona->obs        = $request->observacion;
-
-        $persona->save();
        
         #user baja
         $iduser = DB::table('users')->where('email', $request->correo)->get()->toArray();
@@ -180,9 +205,18 @@ class RrhhControlador extends Controller
                     }
 
          $user=User::find($id);
-         $user->status=   $request->estado;
+         $user->status= $request->estado;
          $user->save();
-
+         //inicio codigo auditoria
+        $auditoria = new Auditoria();
+        $auditoria->fecha_hora = date('Y-m-d H:i:s');
+        $auditoria->cedula = session()->get('cedula_usuario');
+        $auditoria->rol = session()->get('rol_usuario');
+        $auditoria->ip = session()->get('ip_usuario');
+        $auditoria->operacion = "Desactivación acceso usuario";
+        $auditoria->descripcion = "Se procedio a la desactivación del acceso del usuario con número de cédula: ".$request->cedula;
+        $auditoria->save();
+        //fin codigo auditoria
 
        # return view('rrhh.empleado_cargado');
         return view('/rrhh/busqueda_empleado')->with('msjbaja','El usuario con CI Nro. '.$request->cedula.' se desactivo del Sistema !!!');
@@ -193,21 +227,7 @@ class RrhhControlador extends Controller
     {   
       
         $persona =Persona::find($request->cedula);
-    
-        $persona->id_grupo   = $request->grupo;
-        $persona->nombres    = $request->nombre;
-        $persona->apellidos  = $request->apellido;
-        $persona->cedula     = $request->cedula;
-        $persona->cel        = $request->celular;
-        $persona->tel        = $request->telefono;
-        $persona->dpto       = $request->dpto;
-        $persona->cargo      = $request->cargo;
-        $persona->correo     = $request->correo;
-        $persona->estado     = $request->estado;
-        $persona->obs        = $request->observacion;
 
-        $persona->save();
-       
         #user baja
         $iduser = DB::table('users')->where('email', $request->correo)->get()->toArray();
                 foreach ($iduser as $users) 
@@ -219,7 +239,17 @@ class RrhhControlador extends Controller
          $user->status=   $request->estado;
          $user->save();
 
-
+       //inicio codigo auditoria
+        $auditoria = new Auditoria();
+        $auditoria->fecha_hora = date('Y-m-d H:i:s');
+        $auditoria->cedula = session()->get('cedula_usuario');
+        $auditoria->rol = session()->get('rol_usuario');
+        $auditoria->ip = session()->get('ip_usuario');
+        $auditoria->operacion = "Activación acceso usuario";
+        $auditoria->descripcion = "Se procedio a la activación del acceso del usuario con número de cédula: ".$request->cedula;
+        $auditoria->save();
+        //fin codigo auditoria
+        
        # return view('rrhh.empleado_cargado');
         return view('/rrhh/busqueda_empleado')->with('msjactivado','El usuario con CI Nro. '.$request->cedula.' se activo correctamente!!');
         
@@ -418,16 +448,6 @@ class RrhhControlador extends Controller
                                 $Recibo->id_periodo= $id_periodo;
                                 $Recibo->save();
                                 rename($dir . $f, "C:/xampp/htdocs/sgfrs/public/recibos/pendientes/" . $año . "/" . $mes . "/" . $f);
-                                //inicio codigo auditoria
-                                $auditoria = new Auditoria();
-                                $auditoria->fecha_hora = date('Y-m-d H:i:s');
-                                $auditoria->cedula = session()->get('cedula_usuario');
-                                $auditoria->rol = session()->get('rol_usuario');
-                                $auditoria->ip = session()->get('ip_usuario');
-                                $auditoria->operacion = "Importación de recibos";
-                                $auditoria->descripcion = "Se procedio a la importación de recibos del periodo ". $mes . '/' . $año;
-                                $auditoria->save();
-                                //fin codigo auditoria
                             } else {
     //aqui se guardan los recibos que el numero de cedula no corresponde
                                 $recibo_error_cedula[$d] = $f;
@@ -445,6 +465,17 @@ class RrhhControlador extends Controller
                     }
                 }
             }
+            //inicio codigo auditoria
+            $auditoria = new Auditoria();
+            $auditoria->fecha_hora = date('Y-m-d H:i:s');
+            $auditoria->cedula = session()->get('cedula_usuario');
+            $auditoria->rol = session()->get('rol_usuario');
+            $auditoria->ip = session()->get('ip_usuario');
+            $auditoria->operacion = "Importación de recibos";
+            $auditoria->descripcion = "Se procedio a la importación de recibos del periodo ". $mes . '/' . $año;
+            $auditoria->save();
+            //fin codigo auditoria
+
             if ($a > 0) //aqui se guardan la cantidad de recibos correctos que fueron procesados
             {
                 $resultado[0] = count($recibos);

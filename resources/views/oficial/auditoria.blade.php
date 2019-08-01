@@ -19,7 +19,7 @@
 			<td>{{ $registro->rol }}</td>
 			<td>{{ $registro->ip }}</td>
 			<td>{{ $registro->operacion }}</td>
-			<td>{{ $registro->descripcion }}</td>
+			<td><pre>{{ $registro->descripcion }}</pre></td>
 		</tr>
 		</tbody>
 	@endforeach

@@ -209,6 +209,16 @@ class EmpresaControlador extends Controller
             $dir_origen= "C:/xampp/htdocs/sgfrs/public/recibos/pendientes/20" . $año . "/" . $mes . "/";
             $dir_destino= "C:/xampp/htdocs/sgfrs/public/recibos/firmados_empresa/20" . $año . "/" . $mes . "/";
             rename($dir_origen.$value.'.pdf' , $dir_destino.$value.'.pdf');
+            //inicio codigo auditoria
+            $auditoria = new Auditoria();
+            $auditoria->fecha_hora = date('Y-m-d H:i:s');
+            $auditoria->cedula = session()->get('cedula_usuario');
+            $auditoria->rol = session()->get('rol_usuario');
+            $auditoria->ip = session()->get('ip_usuario');
+            $auditoria->operacion = "Firma de recibo";
+            $auditoria->descripcion = "Se procedio a la firma del siguiente recibo: ".$value;
+            $auditoria->save();
+            //fin codigo auditoria
         }
         $recibos = DB::table('recibos')
         ->join('personas', 'recibos.cedula','=','personas.cedula')
