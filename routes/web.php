@@ -45,6 +45,7 @@ Route::group(['middleware' => 'auth'], function()
 	Route::post('empresa/resultado_informes_empresa', 'EmpresaControlador@postVerInformesEmpresa');
 
 	Route::get('empresa/cambiar_contraseña', 'EmpresaControlador@getCambiarContraseña');
+	Route::post('empresa/update_password', 'EmpresaControlador@postUpdatePassword');
 
 	Route::get('empresa/datatable', 'EmpresaControlador@datatable');
 
@@ -93,7 +94,10 @@ Route::group(['middleware' => 'auth'], function()
 	Route::get('rrhh/informes_rrhh', 'RrhhControlador@getInformesRrhh');
 	Route::post('rrhh/resultado_informes_rrhh', 'RrhhControlador@postVerInformesRrhh');
 
-	Route::get('rrhh/cambiar_contraseña', 'RrhhControlador@getCambiarContraseña');
+	Route::get('rrhh/contactar_rrhh', 'EmpleadoControlador@getContactarRrhh');
+	Route::get('rrhh/cambiar_contraseña', 'EmpresaControlador@getCambiarContraseña');
+	Route::post('rrhh/update_password', 'EmpresaControlador@postUpdatePassword');
+
  
 
 //Sección rutas oficial----------------------------------------------
@@ -132,7 +136,8 @@ Route::group(['middleware' => 'auth'], function()
 	Route::get('oficial/roles', 'OficialControlador@getRoles');
 	Route::get('oficial/auditoria', 'OficialControlador@getAuditoria');
 	Route::get('oficial/restablecer_contraseña', 'OficialControlador@getRestablecerContraseña');
-	Route::get('oficial/cambiar_contraseña', 'OficialControlador@getCambiarContraseña');
+	Route::get('oficial/cambiar_contraseña', 'EmpresaControlador@getCambiarContraseña');
+	Route::post('oficial/update_password', 'EmpresaControlador@postUpdatePassword');
 
 //Sección rutas empleado----------------------------------------------
 
@@ -148,10 +153,12 @@ Route::group(['middleware' => 'auth'], function()
 	Route::get('empleado/recibos_firmados', 'EmpleadoControlador@getRecibosFirmados');
 	Route::get('empleado/ver_recibo_firmado_empresa_empleado/{id}', 'EmpleadoControlador@getVerReciboFirmadoEmpresaEmpleado/{id}');
 
-
+    
+	Route::get('empleado/cambiar_contraseña', 'EmpresaControlador@getCambiarContraseña');
+	Route::post('empleado/update_password', 'EmpresaControlador@postUpdatePassword');
 
 	Route::get('empleado/contactar_rrhh', 'EmpleadoControlador@getContactarRrhh');
-	Route::get('empleado/cambiar_contraseña', 'EmpleadoControlador@getCambiarContraseña');
+	
 
 });
 
