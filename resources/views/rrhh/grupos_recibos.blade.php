@@ -83,6 +83,9 @@
 
 </form>
 </table>
+
+<!--{{ $grupos->links() }}-->
+
 <br>
 <div align="center">
 <button class="btn btn-primary" type="submit" align="center">Crear Nuevo Grupo</button>

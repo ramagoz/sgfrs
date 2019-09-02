@@ -13,6 +13,8 @@ use Illuminate\Http\Request;
 use DataTables;
 use App\User;
 use Illuminate\Support\Facades\Hash;
+//use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 
 //prueba de nuevo contribuidor
@@ -555,7 +557,7 @@ class RrhhControlador extends Controller
             $auditoria->descripcion = "Se procedio a la creación del grupo de recibos con el nombre de: ".$request->nombre_grupo;
             $auditoria->save();
             //fin codigo auditoria
-            $grupos = DB::table('grupos_recibos')->get();
+            $grupos = DB::table('grupos_recibos')->paginate(3);
             return view('rrhh.grupos_recibos')->with('msj','Grupo creado correctamente!')->with('grupos',$grupos);
         } else {
             $grupos = DB::table('grupos_recibos')->get();
