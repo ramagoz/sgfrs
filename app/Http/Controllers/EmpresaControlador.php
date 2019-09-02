@@ -12,6 +12,8 @@ use DB;
 use DataTables;
 use Illuminate\Support\Facades\Hash;
 use App\User;
+use Validator;
+use Auth;
 
 
 
@@ -559,6 +561,41 @@ class EmpresaControlador extends Controller
      public function getCambiarContraseña()
     {
     	return view('empresa.cambiar_contraseña');
+    }
+
+    public function postUpdatePassword(Request $request)
+    {
+        $rules = [
+            'mypassword' => 'required',
+            'password' => 'required|confirmed|min:4|max:18',
+        ];
+        
+        $messages = [
+            'mypassword.required' => 'El campo es requerido',
+            'password.required' => 'El campo es requerido',
+            'password.confirmed' => 'Los passwords no coinciden',
+            'password.min' => 'El mínimo permitido son 6 caracteres',
+            'password.max' => 'El máximo permitido son 18 caracteres',
+        ];
+        
+        $validator = Validator::make($request->all(), $rules, $messages);
+        if ($validator->fails()){
+            return redirect('empresa/cambiar_contraseña')->withErrors($validator);
+        }
+        else{
+            if (Hash::check($request->mypassword, Auth::user()->password)){
+                $user = new User;
+                $user->where('email', '=', Auth::user()->email)
+                     ->update(['password' => bcrypt($request->password)]);
+                #return redirect('empresa/cambiar_contraseña')->with('status', 'Password cambiado con éxito');
+                return view('empresa/cambiar_contraseña')->with('status', 'Se ha actualizado la contraseña con éxito!!');
+            }
+            else
+            {
+               # return redirect('empresa/cambiar_contraseña')->with('message', 'Credenciales incorrectas');
+                return view('empresa/cambiar_contraseña')->with('message', 'Credenciales incorrectas');
+            }
+        }
     }
 
 }
