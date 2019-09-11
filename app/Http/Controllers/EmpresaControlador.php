@@ -67,52 +67,73 @@ class EmpresaControlador extends Controller
     {
        //validacion si el usuario a cargar ya no existe
         $validemail=DB::table('users')->where('email',$request->correo)->get();
-         if ($validemail=='[]') 
+        if ($validemail=='[]') 
              { // usuario no existe
-          $validcedula=DB::table('personas')->where('cedula',$request->cedula)->get();
-          if($validcedula=='[]') //persona no existe, se puede proceder a crear usuario y persona
-          {
-            //creacion de usuario
+            $validcedula=DB::table('personas')->where('cedula',$request->cedula)->get();
+            if($validcedula=='[]') //persona no existe, se puede proceder a crear usuario y persona
+            {
+                //creacion de usuario
                  $user = new User();
                  $user->name = $request->nombre;
                  $user->email = $request->correo;
                  $user->status= '1';
                  $user->password = Hash::make($request->cedula);
                  $user->save();
-          //creacion de persona relacionada al usuario que se creo previamente.
+                //creacion de persona relacionada al usuario que se creo previamente.
                  $usuario = DB::table('users')->where('email', $request->correo)->get()->toArray();
                 foreach ($usuario as $users) 
-                    {
-                        $id = $users->id;
-                    }
-                    $persona             = new Persona();
-                    $persona->id_usuario = $id;
-                    $id_rol='5';
-                    $persona->id_rol   = $id_rol;
-                    $persona->id_grupo   = $request->grupo;
-                    $persona->nombres    = $request->nombre;
-                    $persona->apellidos  = $request->apellido;
-                    $persona->cedula     = $request->cedula;
-                    $persona->cel        = $request->celular;
-                    $persona->tel        = $request->telefono;
-                    $persona->dpto       = $request->dpto;
-                    $persona->cargo      = $request->cargo;
-                    $persona->correo     = $request->correo;
-                    $persona->estado     = $request->estado;
-                    $persona->obs        = $request->observacion;
-                    $persona->save();
-                    return view('empresa.busqueda_oficial')->with('$msjcargado','Se un registro el usuario con CI Nro.'.$request->cedula);
-
-          }
-          else{
-                
-                return view('/empresa/busqueda_oficial')->with('errorpersona','Ya existe un registro de usuario con CI Nro. '.$request->cedula);
+                {
+                    $id = $users->id;
                 }
+                $persona             = new Persona();
+                $persona->id_usuario = $id;
+                $id_rol='5';
+                $persona->id_rol   = $id_rol;
+                $persona->id_grupo   = $request->grupo;
+                $persona->nombres    = $request->nombre;
+                $persona->apellidos  = $request->apellido;
+                $persona->cedula     = $request->cedula;
+                $persona->cel        = $request->celular;
+                $persona->tel        = $request->telefono;
+                $persona->dpto       = $request->dpto;
+                $persona->cargo      = $request->cargo;
+                $persona->correo     = $request->correo;
+                $persona->estado     = $request->estado;
+                $persona->obs        = $request->observacion;
+                $persona->save();
+                //inicio codigo auditoria
+                    $auditoria = new Auditoria();
+                    $auditoria->fecha_hora = date('Y-m-d H:i:s');
+                    $auditoria->cedula = session()->get('cedula_usuario');
+                    $auditoria->rol = session()->get('rol_usuario');
+                    $auditoria->ip = session()->get('ip_usuario');
+                    $auditoria->operacion = "Alta de Oficial de Seguridad";
+                    $auditoria->descripcion = "Se procedio a la alta en el sistema del usuario con rol de Oficial de Seguridad con los siguientes datos:"."\n"
+                    ."número de cédula: ".$request->cedula."\n"
+                    ."Nombre: ".$request->nombre."\n"
+                    ."Apellido: ".$request->apellido."\n"
+                    ."Cel.: ".$request->celular."\n"
+                    ."Tel.: ".$request->telefono."\n"
+                    ."Correo: ".$request->correo."\n"
+                    ."Dpto.: ".$request->dpto."\n"
+                    ."Cargo: ".$request->cargo."\n"
+                    ."Obs.: ".$request->observacion;
+
+                    $auditoria->save();
+                //fin codigo auditoria
+                return view('empresa.busqueda_oficial')->with('$msjcargado','Se un registro el usuario con CI Nro.'.$request->cedula);
+            }
+            else
+            {
+                
+                return view('/empresa/busqueda_oficial')->with('errorpersona','Ya existe un registro de usuario con el mismo Nro. de CI: '.$request->cedula);
+            }
 
         }         
-          else{
-                 return view('/empresa/busqueda_oficial')->with('erroruser','Ya existe un registro de usuario con el correo '.$request->correo);
-                }
+        else
+        {
+            return view('/empresa/busqueda_oficial')->with('erroruser','Ya existe un registro de usuario con el mismo correo: '.$request->correo);
+        }
 
     }
 
@@ -145,8 +166,71 @@ class EmpresaControlador extends Controller
        # $persona->estado     = $request->estado;
         $persona->obs        = $request->observacion;
         $persona->save();
+        //inicio codigo auditoria
+            $auditoria = new Auditoria();
+            $auditoria->fecha_hora = date('Y-m-d H:i:s');
+            $auditoria->cedula = session()->get('cedula_usuario');
+            $auditoria->rol = session()->get('rol_usuario');
+            $auditoria->ip = session()->get('ip_usuario');
+            $auditoria->operacion = "Actualización datos de Oficial de Seguridad";
+            $auditoria->descripcion = "Se procedio a la actualización de datos en el sistema del usuario con rol de Oficial de Seguridad con los siguientes datos:"."\n"
+            ."número de cédula: ".$request->cedula."\n"
+            ."Nombre: ".$request->nombre."\n"
+            ."Apellido: ".$request->apellido."\n"
+            ."Cel.: ".$request->celular."\n"
+            ."Tel.: ".$request->telefono."\n"
+            ."Correo: ".$request->correo."\n"
+            ."Dpto.: ".$request->dpto."\n"
+            ."Cargo: ".$request->cargo."\n"
+            ."Obs.: ".$request->observacion;
+
+            $auditoria->save();
+        //fin codigo auditoria
+
        # return view('rrhh.empleado_cargado');
         return view('/empresa/busqueda_oficial')->with('msj','Los datos del usuario con CI Nro. '.$request->cedula.' se actualizaron correctamente!!!');
+        
+    }
+    public function getOficialDesactivado(Request $request)
+    {   
+      
+        $persona =Persona::find($request->cedula);
+        $persona->estado = $request->estado;
+        $persona->save();
+       
+        #user baja
+        $iduser = DB::table('users')->where('email', $request->correo)->get()->toArray();
+                foreach ($iduser as $users) 
+                    {
+                        $id = $users->id;
+                    }
+
+         $user=User::find($id);
+         $user->status=   $request->estado;
+         $user->save();
+
+        return view('/empresa/busqueda_oficial')->with('msjbaja','El usuario con CI Nro. '.$request->cedula.' se desactivo del Sistema !!!');
+        
+    }
+    public function getOficialActivado(Request $request)
+    {   
+      
+        $persona =Persona::find($request->cedula);
+        $persona->estado = $request->estado;
+        $persona->save();
+       
+        #user alta
+        $iduser = DB::table('users')->where('email', $request->correo)->get()->toArray();
+                foreach ($iduser as $users) 
+                    {
+                        $id = $users->id;
+                    }
+
+         $user=User::find($id);
+         $user->status=   $request->estado;
+         $user->save();
+
+        return view('/empresa/busqueda_oficial')->with('msjactivado','El usuario con CI Nro. '.$request->cedula.' se activo correctamente!!');
         
     }
      public function getBusquedaOficial()

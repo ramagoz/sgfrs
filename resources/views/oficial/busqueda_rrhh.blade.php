@@ -183,7 +183,7 @@
                      window.location.href = '{{url("oficial/desactivar_rrhh")}}'+'/'+cedula;
             });
 
-            /*Javascript para captura de la cedula y redirección a la ruta para baja de empleado*/
+            /*Javascript para captura de la cedula y redirección a la ruta para activar de empleado*/
             $('#table').on('click', 'button.act', function(){
                 var data = datatable.row( $(this).closest('tr') ).data();
                      var cedula=( data['cedula']);

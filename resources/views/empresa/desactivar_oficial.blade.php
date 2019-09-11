@@ -2,7 +2,7 @@
 @section('content')
 {{-- Dentro de section va el contenido de la vista--}}
   @include('layouts.menu_empresa')
-  <h3 align="center">BUSQUEDA OFICIAL DE SEGURIDAD</h1>
+  <h3 align="center">DESACTIVAR OFICIAL</h1>
   <p align="center"><strong>Usuario: </strong> {{ Auth::user()->name }}, esta conectado con el Rol de <strong>Empresa</strong></p>
 <html >
 <head>
@@ -74,9 +74,7 @@
                 			<div class="col-lg-10">
                   				<select class="form-control" id="estado" name="estado" value="{{$persona->estado}}" readonly>
 						            @if ($persona->estado==1)
-                        <option value="0" selected="true">Inactivo</option>
-                        @else
-                            <option value="0" selected="true">Inactivo</option>
+                        <option value="0" selected="true">Activo</option>
                         @endif
                         
                         

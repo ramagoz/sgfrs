@@ -2,7 +2,7 @@
 @section('content')
 {{-- Dentro de section va el contenido de la vista--}}
 	@include('layouts.menu_oficial')
-	<h3 align="center">BAJA DE RRHH</h1>
+	<h3 align="center">ALTA DE EMPRESA</h1>
 	<p align="center"><strong>Usuario: </strong> {{ Auth::user()->name }}, esta conectado con el Rol de <strong>Oficial de Seguridad</strong></p>
 </p>
 
@@ -10,7 +10,7 @@
   </style>
 <div class="container" align="center">
 
- <form action="{{url('/oficial/rrhh_activar')}}" id="formulario-form" method="get"  role="form"> {{ csrf_field() }}
+ <form action="{{url('/oficial/empresa_activar')}}" id="formulario-form" method="get"  role="form"> {{ csrf_field() }}
     <div class="row justify-content-md-center">
     	@foreach($persona as $persona)
           <!--Primera columna de Carga de Datos-->
@@ -73,9 +73,7 @@
                 			<div class="col-lg-10">
                   				<select class="form-control" id="estado" name="estado" value="{{$persona->estado}}" readonly>
 						            @if ($persona->estado==0)
-                        <option value="1" selected="true">Activo</option>
-                        @else
-                            <option value="1" selected="true">Activo</option>
+                        <option value="1" selected="true">Inactivo</option>
                         @endif
                         
                         

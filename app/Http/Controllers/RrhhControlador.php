@@ -13,7 +13,6 @@ use Illuminate\Http\Request;
 use DataTables;
 use App\User;
 use Illuminate\Support\Facades\Hash;
-//use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
 
@@ -198,7 +197,9 @@ class RrhhControlador extends Controller
     {   
       
         $persona =Persona::find($request->cedula);
-       
+        $persona->estado = $request->estado;
+        $persona->save();
+
         #user baja
         $iduser = DB::table('users')->where('email', $request->correo)->get()->toArray();
                 foreach ($iduser as $users) 
@@ -209,6 +210,7 @@ class RrhhControlador extends Controller
          $user=User::find($id);
          $user->status= $request->estado;
          $user->save();
+
          //inicio codigo auditoria
         $auditoria = new Auditoria();
         $auditoria->fecha_hora = date('Y-m-d H:i:s');
@@ -220,7 +222,6 @@ class RrhhControlador extends Controller
         $auditoria->save();
         //fin codigo auditoria
 
-       # return view('rrhh.empleado_cargado');
         return view('/rrhh/busqueda_empleado')->with('msjbaja','El usuario con CI Nro. '.$request->cedula.' se desactivo del Sistema !!!');
         
     }
@@ -229,6 +230,8 @@ class RrhhControlador extends Controller
     {   
       
         $persona =Persona::find($request->cedula);
+        $persona->estado = $request->estado;
+        $persona->save();
 
         #user baja
         $iduser = DB::table('users')->where('email', $request->correo)->get()->toArray();

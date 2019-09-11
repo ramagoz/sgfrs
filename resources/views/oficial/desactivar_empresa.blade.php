@@ -73,9 +73,7 @@
                 			<div class="col-lg-10">
                   				<select class="form-control" id="estado" name="estado" value="{{$persona->estado}}" readonly>
 						            @if ($persona->estado==1)
-                        <option value="0" selected="true">Inactivo</option>
-                        @else
-                            <option value="0" selected="true">Inactivo</option>
+                        <option value="0" selected="true">Activo</option>
                         @endif
                         
                         

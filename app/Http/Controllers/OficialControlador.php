@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Persona;
+use App\Auditoria;
 use DB;
 use DataTables;
 use App\User;
@@ -12,7 +13,7 @@ use Illuminate\Support\Facades\Hash;
 class OficialControlador extends Controller
 {
     
-     //devuelve a la vista en formato json los datos de los empleados
+     //devuelve a la vista en formato json los datos de los usuarios con rol de rrhh
     //para ser procesado por el datatable
     public function datatable()
     {
@@ -22,7 +23,7 @@ class OficialControlador extends Controller
 
     }
 
-         //devuelve a la vista en formato json los datos de los empleados
+    //devuelve a la vista en formato json los datos de los usuarios con rol de empresa
     //para ser procesado por el datatable
     public function datatableempresa()
     {
@@ -161,6 +162,27 @@ class OficialControlador extends Controller
                     $persona->estado     = $request->estado;
                     $persona->obs        = $request->observacion;
                     $persona->save();
+
+                //inicio codigo auditoria
+                    $auditoria = new Auditoria();
+                    $auditoria->fecha_hora = date('Y-m-d H:i:s');
+                    $auditoria->cedula = session()->get('cedula_usuario');
+                    $auditoria->rol = session()->get('rol_usuario');
+                    $auditoria->ip = session()->get('ip_usuario');
+                    $auditoria->operacion = "Alta de RRHH";
+                    $auditoria->descripcion = "Se procedio a la alta en el sistema del usuario con rol de RRHH con los siguientes datos:"."\n"
+                    ."número de cédula: ".$request->cedula."\n"
+                    ."Nombre: ".$request->nombre."\n"
+                    ."Apellido: ".$request->apellido."\n"
+                    ."Cel.: ".$request->celular."\n"
+                    ."Tel.: ".$request->telefono."\n"
+                    ."Correo: ".$request->correo."\n"
+                    ."Dpto.: ".$request->dpto."\n"
+                    ."Cargo: ".$request->cargo."\n"
+                    ."Obs.: ".$request->observacion;
+
+                    $auditoria->save();
+                //fin codigo auditoria
                     return view('oficial.busqueda_rrhh')->with('$msjcargado','Se un registro el usuario con CI Nro. '.$request->cedula);
 
           }
@@ -214,6 +236,28 @@ class OficialControlador extends Controller
                     $persona->estado     = $request->estado;
                     $persona->obs        = $request->observacion;
                     $persona->save();
+
+                //inicio codigo auditoria
+                    $auditoria = new Auditoria();
+                    $auditoria->fecha_hora = date('Y-m-d H:i:s');
+                    $auditoria->cedula = session()->get('cedula_usuario');
+                    $auditoria->rol = session()->get('rol_usuario');
+                    $auditoria->ip = session()->get('ip_usuario');
+                    $auditoria->operacion = "Alta de empresa";
+                    $auditoria->descripcion = "Se procedio a la alta en el sistema del usuario con rol de EMPRESA con los siguientes datos:"."\n"
+                    ."número de cédula: ".$request->cedula."\n"
+                    ."Nombre: ".$request->nombre."\n"
+                    ."Apellido: ".$request->apellido."\n"
+                    ."Cel.: ".$request->celular."\n"
+                    ."Tel.: ".$request->telefono."\n"
+                    ."Correo: ".$request->correo."\n"
+                    ."Dpto.: ".$request->dpto."\n"
+                    ."Cargo: ".$request->cargo."\n"
+                    ."Obs.: ".$request->observacion;
+
+                    $auditoria->save();
+                //fin codigo auditoria
+
                     return view('oficial.busqueda_empresa')->with('$msjcargado','Se un registro el usuario con CI Nro. '.$request->cedula);
 
           }
@@ -278,6 +322,29 @@ class OficialControlador extends Controller
        # $persona->estado     = $request->estado;
         $persona->obs        = $request->observacion;
         $persona->save();
+
+        //inicio codigo auditoria
+            $auditoria = new Auditoria();
+            $auditoria->fecha_hora = date('Y-m-d H:i:s');
+            $auditoria->cedula = session()->get('cedula_usuario');
+            $auditoria->rol = session()->get('rol_usuario');
+            $auditoria->ip = session()->get('ip_usuario');
+            $auditoria->operacion = "Actualización datos de RRHH";
+            $auditoria->descripcion = "Se procedio a la actualización de datos en el sistema del usuario con rol de RRHH con los siguientes datos:"."\n"
+            ."número de cédula: ".$request->cedula."\n"
+            ."Nombre: ".$request->nombre."\n"
+            ."Apellido: ".$request->apellido."\n"
+            ."Cel.: ".$request->celular."\n"
+            ."Tel.: ".$request->telefono."\n"
+            ."Correo: ".$request->correo."\n"
+            ."Dpto.: ".$request->dpto."\n"
+            ."Cargo: ".$request->cargo."\n"
+            ."Obs.: ".$request->observacion;
+
+            $auditoria->save();
+        //fin codigo auditoria
+
+
        # return view('rrhh.empleado_cargado');
         return view('oficial.busqueda_rrhh')->with('msj','Los datos del usuario con CI Nro. '.$request->cedula.' se actualizaron correctamente!!!');
         
@@ -313,6 +380,28 @@ class OficialControlador extends Controller
        # $persona->estado     = $request->estado;
         $persona->obs        = $request->observacion;
         $persona->save();
+
+        //inicio codigo auditoria
+            $auditoria = new Auditoria();
+            $auditoria->fecha_hora = date('Y-m-d H:i:s');
+            $auditoria->cedula = session()->get('cedula_usuario');
+            $auditoria->rol = session()->get('rol_usuario');
+            $auditoria->ip = session()->get('ip_usuario');
+            $auditoria->operacion = "Actualización datos de EMPRESA";
+            $auditoria->descripcion = "Se procedio a la actualización de datos en el sistema del usuario con rol de EMPRESA con los siguientes datos:"."\n"
+            ."número de cédula: ".$request->cedula."\n"
+            ."Nombre: ".$request->nombre."\n"
+            ."Apellido: ".$request->apellido."\n"
+            ."Cel.: ".$request->celular."\n"
+            ."Tel.: ".$request->telefono."\n"
+            ."Correo: ".$request->correo."\n"
+            ."Dpto.: ".$request->dpto."\n"
+            ."Cargo: ".$request->cargo."\n"
+            ."Obs.: ".$request->observacion;
+
+            $auditoria->save();
+        //fin codigo auditoria
+
        # return view('rrhh.empleado_cargado');
         return view('oficial.busqueda_empresa')->with('msj','Los datos del usuario con CI Nro. '.$request->cedula.' se actualizaron correctamente!!!');
         
@@ -323,19 +412,7 @@ class OficialControlador extends Controller
     {   
       
         $persona =Persona::find($request->cedula);
-    
-        $persona->id_grupo   = $request->grupo;
-        $persona->nombres    = $request->nombre;
-        $persona->apellidos  = $request->apellido;
-        $persona->cedula     = $request->cedula;
-        $persona->cel        = $request->celular;
-        $persona->tel        = $request->telefono;
-        $persona->dpto       = $request->dpto;
-        $persona->cargo      = $request->cargo;
-        $persona->correo     = $request->correo;
-        $persona->estado     = $request->estado;
-        $persona->obs        = $request->observacion;
-
+        $persona->estado = $request->estado;
         $persona->save();
        
         #user baja
@@ -349,8 +426,6 @@ class OficialControlador extends Controller
          $user->status=   $request->estado;
          $user->save();
 
-
-       # return view('rrhh.empleado_cargado');
         return view('/oficial/busqueda_rrhh')->with('msjbaja','El usuario con CI Nro. '.$request->cedula.' se desactivo del Sistema !!!');
         
     }
@@ -359,19 +434,7 @@ class OficialControlador extends Controller
     {   
       
         $persona =Persona::find($request->cedula);
-    
-        $persona->id_grupo   = $request->grupo;
-        $persona->nombres    = $request->nombre;
-        $persona->apellidos  = $request->apellido;
-        $persona->cedula     = $request->cedula;
-        $persona->cel        = $request->celular;
-        $persona->tel        = $request->telefono;
-        $persona->dpto       = $request->dpto;
-        $persona->cargo      = $request->cargo;
-        $persona->correo     = $request->correo;
-        $persona->estado     = $request->estado;
-        $persona->obs        = $request->observacion;
-
+        $persona->estado = $request->estado;
         $persona->save();
        
         #user baja
@@ -385,8 +448,6 @@ class OficialControlador extends Controller
          $user->status=   $request->estado;
          $user->save();
 
-
-       # return view('rrhh.empleado_cargado');
         return view('/oficial/busqueda_empresa')->with('msjbaja','El usuario con CI Nro. '.$request->cedula.' se desactivo del Sistema !!!');
         
     }
@@ -395,19 +456,7 @@ class OficialControlador extends Controller
     {   
       
         $persona =Persona::find($request->cedula);
-    
-        $persona->id_grupo   = $request->grupo;
-        $persona->nombres    = $request->nombre;
-        $persona->apellidos  = $request->apellido;
-        $persona->cedula     = $request->cedula;
-        $persona->cel        = $request->celular;
-        $persona->tel        = $request->telefono;
-        $persona->dpto       = $request->dpto;
-        $persona->cargo      = $request->cargo;
-        $persona->correo     = $request->correo;
         $persona->estado     = $request->estado;
-        $persona->obs        = $request->observacion;
-
         $persona->save();
        
         #user baja
@@ -421,9 +470,7 @@ class OficialControlador extends Controller
          $user->status=   $request->estado;
          $user->save();
 
-
-       # return view('rrhh.empleado_cargado');
-        return view('/oficial/busqueda_empresa')->with('msjactivado','El usuario con CI Nro. '.$request->cedula.' se activo correctamente!!');
+        return view('/oficial/busqueda_rrhh')->with('msjactivado','El usuario con CI Nro. '.$request->cedula.' se activo correctamente!!');
         
     }
 
@@ -431,19 +478,7 @@ class OficialControlador extends Controller
     {   
       
         $persona =Persona::find($request->cedula);
-    
-        $persona->id_grupo   = $request->grupo;
-        $persona->nombres    = $request->nombre;
-        $persona->apellidos  = $request->apellido;
-        $persona->cedula     = $request->cedula;
-        $persona->cel        = $request->celular;
-        $persona->tel        = $request->telefono;
-        $persona->dpto       = $request->dpto;
-        $persona->cargo      = $request->cargo;
-        $persona->correo     = $request->correo;
         $persona->estado     = $request->estado;
-        $persona->obs        = $request->observacion;
-
         $persona->save();
        
         #user baja
@@ -457,8 +492,6 @@ class OficialControlador extends Controller
          $user->status=   $request->estado;
          $user->save();
 
-
-       # return view('rrhh.empleado_cargado');
         return view('/oficial/busqueda_empresa')->with('msjactivado','El usuario con CI Nro. '.$request->cedula.' se activo correctamente!!');
         
     }
