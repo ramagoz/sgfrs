@@ -14,6 +14,8 @@ use DataTables;
 use App\User;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
+use Validator;
+use Auth;
 
 
 //prueba de nuevo contribuidor
@@ -211,14 +213,17 @@ class RrhhControlador extends Controller
          $user->status= $request->estado;
          $user->save();
 
-         //inicio codigo auditoria
+        //inicio codigo auditoria
         $auditoria = new Auditoria();
         $auditoria->fecha_hora = date('Y-m-d H:i:s');
         $auditoria->cedula = session()->get('cedula_usuario');
         $auditoria->rol = session()->get('rol_usuario');
         $auditoria->ip = session()->get('ip_usuario');
         $auditoria->operacion = "Desactivación acceso usuario";
-        $auditoria->descripcion = "Se procedio a la desactivación del acceso del usuario con número de cédula: ".$request->cedula;
+        $auditoria->descripcion = "Se procedio a la Inactivación del acceso al sistema para el usuario con los siguientes datos:"."\n"
+            ."Número de cédula: ".$request->cedula."\n"
+            ."Nombre: ".$request->nombre."\n"
+            ."Apellido: ".$request->apellido;
         $auditoria->save();
         //fin codigo auditoria
 
@@ -251,7 +256,10 @@ class RrhhControlador extends Controller
         $auditoria->rol = session()->get('rol_usuario');
         $auditoria->ip = session()->get('ip_usuario');
         $auditoria->operacion = "Activación acceso usuario";
-        $auditoria->descripcion = "Se procedio a la activación del acceso del usuario con número de cédula: ".$request->cedula;
+        $auditoria->descripcion = "Se procedio a la Activación del acceso al sistema para el usuario con los siguientes datos:"."\n"
+            ."Número de cédula: ".$request->cedula."\n"
+            ."Nombre: ".$request->nombre."\n"
+            ."Apellido: ".$request->apellido;
         $auditoria->save();
         //fin codigo auditoria
         
@@ -979,7 +987,29 @@ class RrhhControlador extends Controller
                 $user = new User;
                 $user->where('email', '=', Auth::user()->email)
                      ->update(['password' => bcrypt($request->password)]);
-                #return redirect('empresa/cambiar_contraseña')->with('status', 'Password cambiado con éxito');
+
+                //inicio codigo auditoria
+                $auditoria = new Auditoria();
+                $auditoria->fecha_hora = date('Y-m-d H:i:s');
+                $auditoria->cedula = session()->get('cedula_usuario');
+                $auditoria->rol = session()->get('rol_usuario');
+                $auditoria->ip = session()->get('ip_usuario');
+                $auditoria->operacion = "Cambio de Contraseña";
+                $personas =DB::table('personas')->where('correo',Auth::user()->email)->get()->toArray();
+                foreach ($personas as $persona) 
+                {
+                    $cedula = $persona->cedula;
+                    $nombre = $persona->nombres;
+                    $apellido = $persona->apellidos;
+                }
+                $auditoria->descripcion = "Se procedio al cambio de contraseña del usuario: "."\n"
+                ."Número de cédula: ".$cedula."\n"
+                ."Nombre: ".$nombre."\n"
+                ."Apellido: ".$apellido;
+
+                $auditoria->save();
+                //fin codigo auditoria
+
                 return view('rrhh/cambiar_contraseña')->with('status', 'Se ha actualizado la contraseña con éxito!!');
             }
             else

@@ -2,7 +2,7 @@
 @section('content')
 {{-- Dentro de section va el contenido de la vista--}}
 	@include('layouts.menu_oficial')
-	<h3 align="center">CAMBIAR CONTRASEÑA</h1>
+	<h3 align="center">CAMBIAR CONTRASEÑA OFICIAL SEGURIDAD</h1>
 	<p align="center"><strong>Usuario: </strong> {{ Auth::user()->name }}, esta conectado con el Rol de <strong>Oficial de Seguridad</strong></p>
 <head>
         
@@ -40,29 +40,29 @@
                 @endisset
 
 <div class="container" align="center">
-<form method="post" class="form-horizontal" role="form" action="{{url('empresa/update_password')}}">
+<form method="post" class="form-horizontal" role="form" action="{{url('oficial/update_password')}}">
  {{csrf_field()}}
  <div class="form-group">
-    <label for="mypassword" class="col-lg-3">Introduce tu actual password:</label>
+    <label for="mypassword" class="col-lg-3">Introduce tu actual contraseña:</label>
        <div class="col-lg-5">
         <input type="password" name="mypassword" class="form-control">
          <div class="text-danger">{{$errors->first('mypassword')}}</div>
       </div>
  </div>
  <div class="form-group">
- 	 	  <label for="password" class="col-lg-3">Introduce tu nuevo password:</label>
+ 	 	  <label for="password" class="col-lg-3">Introduce tu nueva contraseña:</label>
  	 <div class="col-lg-5">
 		  <input type="password" name="password" class="form-control">
 		  <div class="text-danger">{{$errors->first('password')}}</div>
 	 </div>
  </div>
  <div class="form-group">
-  <label for="mypassword" class="col-lg-3">Confirma tu nuevo password:</label>
+  <label for="mypassword" class="col-lg-3">Confirma tu nueva contraseña:</label>
       <div class="col-lg-5">
 	     <input type="password" name="password_confirmation" class="form-control">
 	  </div>
   </div>
- <button type="submit" class="btn btn-primary">Cambiar mi password</button>
+ <button type="submit" class="btn btn-primary">Cambiar mi contraseña</button>
 </form>
 </div>
 

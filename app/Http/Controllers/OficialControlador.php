@@ -9,6 +9,8 @@ use DB;
 use DataTables;
 use App\User;
 use Illuminate\Support\Facades\Hash;
+use Validator;
+use Auth;
 
 class OficialControlador extends Controller
 {
@@ -377,7 +379,6 @@ class OficialControlador extends Controller
         $persona->dpto       = $request->dpto;
         $persona->cargo      = $request->cargo;
         $persona->correo     = $request->correo;
-       # $persona->estado     = $request->estado;
         $persona->obs        = $request->observacion;
         $persona->save();
 
@@ -426,6 +427,21 @@ class OficialControlador extends Controller
          $user->status=   $request->estado;
          $user->save();
 
+         //inicio codigo auditoria
+            $auditoria = new Auditoria();
+            $auditoria->fecha_hora = date('Y-m-d H:i:s');
+            $auditoria->cedula = session()->get('cedula_usuario');
+            $auditoria->rol = session()->get('rol_usuario');
+            $auditoria->ip = session()->get('ip_usuario');
+            $auditoria->operacion = "Desactivación acceso usuario";
+            $auditoria->descripcion = "Se procedio a la Inactivación del acceso al sistema para el usuario con los siguientes datos:"."\n"
+            ."Número de cédula: ".$request->cedula."\n"
+            ."Nombre: ".$request->nombre."\n"
+            ."Apellido: ".$request->apellido;
+
+            $auditoria->save();
+        //fin codigo auditoria
+
         return view('/oficial/busqueda_rrhh')->with('msjbaja','El usuario con CI Nro. '.$request->cedula.' se desactivo del Sistema !!!');
         
     }
@@ -447,6 +463,21 @@ class OficialControlador extends Controller
          $user=User::find($id);
          $user->status=   $request->estado;
          $user->save();
+
+         //inicio codigo auditoria
+            $auditoria = new Auditoria();
+            $auditoria->fecha_hora = date('Y-m-d H:i:s');
+            $auditoria->cedula = session()->get('cedula_usuario');
+            $auditoria->rol = session()->get('rol_usuario');
+            $auditoria->ip = session()->get('ip_usuario');
+            $auditoria->operacion = "Desactivación acceso usuario";
+            $auditoria->descripcion = "Se procedio a la Inactivación del acceso al sistema para el usuario con los siguientes datos:"."\n"
+            ."Número de cédula: ".$request->cedula."\n"
+            ."Nombre: ".$request->nombre."\n"
+            ."Apellido: ".$request->apellido;
+
+            $auditoria->save();
+        //fin codigo auditoria
 
         return view('/oficial/busqueda_empresa')->with('msjbaja','El usuario con CI Nro. '.$request->cedula.' se desactivo del Sistema !!!');
         
@@ -470,6 +501,21 @@ class OficialControlador extends Controller
          $user->status=   $request->estado;
          $user->save();
 
+         //inicio codigo auditoria
+            $auditoria = new Auditoria();
+            $auditoria->fecha_hora = date('Y-m-d H:i:s');
+            $auditoria->cedula = session()->get('cedula_usuario');
+            $auditoria->rol = session()->get('rol_usuario');
+            $auditoria->ip = session()->get('ip_usuario');
+            $auditoria->operacion = "Activación acceso usuario";
+            $auditoria->descripcion = "Se procedio a la Activación del acceso al sistema para el usuario con los siguientes datos:"."\n"
+            ."Número de cédula: ".$request->cedula."\n"
+            ."Nombre: ".$request->nombre."\n"
+            ."Apellido: ".$request->apellido;
+
+            $auditoria->save();
+        //fin codigo auditoria
+
         return view('/oficial/busqueda_rrhh')->with('msjactivado','El usuario con CI Nro. '.$request->cedula.' se activo correctamente!!');
         
     }
@@ -491,6 +537,21 @@ class OficialControlador extends Controller
          $user=User::find($id);
          $user->status=   $request->estado;
          $user->save();
+
+        //inicio codigo auditoria
+            $auditoria = new Auditoria();
+            $auditoria->fecha_hora = date('Y-m-d H:i:s');
+            $auditoria->cedula = session()->get('cedula_usuario');
+            $auditoria->rol = session()->get('rol_usuario');
+            $auditoria->ip = session()->get('ip_usuario');
+            $auditoria->operacion = "Activación acceso usuario";
+            $auditoria->descripcion = "Se procedio a la Activación del acceso al sistema para el usuario con los siguientes datos:"."\n"
+            ."Número de cédula: ".$request->cedula."\n"
+            ."Nombre: ".$request->nombre."\n"
+            ."Apellido: ".$request->apellido;
+
+            $auditoria->save();
+        //fin codigo auditoria
 
         return view('/oficial/busqueda_empresa')->with('msjactivado','El usuario con CI Nro. '.$request->cedula.' se activo correctamente!!');
         
@@ -543,7 +604,7 @@ class OficialControlador extends Controller
             'mypassword.required' => 'El campo es requerido',
             'password.required' => 'El campo es requerido',
             'password.confirmed' => 'Los passwords no coinciden',
-            'password.min' => 'El mínimo permitido son 6 caracteres',
+            'password.min' => 'El mínimo permitido son 4 caracteres',
             'password.max' => 'El máximo permitido son 18 caracteres',
         ];
         
@@ -552,16 +613,39 @@ class OficialControlador extends Controller
             return redirect('oficial/cambiar_contraseña')->withErrors($validator);
         }
         else{
-            if (Hash::check($request->mypassword, Auth::user()->password)){
+            if (Hash::check($request->mypassword, Auth::user()->password))
+            {
                 $user = new User;
                 $user->where('email', '=', Auth::user()->email)
                      ->update(['password' => bcrypt($request->password)]);
-                #return redirect('empresa/cambiar_contraseña')->with('status', 'Password cambiado con éxito');
+                
+                //inicio codigo auditoria
+                $auditoria = new Auditoria();
+                $auditoria->fecha_hora = date('Y-m-d H:i:s');
+                $auditoria->cedula = session()->get('cedula_usuario');
+                $auditoria->rol = session()->get('rol_usuario');
+                $auditoria->ip = session()->get('ip_usuario');
+                $auditoria->operacion = "Cambio de Contraseña";
+                $personas =DB::table('personas')->where('correo',Auth::user()->email)->get()->toArray();
+                foreach ($personas as $persona) 
+                {
+                    $cedula = $persona->cedula;
+                    $nombre = $persona->nombres;
+                    $apellido = $persona->apellidos;
+                }
+                $auditoria->descripcion = "Se procedio al cambio de contraseña del usuario: "."\n"
+                ."Número de cédula: ".$cedula."\n"
+                ."Nombre: ".$nombre."\n"
+                ."Apellido: ".$apellido;
+
+                $auditoria->save();
+                //fin codigo auditoria     
+
+
                 return view('oficial/cambiar_contraseña')->with('status', 'Se ha actualizado la contraseña con éxito!!');
             }
             else
             {
-               # return redirect('empresa/cambiar_contraseña')->with('message', 'Credenciales incorrectas');
                 return view('oficial/cambiar_contraseña')->with('message', 'Credenciales incorrectas');
             }
         }

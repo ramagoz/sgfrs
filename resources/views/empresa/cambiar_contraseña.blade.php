@@ -44,26 +44,26 @@
 <form method="post" class="form-horizontal" role="form" action="{{url('empresa/update_password')}}">
  {{csrf_field()}}
  <div class="form-group">
-    <label for="mypassword" class="col-lg-3">Introduce tu actual password:</label>
+    <label for="mypassword" class="col-lg-3">Introduce tu actual contraseña:</label>
        <div class="col-lg-5">
         <input type="password" name="mypassword" class="form-control">
          <div class="text-danger">{{$errors->first('mypassword')}}</div>
       </div>
  </div>
  <div class="form-group">
- 	 	  <label for="password" class="col-lg-3">Introduce tu nuevo password:</label>
+ 	 	  <label for="password" class="col-lg-3">Introduce tu nueva contraseña:</label>
  	 <div class="col-lg-5">
 		  <input type="password" name="password" class="form-control">
 		  <div class="text-danger">{{$errors->first('password')}}</div>
 	 </div>
  </div>
  <div class="form-group">
-  <label for="mypassword" class="col-lg-3">Confirma tu nuevo password:</label>
+  <label for="mypassword" class="col-lg-3">Confirma tu nueva contraseña:</label>
       <div class="col-lg-5">
 	     <input type="password" name="password_confirmation" class="form-control">
 	  </div>
   </div>
- <button type="submit" class="btn btn-primary">Cambiar mi password</button>
+ <button type="submit" class="btn btn-primary">Cambiar mi contraseña</button>
 </form>
 </div>
 

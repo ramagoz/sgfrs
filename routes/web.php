@@ -96,9 +96,9 @@ Route::group(['middleware' => 'auth'], function()
 	Route::get('rrhh/informes_rrhh', 'RrhhControlador@getInformesRrhh');
 	Route::post('rrhh/resultado_informes_rrhh', 'RrhhControlador@postVerInformesRrhh');
 
-	Route::get('rrhh/contactar_rrhh', 'EmpleadoControlador@getContactarRrhh');
-	Route::get('rrhh/cambiar_contraseña', 'EmpresaControlador@getCambiarContraseña');
-	Route::post('rrhh/update_password', 'EmpresaControlador@postUpdatePassword');
+	Route::get('rrhh/contactar_rrhh', 'RrhhControlador@getContactarRrhh');
+	Route::get('rrhh/cambiar_contraseña', 'RrhhControlador@getCambiarContraseña');
+	Route::post('rrhh/update_password', 'RrhhControlador@postUpdatePassword');
 
  
 
@@ -138,8 +138,8 @@ Route::group(['middleware' => 'auth'], function()
 	Route::get('oficial/roles', 'OficialControlador@getRoles');
 	Route::get('oficial/auditoria', 'OficialControlador@getAuditoria');
 	Route::get('oficial/restablecer_contraseña', 'OficialControlador@getRestablecerContraseña');
-	Route::get('oficial/cambiar_contraseña', 'EmpresaControlador@getCambiarContraseña');
-	Route::post('oficial/update_password', 'EmpresaControlador@postUpdatePassword');
+	Route::get('oficial/cambiar_contraseña', 'OficialControlador@getCambiarContraseña');
+	Route::post('oficial/update_password', 'OficialControlador@postUpdatePassword');
 
 //Sección rutas empleado----------------------------------------------
 
@@ -156,8 +156,8 @@ Route::group(['middleware' => 'auth'], function()
 	Route::get('empleado/ver_recibo_firmado_empresa_empleado/{id}', 'EmpleadoControlador@getVerReciboFirmadoEmpresaEmpleado/{id}');
 
     
-	Route::get('empleado/cambiar_contraseña', 'EmpresaControlador@getCambiarContraseña');
-	Route::post('empleado/update_password', 'EmpresaControlador@postUpdatePassword');
+	Route::get('empleado/cambiar_contraseña', 'EmpleadoControlador@getCambiarContraseña');
+	Route::post('empleado/update_password', 'EmpleadoControlador@postUpdatePassword');
 
 	Route::get('empleado/contactar_rrhh', 'EmpleadoControlador@getContactarRrhh');
 	
