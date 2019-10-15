@@ -20,7 +20,6 @@ class OficialControlador extends Controller
     public function datatable()
     {
          $persona_rol= DB::table('personas')->where('id_rol', '2')->get();
-         //return Datatables::of(Persona::query())->make(true);
          return Datatables::of($persona_rol)->make(true);
 
     }
@@ -113,17 +112,73 @@ class OficialControlador extends Controller
         return view('oficial.modificacion_rol', compact('persona'),compact('nombre_rol'));
     }
 
-
-     public function getAltaEmpleado()
-    {
-        //Consulta DB para ver grupos disponibles los compacta en de array y los envia a la vista//
-        $nombre_grupos = DB::table('grupos_recibos')->select('nombre_grupo','id_grupo')->get();
-        return view('oficial.alta_empleado', compact('nombre_grupos'));
-    }
-
     public function getIndexOficial()
     {
-    	return view('oficial.indexoficial');
+      // Creamos los datos de entrada para firma masiva
+      $datos = [
+      'tipo_firma'=>2,
+      'firmante'=>1000000,
+      'estado_recibo'=>1,
+      //'id_recibo'=>'1111111-0119',
+      'id_recibo'=>'1111111-0119,2222222-0119',
+      'pass'=>'1111'];
+
+      /*
+      $datos = 
+      [
+      'tipo_firma'=>2,
+      'firmante'=>1111111,
+      'estado_recibo'=>1,
+      'id_recibo'=>
+          [
+            '1' => '1111111-0119',
+            '2' => '2222222-0119'
+          ],
+      'pass'=>'1111'
+      ];*/
+
+      // Este es el webservice que vamos a consumir
+      $wsdl = 'http://localhost:8080/WebServicesTest/services/ServicioFirma?wsdl';
+
+      $parametros=array('encoding' => 'UTF-8','trace' => 1,"verify_peer"=>false);
+
+      // Creamos el cliente SOAP que hará la solicitud
+
+      $cliente = new \SoapClient($wsdl,$parametros);
+
+      // Consumimos el servicio llamando al método que necesitamos, en este caso
+      // func() es un método definido dentro del WSDL 
+
+      //dd($datos);
+      $resultado = $cliente->func($datos);
+      
+    	return view('oficial.indexoficial')->with('res',$resultado);
+
+      /*
+      // Creamos los datos de entrada para firma unitaria
+      $datos = [
+      'tipo_firma'=>1,
+      'firmante'=>1111111,
+      'estado_recibo'=>1,
+      'id_recibo'=>'1111111-0119',
+      'pass'=>'1111'];
+
+      // Este es el webservice que vamos a consumir
+      $wsdl = 'http://localhost:8080/WebServicesTest/services/ServicioFirma?wsdl';
+
+      $parametros=array('encoding' => 'UTF-8','trace' => 1,"verify_peer"=>false);
+
+      // Creamos el cliente SOAP que hará la solicitud
+
+      $cliente = new \SoapClient($wsdl,$parametros);
+
+      // Consumimos el servicio llamando al método que necesitamos, en este caso
+      // func() es un método definido dentro del WSDL 
+
+      $resultado = $cliente->func($datos);
+      
+      return view('oficial.indexoficial')->with('res',$resultado);
+      */
     }
 
     public function postRrhhCargado(Request $request)
@@ -580,9 +635,12 @@ class OficialControlador extends Controller
     }
     public function getAuditoria()
     {
-        $registros = DB::table('auditorias')->get();
-
-    	return view('oficial.auditoria')->with('registros',$registros);
+    	return view('oficial.auditoria');
+    }
+    public function getDatatableAuditoria()
+    {
+       $registros = DB::table('auditorias')->get();
+       return Datatables::of($registros)->make(true);
     }
     public function getRestablecerContraseña()
     {

@@ -290,14 +290,37 @@ class EmpresaControlador extends Controller
     }
     public function getFirmarReciboPendienteEmpresa($id)
     {
+        //Servicio de firma
+          $datos = [
+          'tipo_firma'=>1,
+          'firmante'=>session()->get('cedula_usuario'),
+          'estado_recibo'=>1,
+          'id_recibo'=>$id,
+          'pass'=>'1111'];
+
+          // Este es el webservice que vamos a consumir
+          $wsdl = 'http://localhost:8080/WsDigitalSignature/services/ServicioFirma?wsdl';
+
+          $parametros=array('encoding' => 'UTF-8','trace' => 1,"verify_peer"=>false);
+
+          // Creamos el cliente SOAP que hará la solicitud
+
+          $cliente = new \SoapClient($wsdl,$parametros);
+
+          // Consumimos el servicio llamando al método que necesitamos, en este caso
+          // func() es un método definido dentro del WSDL 
+
+          $resultado = $cliente->func($datos);
+        //fin servicio firma
         $recibo =Recibo::find($id);
         $recibo->id_estado_recibo =2;
         $recibo->save();
+
         $mes=substr($id, -4,2);
         $año=substr($id, -2,2);
         $dir_origen= "C:/xampp/htdocs/sgfrs/public/recibos/pendientes/20" . $año . "/" . $mes . "/";
-        $dir_destino= "C:/xampp/htdocs/sgfrs/public/recibos/firmados_empresa/20" . $año . "/" . $mes . "/";
-        rename($dir_origen.$id.'.pdf' , $dir_destino.$id.'.pdf');
+        unlink($dir_origen.$id.'.pdf');
+
         //inicio codigo auditoria
         $auditoria = new Auditoria();
         $auditoria->fecha_hora = date('Y-m-d H:i:s');
@@ -315,6 +338,42 @@ class EmpresaControlador extends Controller
      public function postFirmaMasivaRecibosPendientesEmpleados(Request $request)
     {
         //aqui se recuperan los identificadores de recibos que fueron selecionados para ser firmados
+        $i=0;
+        $CadenaRecibos='';
+        foreach ($request->recibos_a_firmar as $key => $value) 
+        {
+            $i++;
+            if ($i==1) 
+            {
+                $CadenaRecibos = $CadenaRecibos.$value;
+            }else
+            {
+                $CadenaRecibos = $CadenaRecibos.','.$value;
+            }
+        }
+        //Servicio de firma
+          $datos = [
+          'tipo_firma'=>2,
+          'firmante'=>session()->get('cedula_usuario'),
+          'estado_recibo'=>1,
+          'id_recibo'=>$CadenaRecibos,
+          'pass'=>'1111'];
+
+          // Este es el webservice que vamos a consumir
+          $wsdl = 'http://localhost:8080/WsDigitalSignature/services/ServicioFirma?wsdl';
+
+          $parametros=array('encoding' => 'UTF-8','trace' => 1,"verify_peer"=>false);
+
+          // Creamos el cliente SOAP que hará la solicitud
+
+          $cliente = new \SoapClient($wsdl,$parametros);
+
+          // Consumimos el servicio llamando al método que necesitamos, en este caso
+          // func() es un método definido dentro del WSDL 
+
+          $resultado = $cliente->func($datos);
+        //fin servicio firma
+        //inicio codigo de autitoria
         foreach ($request->recibos_a_firmar as $key => $value) 
         {
             $recibo =Recibo::find($value);
@@ -323,9 +382,7 @@ class EmpresaControlador extends Controller
             $mes=substr($value, -4,2);
             $año=substr($value, -2,2);
             $dir_origen= "C:/xampp/htdocs/sgfrs/public/recibos/pendientes/20" . $año . "/" . $mes . "/";
-            $dir_destino= "C:/xampp/htdocs/sgfrs/public/recibos/firmados_empresa/20" . $año . "/" . $mes . "/";
-            rename($dir_origen.$value.'.pdf' , $dir_destino.$value.'.pdf');
-            //inicio codigo auditoria
+            unlink($dir_origen.$value.'.pdf');
             $auditoria = new Auditoria();
             $auditoria->fecha_hora = date('Y-m-d H:i:s');
             $auditoria->cedula = session()->get('cedula_usuario');

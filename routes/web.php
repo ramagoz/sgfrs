@@ -126,7 +126,6 @@ Route::group(['middleware' => 'auth'], function()
 	Route::get('oficial/empresa_desactivar', 'OficialControlador@getEmpresaDesactivado');
 	Route::get('oficial/rrhh_activar', 'OficialControlador@getRrhhActivado');
 	Route::get('oficial/empresa_activar', 'OficialControlador@getEmpresaActivado');
-//	------------------------------------------------------
 	Route::get('oficial/alta_rrhh', 'OficialControlador@getAltaRrhh');
 	Route::get('oficial/baja_rrhh', 'OficialControlador@getBajaRrhh');
 	
@@ -137,6 +136,7 @@ Route::group(['middleware' => 'auth'], function()
 	Route::get('oficial/busqueda_empresa', 'OficialControlador@getBusquedaEmpresa');
 	Route::get('oficial/roles', 'OficialControlador@getRoles');
 	Route::get('oficial/auditoria', 'OficialControlador@getAuditoria');
+	Route::get('oficial/datatableauditoria', 'OficialControlador@getDatatableAuditoria');
 	Route::get('oficial/restablecer_contraseña', 'OficialControlador@getRestablecerContraseña');
 	Route::get('oficial/cambiar_contraseña', 'OficialControlador@getCambiarContraseña');
 	Route::post('oficial/update_password', 'OficialControlador@postUpdatePassword');

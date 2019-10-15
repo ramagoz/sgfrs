@@ -4,5 +4,4 @@
 	@include('layouts.menu_empresa')
 	<h3 align="center">PÁGINA PRINCIPAL</h1>
 	<p align="center"><strong>Bienvenido: </strong> {{ Auth::user()->name }}, esta conectado con el Rol de <strong>Empresa</strong></p>
-
 @endsection
