@@ -312,6 +312,7 @@ class EmpresaControlador extends Controller
 
           $resultado = $cliente->func($datos);
         //fin servicio firma
+          
         $recibo =Recibo::find($id);
         $recibo->id_estado_recibo =2;
         $recibo->save();

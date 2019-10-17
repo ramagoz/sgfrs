@@ -113,72 +113,8 @@ class OficialControlador extends Controller
     }
 
     public function getIndexOficial()
-    {
-      // Creamos los datos de entrada para firma masiva
-      $datos = [
-      'tipo_firma'=>2,
-      'firmante'=>1000000,
-      'estado_recibo'=>1,
-      //'id_recibo'=>'1111111-0119',
-      'id_recibo'=>'1111111-0119,2222222-0119',
-      'pass'=>'1111'];
-
-      /*
-      $datos = 
-      [
-      'tipo_firma'=>2,
-      'firmante'=>1111111,
-      'estado_recibo'=>1,
-      'id_recibo'=>
-          [
-            '1' => '1111111-0119',
-            '2' => '2222222-0119'
-          ],
-      'pass'=>'1111'
-      ];*/
-
-      // Este es el webservice que vamos a consumir
-      $wsdl = 'http://localhost:8080/WebServicesTest/services/ServicioFirma?wsdl';
-
-      $parametros=array('encoding' => 'UTF-8','trace' => 1,"verify_peer"=>false);
-
-      // Creamos el cliente SOAP que hará la solicitud
-
-      $cliente = new \SoapClient($wsdl,$parametros);
-
-      // Consumimos el servicio llamando al método que necesitamos, en este caso
-      // func() es un método definido dentro del WSDL 
-
-      //dd($datos);
-      $resultado = $cliente->func($datos);
-      
-    	return view('oficial.indexoficial')->with('res',$resultado);
-
-      /*
-      // Creamos los datos de entrada para firma unitaria
-      $datos = [
-      'tipo_firma'=>1,
-      'firmante'=>1111111,
-      'estado_recibo'=>1,
-      'id_recibo'=>'1111111-0119',
-      'pass'=>'1111'];
-
-      // Este es el webservice que vamos a consumir
-      $wsdl = 'http://localhost:8080/WebServicesTest/services/ServicioFirma?wsdl';
-
-      $parametros=array('encoding' => 'UTF-8','trace' => 1,"verify_peer"=>false);
-
-      // Creamos el cliente SOAP que hará la solicitud
-
-      $cliente = new \SoapClient($wsdl,$parametros);
-
-      // Consumimos el servicio llamando al método que necesitamos, en este caso
-      // func() es un método definido dentro del WSDL 
-
-      $resultado = $cliente->func($datos);
-      
-      return view('oficial.indexoficial')->with('res',$resultado);
-      */
+    {      
+    	return view('oficial.indexoficial');
     }
 
     public function postRrhhCargado(Request $request)

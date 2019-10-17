@@ -60,6 +60,7 @@
 						@if ( $existencia_mar==0)
 							Periodo no creado
 						@elseif ( $mar > 0 and $cantidad_empleados ==$mar_firmado_empleado)
+							Periodo Cerrado
 						@else
 							Periodo Abierto
 					 	@endif

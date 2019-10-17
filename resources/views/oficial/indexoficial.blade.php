@@ -7,10 +7,9 @@
 
 <br>
 
-<div align="center">
+{{--<div align="center">
 @foreach ($res as $r)
 	{{ $r}}
 @endforeach
-</div>
-
+</div> --}}
 @endsection

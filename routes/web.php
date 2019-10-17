@@ -153,7 +153,7 @@ Route::group(['middleware' => 'auth'], function()
 	Route::get('empleado/ver_recibo_firmado_empleado/{id}', 'EmpleadoControlador@getFirmarReciboPendienteEmpleado');
 
 	Route::get('empleado/recibos_firmados', 'EmpleadoControlador@getRecibosFirmados');
-	Route::get('empleado/ver_recibo_firmado_empresa_empleado/{id}', 'EmpleadoControlador@getVerReciboFirmadoEmpresaEmpleado/{id}');
+	Route::get('empleado/ver_recibo_firmado_empresa_empleado/{id}', 'EmpleadoControlador@getVerReciboFirmadoEmpresaEmpleado');
 
     
 	Route::get('empleado/cambiar_contraseña', 'EmpleadoControlador@getCambiarContraseña');
