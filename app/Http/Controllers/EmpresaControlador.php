@@ -311,6 +311,13 @@ class EmpresaControlador extends Controller
           // func() es un método definido dentro del WSDL 
 
           $resultado = $cliente->func($datos);
+          //Se verifica si hay error durante el proceso de firma
+          if ($resultado ="keystore password was incorrect") 
+          {
+            $id_recibo=$id;
+            $id="/recibos/pendientes/"."20".substr($id, -2, 2)."/".substr($id, -4, 2)."/".$id.".pdf";
+            return view('empresa.ver_recibo_pendiente_firma_empresa')->with('id',$id)->with('id_recibo',$id_recibo)->with('error','La contraseña ingresa es incorrecta, no se completo la firma');
+          }
         //fin servicio firma
           
         $recibo =Recibo::find($id);
