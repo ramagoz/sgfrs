@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use App\Recibo;
 use App\Grupo_recibo;
 use App\Periodo;
@@ -31,6 +32,14 @@ class EmpresaControlador extends Controller
 
     public function getIndexEmpresa()
     {
+        /*
+        $encrypted1 = Crypt::encryptString('1111');
+        $encrypted2 = encrypt('1111');
+        echo $encrypted1;
+        echo "<br>";
+        echo $encrypted2;
+        //$decrypted = Crypt::decryptString($encrypted);
+        */
     	return view('empresa.indexempresa');
     }
 
@@ -288,36 +297,39 @@ class EmpresaControlador extends Controller
         $id="/recibos/pendientes/"."20".substr($id, -2, 2)."/".substr($id, -4, 2)."/".$id.".pdf";
         return view('empresa.ver_recibo_pendiente_firma_empresa')->with('id',$id)->with('id_recibo',$id_recibo);
     }
-    public function getFirmarReciboPendienteEmpresa($id)
+    public function postFirmarReciboPendienteEmpresa(Request $request)
     {
         //Servicio de firma
-          $datos = [
-          'tipo_firma'=>1,
-          'firmante'=>session()->get('cedula_usuario'),
-          'estado_recibo'=>1,
-          'id_recibo'=>$id,
-          'pass'=>'1111'];
+        $datos = [
+        'tipo_firma'=>1,
+        'firmante'=>session()->get('cedula_usuario'),
+        'estado_recibo'=>1,
+        'id_recibo'=>$request->id,
+        'pass'=>hash('sha256',$request->contraseña)];
+        $id=$request->id;
 
-          // Este es el webservice que vamos a consumir
-          $wsdl = 'http://localhost:8080/WsDigitalSignature/services/ServicioFirma?wsdl';
+        // Este es el webservice que vamos a consumir
+        $wsdl = 'http://localhost:8080/WsDigitalSignature/services/ServicioFirma?wsdl';
 
-          $parametros=array('encoding' => 'UTF-8','trace' => 1,"verify_peer"=>false);
+        $parametros=array('encoding' => 'UTF-8','trace' => 1,"verify_peer"=>false);
 
-          // Creamos el cliente SOAP que hará la solicitud
+        // Creamos el cliente SOAP que hará la solicitud
 
-          $cliente = new \SoapClient($wsdl,$parametros);
+        $cliente = new \SoapClient($wsdl,$parametros);
 
-          // Consumimos el servicio llamando al método que necesitamos, en este caso
-          // func() es un método definido dentro del WSDL 
+        // Consumimos el servicio llamando al método que necesitamos, en este caso
+        // func() es un método definido dentro del WSDL 
 
-          $resultado = $cliente->func($datos);
-          //Se verifica si hay error durante el proceso de firma
-          /*if ($resultado ="keystore password was incorrect") 
-          {
+        $resultado = $cliente->func($datos);
+        //Se verifica si hay error durante el proceso de firma y se devuelve el error
+        if ($resultado->funcReturn != "ok")// si el resultado es diferente de ok, ocurrio un error en el proceso de firma
+        {
+            $mes=substr($id, -4,2);
+            $año=substr($id, -2,2);
             $id_recibo=$id;
-            $id="/recibos/pendientes/"."20".substr($id, -2, 2)."/".substr($id, -4, 2)."/".$id.".pdf";
-            return view('empresa.ver_recibo_pendiente_firma_empresa')->with('id',$id)->with('id_recibo',$id_recibo)->with('error','La contraseña ingresa es incorrecta, no se completo la firma');
-          }*/
+            $id="/recibos/pendientes/20". $año . "/" . $mes."/".$id.".pdf";
+            return view('empresa.ver_recibo_pendiente_firma_empresa')->with('id',$id)->with('id_recibo',$id_recibo)->with('error',$resultado->funcReturn);
+        }
         //fin servicio firma
           
         $recibo =Recibo::find($id);
@@ -341,31 +353,43 @@ class EmpresaControlador extends Controller
         //fin codigo auditoria
         
         $id="/recibos/firmados_empresa/20". $año . "/" . $mes."/".$id.".pdf";
-        return view('empresa.ver_recibo_firmado_empresa')->with('id',$id)->with('msj','Recibo firmado correctamente!');
+        return view('empresa.ver_recibo_pendiente_firma_empleado')->with('id',$id)->with('msj','Recibo firmado correctamente!');
     }
-     public function postFirmaMasivaRecibosPendientesEmpleados(Request $request)
+    
+     public function postFirmaMasivaRecibosPendientesEmpresa(Request $request)
     {
-        //aqui se recuperan los identificadores de recibos que fueron selecionados para ser firmados
+        //aqui se recuperan los identificadores de recibos que fueron selecionados para ser firmados, todos separados por ","
         $i=0;
         $CadenaRecibos='';
-        foreach ($request->recibos_a_firmar as $key => $value) 
+        if ($request->recibos_a_firmar <> '') 
         {
-            $i++;
-            if ($i==1) 
+            foreach ($request->recibos_a_firmar as $key => $value) 
             {
-                $CadenaRecibos = $CadenaRecibos.$value;
-            }else
-            {
-                $CadenaRecibos = $CadenaRecibos.','.$value;
+                $i++;
+                if ($i==1) 
+                {
+                    $CadenaRecibos = $CadenaRecibos.$value;
+                }else
+                {
+                    $CadenaRecibos = $CadenaRecibos.','.$value;
+                }
             }
+        }else
+        {
+            $recibos = DB::table('recibos')
+            ->join('personas', 'recibos.cedula','=','personas.cedula')
+            ->where('recibos.id_estado_recibo', '1')
+            ->get();
+            return view('empresa.recibos_pendientes_empresa')->with('recibos',$recibos)->with('error','No ha selecionado ningun recibo')->with('boton','boton');
         }
+
         //Servicio de firma
           $datos = [
           'tipo_firma'=>2,
           'firmante'=>session()->get('cedula_usuario'),
           'estado_recibo'=>1,
           'id_recibo'=>$CadenaRecibos,
-          'pass'=>'1111'];
+          'pass'=>hash('sha256',$request->contraseña)];
 
           // Este es el webservice que vamos a consumir
           $wsdl = 'http://localhost:8080/WsDigitalSignature/services/ServicioFirma?wsdl';
@@ -380,8 +404,17 @@ class EmpresaControlador extends Controller
           // func() es un método definido dentro del WSDL 
 
           $resultado = $cliente->func($datos);
-        //fin servicio firma
-        //inicio codigo de autitoria
+            //Se verifica si hay error durante el proceso de firma y se devuelve el error
+            if ($resultado->funcReturn != "ok")// si el resultado es diferente de ok, ocurrio un error en el proceso de firma
+            {
+            $recibos = DB::table('recibos')
+            ->join('personas', 'recibos.cedula','=','personas.cedula')
+            ->where('recibos.id_estado_recibo', '1')
+            ->get();
+            return view('empresa.recibos_pendientes_empresa')->with('recibos',$recibos)->with('error',$resultado->funcReturn)->with('boton','boton');
+            }
+            //fin servicio firma
+            //inicio codigo de autitoria
         foreach ($request->recibos_a_firmar as $key => $value) 
         {
             $recibo =Recibo::find($value);
@@ -422,8 +455,7 @@ class EmpresaControlador extends Controller
             return view('empresa.recibos_pendientes_empleados')->with('recibos',$recibos);
         }
     }
-    public function getVerReciboPendienteFirmaEmpleado($id)
-    {
+    public function getVerReciboPendienteFirmaEmpleado($id) {
         $id="/recibos/firmados_empresa/"."20".substr($id, -2, 2)."/".substr($id, -4, 2)."/".$id.".pdf";
         return view('empresa.ver_recibo_pendiente_firma_empleado')->with('id',$id);
     }

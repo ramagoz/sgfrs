@@ -11,6 +11,6 @@
 <div align="center">
 <iframe src='{{$id}}' width="1200" height="400" style="border: none;" ></iframe>
 <br>
-<a class="btn btn-primary" href="{{ url('/empresa/recibos_pendientes_empleados' ) }}" role="button">Volver</a>
+<a class="btn btn-primary" href="{{ url('/empresa/recibos_pendientes_empresa' ) }}" role="button">Volver</a>
 </div>
 @endsection

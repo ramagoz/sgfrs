@@ -11,7 +11,8 @@
   </style>
 <div class="container" align="center">
 
- <form action="{{url('/empresa/oficial_activar')}}" id="formulario-form" method="get"  role="form"> {{ csrf_field() }}
+ <form action="{{url('/empresa/oficial_activar')}}" id="formulario-form" method="get"  role="form"> 
+  {{ csrf_field() }}
     <div class="row justify-content-md-center">
     	@foreach($persona as $persona)
           <!--Primera columna de Carga de Datos-->

@@ -21,6 +21,7 @@ Route::group(['middleware' => 'auth'], function()
 //Sección de rol----------------------------------------------
 	Route::post('auth/rol_seleccionado', 'HomeController@postRolSeleccionado');
 //Sección rutas empresa----------------------------------------------
+	//Route::get('empresa', 'EmpresaControlador@getIndexEmpresa');
 	Route::get('empresa', 'EmpresaControlador@getRecibosPendientesEmpresa');
 	Route::get('empresa/alta_oficial', 'EmpresaControlador@getAltaOficial');
 	Route::post('empresa/oficial_cargado', 'EmpresaControlador@postOficialCargado');
@@ -34,12 +35,12 @@ Route::group(['middleware' => 'auth'], function()
 
 	Route::get('empresa/recibos_pendientes_empresa', 'EmpresaControlador@getRecibosPendientesEmpresa');
 	Route::get('empresa/ver_recibo_pendiente_firma_empresa/{id}', 'EmpresaControlador@getVerRecibo');
-	Route::post('empresa/recibos_pendientes_empleados', 'EmpresaControlador@postFirmaMasivaRecibosPendientesEmpleados');
-
 	Route::get('empresa/recibos_pendientes_empleados', 'EmpresaControlador@getRecibosPendientesEmpleados');
-	Route::get('empresa/ver_recibo_firmado_empresa/{id}', 'EmpresaControlador@getFirmarReciboPendienteEmpresa');
-	Route::get('empresa/ver_recibo_pendiente_firma_empleado/{id}', 'EmpresaControlador@getVerReciboPendienteFirmaEmpleado');
 
+	Route::post('empresa/firmar_recibo_empresa/', 'EmpresaControlador@postFirmarReciboPendienteEmpresa');
+	Route::post('empresa/firma_masiva_empresa', 'EmpresaControlador@postFirmaMasivaRecibosPendientesEmpresa');
+
+	Route::get('empresa/ver_recibo_pendiente_firma_empleado/{id}', 'EmpresaControlador@getVerReciboPendienteFirmaEmpleado');
 	Route::get('empresa/recibos_firmados_empresa_empleados', 'EmpresaControlador@getRecibosFirmadosEmpresaEmpleados');
 	Route::get('empresa/ver_recibo_firmado_empresa_empleado/{id}', 'EmpresaControlador@getVerReciboFirmadoEmpresaEmpleado');
 
@@ -146,16 +147,13 @@ Route::group(['middleware' => 'auth'], function()
 	Route::get('empleado', 'EmpleadoControlador@getRecibosPendientes');
 
 	Route::get('empleado/recibos_pendientes', 'EmpleadoControlador@getRecibosPendientes');
-	Route::post('empleado/recibos_firmados', 'EmpleadoControlador@postFirmaMasivaRecibosPendientesEmpleado');
-
 	Route::get('empleado/ver_recibo_pendiente_firma_empleado/{id}', 'EmpleadoControlador@getVerReciboPendienteFirmaEmpleado');
-	Route::get('empleado/ver_recibo_firmado_empresa/{id}', 'EmpleadoControlador@getFirmarReciboPendienteEmpleado');
-	Route::get('empleado/ver_recibo_firmado_empleado/{id}', 'EmpleadoControlador@getFirmarReciboPendienteEmpleado');
+
+	Route::post('empleado/firmar_recibo','EmpleadoControlador@postFirmarRecibo');
+	Route::post('empleado/firma_recibos', 'EmpleadoControlador@postFirmaMasiva');
 
 	Route::get('empleado/recibos_firmados', 'EmpleadoControlador@getRecibosFirmados');
 	Route::get('empleado/ver_recibo_firmado_empresa_empleado/{id}', 'EmpleadoControlador@getVerReciboFirmadoEmpresaEmpleado');
-
-    
 	Route::get('empleado/cambiar_contraseña', 'EmpleadoControlador@getCambiarContraseña');
 	Route::post('empleado/update_password', 'EmpleadoControlador@postUpdatePassword');
 

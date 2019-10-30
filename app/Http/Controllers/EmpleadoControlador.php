@@ -43,29 +43,39 @@ class EmpleadoControlador extends Controller
         $id="/recibos/firmados_empresa/"."20".substr($id, -2, 2)."/".substr($id, -4, 2)."/".$id.".pdf";
         return view('empleado.ver_recibo_pendiente_firma_empleado')->with('id',$id)->with('id_recibo',$id_recibo);
     }
-    public function getFirmarReciboPendienteEmpleado($id)
+    public function postFirmarRecibo(Request $request)
     {
         //Servicio de firma
-          $datos = [
-          'tipo_firma'=>1,
-          'firmante'=>session()->get('cedula_usuario'),
-          'estado_recibo'=>2,
-          'id_recibo'=>$id,
-          'pass'=>'1111'];
+        $datos = [
+        'tipo_firma'=>1,
+        'firmante'=>session()->get('cedula_usuario'),
+        'estado_recibo'=>2,
+        'id_recibo'=>$request->id,
+        'pass'=>hash('sha256',$request->contraseña)];
+        $id=$request->id;
 
-          // Este es el webservice que vamos a consumir
-          $wsdl = 'http://localhost:8080/WsDigitalSignature/services/ServicioFirma?wsdl';
+        // Este es el webservice que vamos a consumir
+        $wsdl = 'http://localhost:8080/WsDigitalSignature/services/ServicioFirma?wsdl';
 
-          $parametros=array('encoding' => 'UTF-8','trace' => 1,"verify_peer"=>false);
+        $parametros=array('encoding' => 'UTF-8','trace' => 1,"verify_peer"=>false);
 
-          // Creamos el cliente SOAP que hará la solicitud
+        // Creamos el cliente SOAP que hará la solicitud
 
-          $cliente = new \SoapClient($wsdl,$parametros);
+        $cliente = new \SoapClient($wsdl,$parametros);
 
-          // Consumimos el servicio llamando al método que necesitamos, en este caso
-          // func() es un método definido dentro del WSDL 
+        // Consumimos el servicio llamando al método que necesitamos, en este caso
+        // func() es un método definido dentro del WSDL 
 
-          $resultado = $cliente->func($datos);
+        $resultado = $cliente->func($datos);
+        //Se verifica si hay error durante el proceso de firma y se devuelve el error
+        if ($resultado->funcReturn != "ok")// si el resultado es diferente de ok, ocurrio un error en el proceso de firma
+        {
+        $mes=substr($id, -4,2);
+        $año=substr($id, -2,2);
+        $id_recibo=$id;
+        $id="/recibos/firmados_empresa/20". $año . "/" . $mes."/".$id.".pdf";
+        return view('empleado.ver_recibo_pendiente_firma_empleado')->with('id',$id)->with('id_recibo',$id_recibo)->with('error',$resultado->funcReturn);
+        }
         //fin servicio firma
           
         $recibo =Recibo::find($id);
@@ -91,21 +101,33 @@ class EmpleadoControlador extends Controller
         $id="/recibos/firmados_empresa_empleados/20". $año . "/" . $mes."/".$id.".pdf";
         return view('empleado.ver_recibo_firmado_empleado')->with('id',$id)->with('msj','Recibo firmado correctamente!');
     }
-     public function postFirmaMasivaRecibosPendientesEmpleado(Request $request)
+
+     public function postFirmaMasiva(Request $request)
     {
         //aqui se recuperan los identificadores de recibos que fueron selecionados para ser firmados
         $i=0;
         $CadenaRecibos='';
-        foreach ($request->recibos_a_firmar as $key => $value) 
+        if ($request->recibos_a_firmar <> '') 
         {
-            $i++;
-            if ($i==1) 
+            foreach ($request->recibos_a_firmar as $key => $value) 
             {
-                $CadenaRecibos = $CadenaRecibos.$value;
-            }else
-            {
-                $CadenaRecibos = $CadenaRecibos.','.$value;
+                $i++;
+                if ($i==1) 
+                {
+                    $CadenaRecibos = $CadenaRecibos.$value;
+                }else
+                {
+                    $CadenaRecibos = $CadenaRecibos.','.$value;
+                }
             }
+        }else
+        {
+            $recibos = DB::table('recibos')
+            ->join('personas', 'recibos.cedula','=','personas.cedula')
+            ->where('recibos.id_estado_recibo', '2')
+            ->where('personas.correo', Auth::user()->email)
+            ->get();
+            return view('empleado.recibos_pendientes')->with('recibos',$recibos)->with('error','No ha selecionado ningun recibo')->with('boton','boton');
         }
         //Servicio de firma
           $datos = [
@@ -113,7 +135,7 @@ class EmpleadoControlador extends Controller
           'firmante'=>session()->get('cedula_usuario'),
           'estado_recibo'=>2,
           'id_recibo'=>$CadenaRecibos,
-          'pass'=>'1111'];
+          'pass'=>hash('sha256',$request->contraseña)];
 
           // Este es el webservice que vamos a consumir
           $wsdl = 'http://localhost:8080/WsDigitalSignature/services/ServicioFirma?wsdl';
@@ -128,7 +150,17 @@ class EmpleadoControlador extends Controller
           // func() es un método definido dentro del WSDL 
 
           $resultado = $cliente->func($datos);
-        //fin servicio firma
+            //Se verifica si hay error durante el proceso de firma y se devuelve el error
+            if ($resultado->funcReturn != "ok")// si el resultado es diferente de ok, ocurrio un error en el proceso de firma
+            {
+                $recibos = DB::table('recibos')
+                ->join('personas', 'recibos.cedula','=','personas.cedula')
+                ->where('recibos.id_estado_recibo', '2')
+                ->where('personas.correo', Auth::user()->email)
+                ->get();
+                return view('empleado.recibos_pendientes')->with('recibos',$recibos)->with('error',$resultado->funcReturn)->with('boton','boton');
+            }
+            //fin servicio firma
         //inicio codigo de autitoria
         foreach ($request->recibos_a_firmar as $key => $value) 
         {
@@ -157,37 +189,6 @@ class EmpleadoControlador extends Controller
         ->get();
 
         return view('empleado.recibos_firmados')->with('recibos',$recibos)->with('msj','Recibos firmados correctamente!');
-    /*
-        //aqui se recuperan los identificadores de recibos que fueron selecionados para ser firmados
-        foreach ($request->recibos_a_firmar as $key => $value) 
-        {
-            $recibo =Recibo::find($value);
-            $recibo->id_estado_recibo =3;
-            $recibo->save();
-            $mes=substr($value, -4,2);
-            $año=substr($value, -2,2);
-            $dir_origen= "C:/xampp/htdocs/sgfrs/public/recibos/firmados_empresa/20" . $año . "/" . $mes . "/";
-            $dir_destino= "C:/xampp/htdocs/sgfrs/public/recibos/firmados_empresa_empleados/20" . $año . "/" . $mes . "/";
-            rename($dir_origen.$value.'.pdf' , $dir_destino.$value.'.pdf');
-            //inicio codigo auditoria
-            $auditoria = new Auditoria();
-            $auditoria->fecha_hora = date('Y-m-d H:i:s');
-            $auditoria->cedula = session()->get('cedula_usuario');
-            $auditoria->rol = session()->get('rol_usuario');
-            $auditoria->ip = session()->get('ip_usuario');
-            $auditoria->operacion = "Firma de recibo";
-            $auditoria->descripcion = "Se procedio a la firma del siguiente recibo: ".$value;
-            $auditoria->save();
-            //fin codigo auditoria
-        }
-        $recibos = DB::table('recibos')
-        ->join('personas', 'recibos.cedula','=','personas.cedula')
-        ->where('recibos.id_estado_recibo', '3')
-        ->where('personas.correo', Auth::user()->email)
-        ->get();
-
-        return view('empleado.recibos_firmados')->with('recibos',$recibos)->with('msj','Recibos firmados correctamente!');
-    */
     }
 
 
