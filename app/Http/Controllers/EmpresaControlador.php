@@ -338,8 +338,6 @@ class EmpresaControlador extends Controller
 
         $mes=substr($id, -4,2);
         $año=substr($id, -2,2);
-        $dir_origen= "C:/xampp/htdocs/sgfrs/public/recibos/pendientes/20" . $año . "/" . $mes . "/";
-        unlink($dir_origen.$id.'.pdf');
 
         //inicio codigo auditoria
         $auditoria = new Auditoria();
@@ -422,8 +420,7 @@ class EmpresaControlador extends Controller
             $recibo->save();
             $mes=substr($value, -4,2);
             $año=substr($value, -2,2);
-            $dir_origen= "C:/xampp/htdocs/sgfrs/public/recibos/pendientes/20" . $año . "/" . $mes . "/";
-            unlink($dir_origen.$value.'.pdf');
+
             $auditoria = new Auditoria();
             $auditoria->fecha_hora = date('Y-m-d H:i:s');
             $auditoria->cedula = session()->get('cedula_usuario');
