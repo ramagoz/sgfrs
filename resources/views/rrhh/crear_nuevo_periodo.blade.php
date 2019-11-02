@@ -68,5 +68,4 @@
 <a class="btn btn-outline-info" href="{{ $periodos->nextPageUrl() }}" role="button">Siguiente</a>
 @endif
 		</div>
-
 @endsection

@@ -40,12 +40,7 @@ class RrhhControlador extends Controller
 
     public function getIndexRrhh()
     {
-        
-        $recibos = DB::table('recibos')
-        ->join('personas', 'recibos.cedula','=','personas.cedula')
-        ->where('recibos.id_estado_recibo', '3')
-        ->paginate(2);
-        return view('rrhh.indexrrhh', compact('recibos'));
+        return view('rrhh.indexrrhh');
 
         //return view('rrhh.indexrrhh'); ['recibos',$recibos]
     }
@@ -292,10 +287,10 @@ class RrhhControlador extends Controller
     {
         //controla si el periodo que se intenta crear existe, si existe devolver un mensajes de error y sino crea el mismo
         
-        $consulta=DB::table('periodos') ->where('año',$request->año)
-        ->where('mes',$request->mes)->get();
+        $periodos=DB::table('periodos') ->where('año',$request->año)
+        ->where('mes',$request->mes)->paginate(5);
 
-        if ($consulta=='[]')
+        if ($periodos->count()==0)
         {
             $periodo                 = new Periodo();
             $periodo->estado_periodo = 0;
@@ -320,11 +315,11 @@ class RrhhControlador extends Controller
             $auditoria->descripcion = "Se procedio a la creación del periodo ". $request->mes . '/' . $request->año;
             $auditoria->save();
             //fin codigo auditoria
-            $periodos = DB::table('periodos')->select('mes','año','estado_periodo')->get();
-            return view('rrhh.crear_nuevo_periodo')->with('msj','Periodo creado correctamente! Mes: '.$request->mes.'  -   Año: '.$request->año)->with('periodos',$periodos);
+            $periodos = DB::table('periodos')->select('mes','año','estado_periodo')->paginate(5);
+            return view('rrhh.crear_nuevo_periodo')->with('msj','Periodo creado correctamente! Mes: '.$request->mes.'  -   Año: '.$request->año)->with('periodos',$periodos)->with('boton','boton');
                 
         } else {
-            $periodos = DB::table('periodos')->select('mes','año','estado_periodo')->get();
+            $periodos = DB::table('periodos')->select('mes','año','estado_periodo')->paginate(5);
             return view('rrhh.crear_nuevo_periodo')->with('errormsj','Este mes y año de periodo ya existe. Mes: '.$request->mes.'  -   Año: '.$request->año)->with('periodos',$periodos);
         }
                 
