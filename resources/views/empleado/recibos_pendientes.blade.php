@@ -8,13 +8,10 @@
 	@isset($error)
 		<div class="alert alert-warning" role="alert" align="center">{{ $error }}</div>
 	@endisset
-	@if(isset($msj))
-		<div class="alert alert-warning" role="alert" align="center">{{ $msj }}</div>
-	@endif
 
 	<form action="/empleado/firma_recibos/" method="POST">
 	{{csrf_field()}}
-	<table id="example" class="display" style="width:90%" align="center" border="1">
+	<table id="example" style="width:70%" align="center" border="2">
 		<thead>
 		<tr><th>Año</th><th>Mes</th><th>Cedula</th><th>Nombres</th><th>Apellidos</th><th>Ver Recibo</th><th>Seleccionar</th></tr>
 		</thead>
@@ -34,17 +31,24 @@
 	@endforeach
 	</table>
 	<br>
-	<div align="center">
-	
+<div align="center">
 	@if(isset($boton))
 		<input type="checkbox" onclick="marcar(this);" /> Marcar/Desmarcar todos
-		<hr>
-		<label>Ingrese su contraseña de firma: </label>
-		<input type="password" name="contraseña" id="contraseña" required>
-		<button class="btn btn-success" type="submit">Firmar</button>
+	<br>
+	<a class="btn btn-outline-info" href="{{ $recibos->previousPageUrl() }}" role="button">Anterior</a>
+	<a class="btn btn-outline-info" href="{{ $recibos->nextPageUrl() }}" role="button">Siguiente</a>
+	<br>
+	<label>Contraseña de firma: </label>
+	<input type="password" name="contraseña" id="contraseña" size="15" maxlength="15" required>
+	<button class="btn btn-success" type="submit">Firmar</button>
+	<br>
 	@endif
-	</div>
+</div>
 	</form>
+
+	@if(isset($msj))
+		<div class="alert alert-warning" role="alert" align="center">{{ $msj }}</div>
+	@endif
 
 	<script type="text/javascript">
 	function marcar(source) 

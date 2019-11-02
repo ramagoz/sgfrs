@@ -4,6 +4,4 @@
 	@include('layouts.menu_rrhh')
 	<h3 align="center">CORREGIR RECIBOS</h1>
 	<p align="center"><strong>Usuario: </strong> {{ Auth::user()->name }}, esta conectado con el Rol de <strong>Recursos Humanos</strong></p>
-
-
 @endsection

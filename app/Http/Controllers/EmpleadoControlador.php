@@ -27,8 +27,8 @@ class EmpleadoControlador extends Controller
         ->join('personas', 'recibos.cedula','=','personas.cedula')
         ->where('recibos.id_estado_recibo', '2')
         ->where('personas.correo', Auth::user()->email)
-        ->get();
-        if ($recibos=='[]')
+        ->paginate(5);
+        if ($recibos->count() ==0)
         {
             return view('empleado.recibos_pendientes')->with('recibos',$recibos)->with('msj','No existen recibos pendientes de firma por el empleado!');
         }else
@@ -195,13 +195,13 @@ class EmpleadoControlador extends Controller
         ->join('personas', 'recibos.cedula','=','personas.cedula')
         ->where('recibos.id_estado_recibo', '3')
         ->where('personas.correo', Auth::user()->email)
-        ->get();
-        if ($recibos=='[]')
+         ->paginate(5);
+        if ($recibos->count()==0)
         {
-            return view('empleado.recibos_firmados')->with('recibos',$recibos)->with('msj_error','No se encontraron recibos firmados');;
+            return view('empleado.recibos_firmados')->with('recibos',$recibos)->with('msj_error','No se encontraron recibos firmados');
         }else
         {
-            return view('empleado.recibos_firmados')->with('recibos',$recibos);
+            return view('empleado.recibos_firmados')->with('recibos',$recibos)->with('boton','boton');
         }
     }
 

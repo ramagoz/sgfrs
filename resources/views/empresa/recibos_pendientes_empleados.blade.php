@@ -7,7 +7,7 @@
 	@isset($msj)
 		<div class="alert alert-success" role="alert" align="center">{{ $msj }}</div>
 	@endisset
-	<table id="example" class="display" style="width:90%" align="center" border="1">
+	<table id="example" style="width:70%" align="center" border="2">
 		<thead>
 		<tr><th>Año</th><th>Mes</th><th>Cedula</th><th>Nombres</th><th>Apellidos</th><th>Ver Recibo</th></tr>
 		</thead>
@@ -26,7 +26,14 @@
 	@endforeach
 
 	</table>
-	@if(isset($msj_error))
-		<div class="alert alert-warning" role="alert" align="center">{{ $msj_error }}</div>
+<div align="center">
+	<br>
+	@if(isset($boton))
+	<a class="btn btn-outline-info" href="{{ $recibos->previousPageUrl() }}" role="button">Anterior</a>
+	<a class="btn btn-outline-info" href="{{ $recibos->nextPageUrl() }}" role="button">Siguiente</a>
 	@endif
+</div>
+@if(isset($msj_error))
+	<div class="alert alert-warning" role="alert" align="center">{{ $msj_error }}</div>
+@endif
 @endsection

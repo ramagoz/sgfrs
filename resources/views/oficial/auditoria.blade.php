@@ -20,7 +20,7 @@
     
 		<style type="text/css">
 		  div.container {
-		        width: 90%;
+		        width: 70%;
 		    }
 		</style>
     

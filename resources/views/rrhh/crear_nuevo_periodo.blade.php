@@ -4,8 +4,6 @@
 	@include('layouts.menu_rrhh')
 	<h3 align="center">CREAR NUEVO PERIODO</h1>
 	<p align="center"><strong>Usuario: </strong> {{ Auth::user()->name }}, esta conectado con el Rol de <strong>Recursos Humanos</strong></p>
-	<br>
-
 	@isset($msj)
 		<div class="alert alert-success" role="alert" align="center">{{ $msj }}</div>
 	@endisset
@@ -15,7 +13,6 @@
 
 	<form action="/rrhh/crear_nuevo_periodo" method="POST">	
 	{{csrf_field()}}
-
 	<div align="center" id="prueba">
 		<table style="width:20%" >
 			<tr> 
@@ -35,18 +32,18 @@
 				   <option value="12">Diciembre</option>
 				</select></td>
 			</tr>
-
 			<tr> 
 				<th>Año:</th>
-				<td><input type="text" value="{{ date("Y") }}" name="año" id="año" required=""></td>
+				<td><input type="text" value="{{ date("Y") }}" name="año" id="año" size="12" maxlength="4" required></td>
+			</tr>
+			<br>
+			<tr>
+				<td colspan="2" align="center"><button class="btn btn-primary" type="submit">Crear periodo</button></td>
 			</tr>
 		</table>
-		<br>
-			<button class="btn btn-primary" type="submit">Crear nuevo periodo</button>
 	</div>
+	<br>
 	</form>
-
-		<br>
 		<div align="center">
 		<h4> <strong>Periodos creados</strong></h4>
 		<table border="1" align="center">
@@ -65,6 +62,11 @@
 		</tr>
 		@endforeach
 		</table>
+@if(isset($boton))
+<br>
+<a class="btn btn-outline-info" href="{{ $periodos->previousPageUrl() }}" role="button">Anterior</a>
+<a class="btn btn-outline-info" href="{{ $periodos->nextPageUrl() }}" role="button">Siguiente</a>
+@endif
 		</div>
 
 @endsection

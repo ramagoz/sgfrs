@@ -278,12 +278,11 @@ class EmpresaControlador extends Controller
     }
      public function getRecibosPendientesEmpresa()
     {
-
         $recibos = DB::table('recibos')
         ->join('personas', 'recibos.cedula','=','personas.cedula')
         ->where('recibos.id_estado_recibo', '1')
-        ->get();
-        if ($recibos=='[]')
+        ->paginate(5);
+        if ($recibos->count() ==0)
         {
             return view('empresa.recibos_pendientes_empresa')->with('recibos',$recibos)->with('msj','No existen recibos pendientes de firma por la empresa!');
         }else
@@ -443,13 +442,13 @@ class EmpresaControlador extends Controller
         $recibos = DB::table('recibos')
         ->join('personas', 'recibos.cedula','=','personas.cedula')
         ->where('recibos.id_estado_recibo', '2')
-        ->get();
-        if ($recibos=='[]')
+        ->paginate(5);
+        if ($recibos->count()==0)
         {
             return view('empresa.recibos_pendientes_empleados')->with('recibos',$recibos)->with('msj_error','No existen recibos pendientes de firma por los empleados!');
         }else
         {
-            return view('empresa.recibos_pendientes_empleados')->with('recibos',$recibos);
+            return view('empresa.recibos_pendientes_empleados')->with('recibos',$recibos)->with('boton','boton');
         }
     }
     public function getVerReciboPendienteFirmaEmpleado($id) {
@@ -459,17 +458,16 @@ class EmpresaControlador extends Controller
 
      public function getRecibosFirmadosEmpresaEmpleados()
     {
-        
         $recibos = DB::table('recibos')
         ->join('personas', 'recibos.cedula','=','personas.cedula')
         ->where('recibos.id_estado_recibo', '3')
-        ->get();
-        if ($recibos=='[]')
+        ->paginate(5);
+        if ($recibos->count()==0)
         {
-            return view('empresa.recibos_firmados_empresa_empleados')->with('recibos',$recibos)->with('msj','No existen recibos firmados por la empresa!');
+            return view('empresa.recibos_firmados_empresa_empleados')->with('recibos',$recibos)->with('msj','No existen recibos firmados por la empresa y empleados!');
         }else
         {
-            return view('empresa.recibos_firmados_empresa_empleados')->with('recibos',$recibos);
+            return view('empresa.recibos_firmados_empresa_empleados')->with('recibos',$recibos)->with('boton','boton');
         }
     }
     public function getVerReciboFirmadoEmpresaEmpleado($id)

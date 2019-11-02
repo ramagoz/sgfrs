@@ -40,7 +40,14 @@ class RrhhControlador extends Controller
 
     public function getIndexRrhh()
     {
-        return view('rrhh.indexrrhh');
+        
+        $recibos = DB::table('recibos')
+        ->join('personas', 'recibos.cedula','=','personas.cedula')
+        ->where('recibos.id_estado_recibo', '3')
+        ->paginate(2);
+        return view('rrhh.indexrrhh', compact('recibos'));
+
+        //return view('rrhh.indexrrhh'); ['recibos',$recibos]
     }
    
     public function getAltaEmpleado()
@@ -271,8 +278,15 @@ class RrhhControlador extends Controller
     
     public function getCrearNuevoPeriodo()
     {
-        $periodos = DB::table('periodos')->select('mes','año','estado_periodo')->get();
-        return view('rrhh.crear_nuevo_periodo')->with('periodos',$periodos);
+        $periodos = DB::table('periodos')->select('mes','año','estado_periodo')->paginate(5);
+        
+        if ($periodos->count()==0)
+        {
+            return view('rrhh.crear_nuevo_periodo')->with('periodos',$periodos);
+        }else
+        {
+            return view('rrhh.crear_nuevo_periodo')->with('periodos',$periodos)->with('boton','boton');
+        }
     }
     public function getCrear(Request $request)
     {
@@ -581,13 +595,13 @@ class RrhhControlador extends Controller
         $recibos = DB::table('recibos')
         ->join('personas', 'recibos.cedula','=','personas.cedula')
         ->where('recibos.id_estado_recibo', '1')
-        ->get();
-        if ($recibos=='[]')
+        ->paginate(8);
+        if ($recibos->count()==0)
         {
             return view('rrhh.pendientes_firma_empresa')->with('recibos',$recibos)->with('msj','No existen recibos pendientes de firma por la empresa!');
         }else
         {
-             return view('rrhh.pendientes_firma_empresa')->with('recibos',$recibos);
+             return view('rrhh.pendientes_firma_empresa')->with('recibos',$recibos)->with('boton','boton');
         }
     }
     public function getVerRecibo($id)
@@ -600,13 +614,13 @@ class RrhhControlador extends Controller
          $recibos = DB::table('recibos')
         ->join('personas', 'recibos.cedula','=','personas.cedula')
         ->where('recibos.id_estado_recibo', '2')
-        ->get();
-        if ($recibos=='[]')
+        ->paginate(8);
+        if ($recibos->count()==0)
         {
             return view('rrhh.pendientes_firma_empleados')->with('recibos',$recibos)->with('msj','No existen recibos pendientes de firma por la empresa!');
         }else
         {
-             return view('rrhh.pendientes_firma_empleados')->with('recibos',$recibos);
+             return view('rrhh.pendientes_firma_empleados')->with('recibos',$recibos)->with('boton','boton');
         }
     }
     public function getVerReciboPendientesFirmaEmpleados($id)
@@ -619,13 +633,13 @@ class RrhhControlador extends Controller
         $recibos = DB::table('recibos')
         ->join('personas', 'recibos.cedula','=','personas.cedula')
         ->where('recibos.id_estado_recibo', '3')
-        ->get();
-        if ($recibos=='[]')
+        ->paginate(8);
+        if ($recibos->count()==0)
         {
             return view('rrhh.firmados_empresa_empleados')->with('recibos',$recibos)->with('msj','No existen recibos firmados por la empresa y empleados!');
         }else
         {
-             return view('rrhh.firmados_empresa_empleados')->with('recibos',$recibos);
+             return view('rrhh.firmados_empresa_empleados')->with('recibos',$recibos)->with('boton','boton');
         }
     }
     public function getVerReciboFirmadoEmpresaEmpleado($id)
@@ -640,13 +654,13 @@ class RrhhControlador extends Controller
         ->where('recibos.id_estado_recibo', '1')
         ->orWhere('recibos.id_estado_recibo', '2')
         ->orWhere('recibos.id_estado_recibo', '3')
-        ->get();
-        if ($recibos=='[]')
+        ->paginate(8);
+        if ($recibos->count()==0)
         {
             return view('rrhh.todos_los_recibos')->with('recibos',$recibos)->with('msj','No existen recibos firmados por la empresa y empleados!');
         }else
         {
-             return view('rrhh.todos_los_recibos')->with('recibos',$recibos);
+             return view('rrhh.todos_los_recibos')->with('recibos',$recibos)->with('boton','boton');
         }
     }
     public function getVerTodosLosRecibos($id)
@@ -745,7 +759,7 @@ class RrhhControlador extends Controller
                     }
                 break;
                 case 4:
-                    $abr=$abr++;
+                    $abr++;
                     if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3) 
                     {
                         $abr_firmado_empresa++;

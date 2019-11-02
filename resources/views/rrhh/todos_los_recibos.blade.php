@@ -4,7 +4,7 @@
 	@include('layouts.menu_rrhh')
 	<h3 align="center">TODOS LOS RECIBOS</h1>
 	<p align="center"><strong>Usuario: </strong> {{ Auth::user()->name }}, esta conectado con el Rol de <strong>Recursos Humanos</strong></p>
-	<table id="example" class="display" style="width:90%" align="center" border="1">
+	<table id="example" style="width:70%" align="center" border="2">
 		<thead>
 		<tr><th>Año</th><th>Mes</th><th>Estado Recibo</th><th>Cedula</th><th>Nombres</th><th>Apellidos</th><th>Ver Recibo</th></tr>
 		</thead>
@@ -38,4 +38,11 @@
 	@if(isset($msj))
 		<div class="alert alert-warning" role="alert" align="center">{{ $msj }}</div>
 	@endif
+<div align="center">
+<br>
+	@if(isset($boton))
+	<a class="btn btn-outline-info" href="{{ $recibos->previousPageUrl() }}" role="button">Anterior</a>
+	<a class="btn btn-outline-info" href="{{ $recibos->nextPageUrl() }}" role="button">Siguiente</a>
+	@endif
+</div>
 @endsection
