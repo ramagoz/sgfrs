@@ -376,7 +376,7 @@ class EmpresaControlador extends Controller
             $recibos = DB::table('recibos')
             ->join('personas', 'recibos.cedula','=','personas.cedula')
             ->where('recibos.id_estado_recibo', '1')
-            ->get();
+            ->paginate(5);
             return view('empresa.recibos_pendientes_empresa')->with('recibos',$recibos)->with('error','No ha selecionado ningun recibo')->with('boton','boton');
         }
 
@@ -407,7 +407,7 @@ class EmpresaControlador extends Controller
             $recibos = DB::table('recibos')
             ->join('personas', 'recibos.cedula','=','personas.cedula')
             ->where('recibos.id_estado_recibo', '1')
-            ->get();
+            ->paginate(5);
             return view('empresa.recibos_pendientes_empresa')->with('recibos',$recibos)->with('error',$resultado->funcReturn)->with('boton','boton');
             }
             //fin servicio firma
@@ -433,9 +433,9 @@ class EmpresaControlador extends Controller
         $recibos = DB::table('recibos')
         ->join('personas', 'recibos.cedula','=','personas.cedula')
         ->where('recibos.id_estado_recibo', '2')
-        ->get();
+        ->paginate(5);
 
-        return view('empresa.recibos_pendientes_empleados')->with('recibos',$recibos)->with('msj','Recibos firmados correctamente!');
+        return view('empresa.recibos_pendientes_empleados')->with('recibos',$recibos)->with('msj','Recibos firmados correctamente!')->with('boton','boton');
     }
      public function getRecibosPendientesEmpleados()
     {
