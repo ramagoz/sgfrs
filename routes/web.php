@@ -79,6 +79,7 @@ Route::group(['middleware' => 'auth'], function()
 	Route::get('rrhh/ver_empleados_sin_recibos/{id}','RrhhControlador@getVerEmpleadosSinRecibos');
 
 	Route::get('rrhh/corregir_recibos', 'RrhhControlador@getCorregirRecibos');
+	Route::post('rrhh/corregir_recibos', 'RrhhControlador@postCorregirRecibos');
 
 	Route::get('rrhh/grupos_recibos', 'RrhhControlador@getGruposRecibos');
 	Route::post('rrhh/grupos_recibos', 'RrhhControlador@postCrearGrupoRecibo');

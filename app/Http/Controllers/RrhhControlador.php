@@ -303,10 +303,12 @@ class RrhhControlador extends Controller
             $estructura_carpetas_pendientes                 = 'C:/xampp/htdocs/sgfrs/public/recibos/pendientes/' . $request->año . '/' . $request->mes;
             $estructura_carpetas_firmados_empresa           = 'C:/xampp/htdocs/sgfrs/public/recibos/firmados_empresa/' . $request->año . '/' . $request->mes;
             $estructura_carpetas_firmados_empresa_empleados = 'C:/xampp/htdocs/sgfrs/public/recibos/firmados_empresa_empleados/' . $request->año . '/' . $request->mes;
+            $estructura_carpetas_recibos_corregidos = 'C:/xampp/htdocs/sgfrs/public/recibos/recibos_corregidos/' . $request->año . '/' . $request->mes;
             mkdir($estructura_carpetas_nuevos, 0777, true);
             mkdir($estructura_carpetas_pendientes, 0777, true);
             mkdir($estructura_carpetas_firmados_empresa, 0777, true);
             mkdir($estructura_carpetas_firmados_empresa_empleados, 0777, true);
+            mkdir($estructura_carpetas_recibos_corregidos, 0777, true);
             //inicio codigo auditoria
             $auditoria = new Auditoria();
             $auditoria->fecha_hora = date('Y-m-d H:i:s');
@@ -621,10 +623,51 @@ class RrhhControlador extends Controller
             return view('rrhh.ver_empleados_sin_recibos')->with('datos',$datos)->with('boton','boton')->with('año',$año)->with('mes',$mes);
         }
     }
+
     public function getCorregirRecibos()
     {
         return view('rrhh.corregir_recibos');
     }
+    public function postCorregirRecibos(Request $request )
+    {
+        $consulta = DB::table('recibos')
+        ->where('id_recibo',$request->id)
+        ->get();
+
+        foreach ($consulta as $dato)
+        {
+            $var = $dato->id_estado_recibo;
+        }
+        //var_dump($var);
+        if ($consulta == '[]')
+        {
+            return view('rrhh.corregir_recibos')->with('errormsj','No existe un recibo con este identidicador: '.$request->id);
+        }
+        else
+        {
+            $recibo = $request->id.'.pdf';
+            switch ($var)
+            {
+                case 1:
+                     rename("C:/xampp/htdocs/sgfrs/public/recibos/pendientes/20".substr($request->id,-2,2)."/".substr($request->id,-4,2)."/".$recibo,
+                     "C:/xampp/htdocs/sgfrs/public/recibos/recibos_corregidos/20".substr($request->id,-2,2)."/".substr($request->id,-4,2)."/".$recibo);
+                    break;
+                case 2:
+                    rename("C:/xampp/htdocs/sgfrs/public/recibos/firmados_empresa/20".substr($request->id,-2,2)."/".substr($request->id,-4,2)."/".$recibo, "C:/xampp/htdocs/sgfrs/public/recibos/recibos_corregidos/20".substr($request->id,-2,2)."/".substr($request->id,-4,2)."/".$recibo);
+                    break;
+                case 3:
+                    rename("C:/xampp/htdocs/sgfrs/public/recibos/firmados_empresa_empleados/20".substr($request->id,-2,2)."/".substr($request->id,-4,2)."/".$recibo, "C:/xampp/htdocs/sgfrs/public/recibos/recibos_corregidos/20".substr($request->id,-2,2)."/".substr($request->id,-4,2)."/".$recibo);
+                    break;
+            }
+
+            DB::table('recibos')
+            ->where('id_recibo',$request->id)
+            ->delete();//se puede crear un tabla de recibos corregidos
+
+            return view('rrhh.corregir_recibos')->with('msj','El recibo fue corregido, favor importe un nuevo recibo con el mismo ID: '.$request->id);
+        }
+    }
+
     public function getGruposRecibos()
     {
         $grupos = DB::table('grupos_recibos')->get();
