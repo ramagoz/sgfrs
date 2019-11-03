@@ -12,6 +12,7 @@ use App\Auditoria;
 use DB;  
 use DataTables;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\FuncionesControlador;
 use App\User;
 use Validator;
 use Auth;
@@ -278,6 +279,9 @@ class EmpresaControlador extends Controller
     }
      public function getRecibosPendientesEmpresa()
     {
+        //esta funcion controla si se cierran los periodos
+        $resultado = (new FuncionesControlador)->getControlPeriodos();
+
         $recibos = DB::table('recibos')
         ->join('personas', 'recibos.cedula','=','personas.cedula')
         ->where('recibos.id_estado_recibo', '1')
@@ -477,6 +481,9 @@ class EmpresaControlador extends Controller
     }
      public function getInformesEmpresa()
     {
+        //esta funcion controla si se cierran los periodos
+        $resultado = (new FuncionesControlador)->getControlPeriodos();
+
         $años = DB::table('periodos')
         ->select('año')
         ->groupBy('año')

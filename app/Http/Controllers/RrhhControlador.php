@@ -8,12 +8,14 @@ use App\Periodo;
 use App\Persona;
 use App\Recibo;
 use App\Auditoria;
+use App\Empleado_sin_recibo;
 use DB;
 use Illuminate\Http\Request;
 use DataTables;
 use App\User;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\FuncionesControlador;
 use Validator;
 use Auth;
 
@@ -22,7 +24,7 @@ use Auth;
 
 class RrhhControlador extends Controller
 {
-  
+
     //redirige a la vista de busqueda de empleados
     public function getBusquedaEmpleado()
     {
@@ -35,16 +37,16 @@ class RrhhControlador extends Controller
          $persona_rol= DB::table('personas')->where('id_rol', '1')->get();
          //return Datatables::of(Persona::query())->make(true);
          return Datatables::of($persona_rol)->make(true);
-
     }
 
     public function getIndexRrhh()
     {
-        return view('rrhh.indexrrhh');
+        //esta funcion controla si se cierran los periodos
+        $resultado = (new FuncionesControlador)->getControlPeriodos();
 
-        //return view('rrhh.indexrrhh'); ['recibos',$recibos]
+        return view('rrhh.indexrrhh');
     }
-   
+
     public function getAltaEmpleado()
     {
         //Consulta DB para ver grupos disponibles los compacta en de array y los envia a la vista//
@@ -52,12 +54,12 @@ class RrhhControlador extends Controller
         return view('rrhh.alta_empleado', compact('nombre_grupos'));
     }
 
-    
+
     public function postEmpleadoCargado(Request $request)
     {
        //validacion si el usuario a cargar ya no existe
         $validemail=DB::table('users')->where('email',$request->correo)->get();
-         if ($validemail=='[]') 
+         if ($validemail=='[]')
              { // usuario no existe
           $validcedula=DB::table('personas')->where('cedula',$request->cedula)->get();
           if($validcedula=='[]') //persona no existe, se puede proceder a crear usuario y persona
@@ -71,7 +73,7 @@ class RrhhControlador extends Controller
                  $user->save();
           //creacion de persona relacionada al usuario que se creo previamente.
                  $usuario = DB::table('users')->where('email', $request->correo)->get()->toArray();
-                foreach ($usuario as $users) 
+                foreach ($usuario as $users)
                     {
                         $id = $users->id;
                     }
@@ -115,11 +117,11 @@ class RrhhControlador extends Controller
 
           }
           else{
-                
+
                 return view('/rrhh/busqueda_empleado')->with('errorpersona','Ya existe un registro de usuario con CI Nro. '.$request->cedula);
                 }
 
-        }         
+        }
           else{
                  return view('/rrhh/busqueda_empleado')->with('erroruser','Ya existe un registro de usuario con el correo '.$request->correo);
                 }
@@ -133,7 +135,7 @@ class RrhhControlador extends Controller
         $nombre_grupos = DB::table('grupos_recibos')->select('nombre_grupo','id_grupo')->get();
 
 
-      foreach ($persona as $person) 
+      foreach ($persona as $person)
                     {
                         $estado = $person->estado;
 
@@ -147,21 +149,21 @@ class RrhhControlador extends Controller
     {
         return view('rrhh.activar_empleado', compact('persona'),compact('nombre_grupos'));
     }
-        
+
     }
     public function getModificacionEmpleado(request $request)
-    {  
+    {
 
         $persona =DB::table('personas')->where('cedula',$request->cedula)->get()->toArray();
         $nombre_grupos = DB::table('grupos_recibos')->select('nombre_grupo','id_grupo')->get();
-       
+
         return view('rrhh.modificacion_empleado', compact('persona'),compact('nombre_grupos'));
     }
     public function getEmpleadoModificado(Request $request)
-    {   
-      
+    {
+
         $persona =Persona::find($request->cedula);
-    
+
         $persona->id_grupo   = $request->grupo;
         $persona->nombres    = $request->nombre;
         $persona->apellidos  = $request->apellido;
@@ -195,18 +197,18 @@ class RrhhControlador extends Controller
         //fin codigo auditoria
 
         return view('/rrhh/busqueda_empleado')->with('msj','Los datos del usuario con CI Nro. '.$request->cedula.' se actualizaron correctamente!!!');
-        
+
     }
      public function getEmpleadoDesactivado(Request $request)
-    {   
-      
+    {
+
         $persona =Persona::find($request->cedula);
         $persona->estado = $request->estado;
         $persona->save();
 
         #user baja
         $iduser = DB::table('users')->where('email', $request->correo)->get()->toArray();
-                foreach ($iduser as $users) 
+                foreach ($iduser as $users)
                     {
                         $id = $users->id;
                     }
@@ -230,19 +232,19 @@ class RrhhControlador extends Controller
         //fin codigo auditoria
 
         return view('/rrhh/busqueda_empleado')->with('msjbaja','El usuario con CI Nro. '.$request->cedula.' se desactivo del Sistema !!!');
-        
+
     }
 
      public function getEmpleadoActivado(Request $request)
-    {   
-      
+    {
+
         $persona =Persona::find($request->cedula);
         $persona->estado = $request->estado;
         $persona->save();
 
         #user baja
         $iduser = DB::table('users')->where('email', $request->correo)->get()->toArray();
-                foreach ($iduser as $users) 
+                foreach ($iduser as $users)
                     {
                         $id = $users->id;
                     }
@@ -264,17 +266,17 @@ class RrhhControlador extends Controller
             ."Apellido: ".$request->apellido;
         $auditoria->save();
         //fin codigo auditoria
-        
+
        # return view('rrhh.empleado_cargado');
         return view('/rrhh/busqueda_empleado')->with('msjactivado','El usuario con CI Nro. '.$request->cedula.' se activo correctamente!!');
-        
+
     }
-    
-    
+
+
     public function getCrearNuevoPeriodo()
     {
         $periodos = DB::table('periodos')->select('mes','año','estado_periodo')->paginate(5);
-        
+
         if ($periodos->count()==0)
         {
             return view('rrhh.crear_nuevo_periodo')->with('periodos',$periodos);
@@ -286,7 +288,7 @@ class RrhhControlador extends Controller
     public function getCrear(Request $request)
     {
         //controla si el periodo que se intenta crear existe, si existe devolver un mensajes de error y sino crea el mismo
-        
+
         $periodos=DB::table('periodos') ->where('año',$request->año)
         ->where('mes',$request->mes)->paginate(5);
 
@@ -317,12 +319,12 @@ class RrhhControlador extends Controller
             //fin codigo auditoria
             $periodos = DB::table('periodos')->select('mes','año','estado_periodo')->paginate(5);
             return view('rrhh.crear_nuevo_periodo')->with('msj','Periodo creado correctamente! Mes: '.$request->mes.'  -   Año: '.$request->año)->with('periodos',$periodos)->with('boton','boton');
-                
+
         } else {
             $periodos = DB::table('periodos')->select('mes','año','estado_periodo')->paginate(5);
             return view('rrhh.crear_nuevo_periodo')->with('errormsj','Este mes y año de periodo ya existe. Mes: '.$request->mes.'  -   Año: '.$request->año)->with('periodos',$periodos);
         }
-                
+
     }
     public function getValidarRecibos()
     {
@@ -332,7 +334,7 @@ class RrhhControlador extends Controller
     {
         $consulta = DB::table('periodos')->where('mes',$request->mes)->where('año',$request->año)->where('estado_periodo','0')->get();
 
-        if ($consulta=='[]') 
+        if ($consulta=='[]')
         {
             return view('rrhh.validar_recibos')->with('errormsj','No existe este periodo o ya se encuentra cerrado. Periodo Mes: '.$request->mes.'  -  Año: '.$request->año);
         } else {
@@ -427,12 +429,12 @@ class RrhhControlador extends Controller
     public function getRecibosImportados(Request $request)
     {
         $consulta = DB::table('periodos')->where('mes',$request->mes)->where('año',$request->año)->where('estado_periodo','0')->get();
-        foreach ($consulta as $result) 
+        foreach ($consulta as $result)
         {
             $id_periodo= $result->id_periodo;
         }
 
-        if ($consulta=='[]') 
+        if ($consulta=='[]')
         {
             return view('rrhh.importar_recibos')->with('errormsj','No existe este periodo o ya se encuentra cerrado. Periodo Mes: '.$request->mes.'  -  Año: '.$request->año);
         } else {
@@ -530,12 +532,94 @@ class RrhhControlador extends Controller
                 $resultado[4] = 0;
             }
             $resultado[5] = $e; //aqui se guardan la cantidad de archivos que fueron procesados
+
+            //inicio codigo control de empleados sin recibos
+                $Personas = DB::table('personas')
+                ->where('id_rol', '1')
+                ->orWhere('id_rol', '2')
+                ->orWhere('id_rol', '4')
+                ->orWhere('id_rol', '5')
+                ->get();
+
+                $Periodos = DB::table('periodos')
+                ->where('estado_periodo',0)
+                ->get();
+
+                foreach ($Personas as $persona)
+                {
+                    foreach ($Periodos as $periodo)
+                    {
+
+                        $consulta1 = DB::table('recibos')
+                        ->where('id_periodo',$periodo->id_periodo)
+                        ->where('id_periodo',$persona->cedula.'-'.substr($periodo->año, 1).$periodo->mes)
+                        ->get();
+                        if ($consulta1 =='[]')//si esta en blanco le falta un recibo a la persona
+                        {
+                            $consulta2 =DB::table('empleados_sin_recibos')
+                            ->where('cedula',$persona->cedula)
+                            ->where('id_periodo',$periodo->id_periodo)
+                            ->get();
+                            if ($consulta2 =='[]')//si esta en blanco todavía no figura la persona en la tabla de personas sin recibos para este periodo en especifico y se carga en la BD
+                            {
+                                $empleados_sin_recibos = new Empleado_sin_recibo();
+                                $empleados_sin_recibos->cedula = $persona->cedula;
+                                $empleados_sin_recibos->id_periodo = $periodo->id_periodo;
+                                $empleados_sin_recibos->save();
+                            }
+                        }else //si la persona ya tiene un recibo para ese periodo se eliminan sus datos de la tabla de empleados sin recibos
+                        {
+                            DB::table('empleados_sin_recibos')
+                            ->where('cedula',$persona->cedula)
+                            ->delete();
+                        }
+                    }
+                }
+            //fin codigo control de empleados sin recibos
+
             return view('rrhh.importar_recibos')->with('msj','Se procedio correctamente con la importación del periodo seleccionado. Mes: '.$request->mes.'  -  Año: '.$request->año)->with('resultados', $resultado)->with('mes',$request->mes)->with('año',$request->año); //se envia los resultados de la validacion a la vista
         }
     }
     public function getEmpleadosSinRecibos()
     {
-        return view('rrhh.empleados_sin_recibos');
+        //esta funcion controla si se cierran los periodos
+        $resultado = (new FuncionesControlador)->getControlPeriodos();
+
+        $periodos = DB::table('periodos')
+        ->where('periodos.estado_periodo', 0)
+        ->paginate(10);
+
+        if ($periodos->count()==0)
+        {
+            return view('rrhh.empleados_sin_recibos')->with('periodos',$periodos)->with('msj','No existen periodos con recibos pendientes!');
+        }else
+        {
+             return view('rrhh.empleados_sin_recibos')->with('periodos',$periodos)->with('boton','boton');
+        }
+    }
+    public function getVerEmpleadosSinRecibos($id)
+    {
+        $datos = DB::table('empleados_sin_recibos')
+        ->where('id_periodo',$id)
+        ->paginate(10);
+
+        $periodos = DB::table('periodos')
+        ->where('id_periodo',$id)
+        ->get();
+
+        foreach ($periodos as $periodo)
+        {
+            $año = $periodo->año;
+            $mes = $periodo->mes;
+        }
+
+        if ($datos->count()==0)
+        {
+            return view('rrhh.ver_empleados_sin_recibos')->with('msj','No existen empleados sin recibos para este periodo');
+        }else
+        {
+            return view('rrhh.ver_empleados_sin_recibos')->with('datos',$datos)->with('boton','boton')->with('año',$año)->with('mes',$mes);
+        }
     }
     public function getCorregirRecibos()
     {
@@ -550,7 +634,7 @@ class RrhhControlador extends Controller
     public function postCrearGrupoRecibo(Request $request)
     {
         $consulta = DB::table('grupos_recibos')->where('nombre_grupo',$request->nombre_grupo)->get();
-        if ($consulta=='[]') 
+        if ($consulta=='[]')
         {
             $grupo               = new Grupo_recibo;
             $grupo->nombre_grupo = $request->nombre_grupo;
@@ -663,7 +747,7 @@ class RrhhControlador extends Controller
         $consulta = DB::table('recibos')
         ->where('id_recibo',$id)
         ->first();
-        switch ($consulta->id_estado_recibo) 
+        switch ($consulta->id_estado_recibo)
         {
             case 1:
                 $id="/recibos/pendientes/"."20".substr($id, -2, 2)."/".substr($id, -4, 2)."/".$id.".pdf";
@@ -672,15 +756,18 @@ class RrhhControlador extends Controller
             case 2:
                 $id="/recibos/firmados_empresa/"."20".substr($id, -2, 2)."/".substr($id, -4, 2)."/".$id.".pdf";
                 return view('rrhh.ver_todos_los_recibos')->with('id',$id);
-            break;            
+            break;
             case 3:
                 $id="/recibos/firmados_empresa_empleados/"."20".substr($id, -2, 2)."/".substr($id, -4, 2)."/".$id.".pdf";
                 return view('rrhh.ver_todos_los_recibos')->with('id',$id);
-            break; 
+            break;
         }
     }
     public function getInformesRrhh()
     {
+        //esta funcion controla si se cierran los periodos
+        $resultado = (new FuncionesControlador)->getControlPeriodos();
+
         $años = DB::table('periodos')
         ->select('año')
         ->groupBy('año')
@@ -702,7 +789,7 @@ class RrhhControlador extends Controller
            ->get();
         $cantidad_empleados = DB::table('personas')->where('id_rol', '1')->orWhere('id_rol', '2')->orWhere('id_rol', '4')->orWhere('id_rol', '5')->count();
 
-        $ene=0; $feb=0; $mar=0; $abr=0; $may=0; $jun=0; 
+        $ene=0; $feb=0; $mar=0; $abr=0; $may=0; $jun=0;
         $jul=0; $ago=0; $set=0; $oct=0; $nov=0; $dic=0;
         $ene_firmado_empresa=0;$feb_firmado_empresa=0;
         $mar_firmado_empresa=0;$abr_firmado_empresa=0;
@@ -716,142 +803,142 @@ class RrhhControlador extends Controller
         $jul_firmado_empleado=0;$ago_firmado_empleado=0;
         $set_firmado_empleado=0;$oct_firmado_empleado=0;
         $nov_firmado_empleado=0;$dic_firmado_empleado=0;
-        foreach ($recibos as $recibo) 
+        foreach ($recibos as $recibo)
         {
-            switch ($recibo->mes) 
+            switch ($recibo->mes)
             {
                 case 1:
                     $ene++;
-                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3) 
+                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
                     {
                         $ene_firmado_empresa++;
                     }
-                    if ($recibo->id_estado_recibo==3) 
+                    if ($recibo->id_estado_recibo==3)
                     {
                         $ene_firmado_empleado++;
                     }
                 break;
                 case 2:
                     $feb++;
-                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3) 
+                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
                     {
                         $feb_firmado_empresa++;
                     }
-                    if ($recibo->id_estado_recibo==3) 
+                    if ($recibo->id_estado_recibo==3)
                     {
                         $feb_firmado_empleado++;
                     }
                 break;
                 case 3:
                     $mar++;
-                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)  
+                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
                     {
                         $mar_firmado_empresa++;
                     }
-                    if ($recibo->id_estado_recibo==3) 
+                    if ($recibo->id_estado_recibo==3)
                     {
                         $mar_firmado_empleado++;
                     }
                 break;
                 case 4:
                     $abr++;
-                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3) 
+                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
                     {
                         $abr_firmado_empresa++;
                     }
-                    if ($recibo->id_estado_recibo==3) 
+                    if ($recibo->id_estado_recibo==3)
                     {
                         $abr_firmado_empleado++;
-                    } 
+                    }
                 break;
                 case 5:
                     $may++;
-                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)  
+                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
                     {
                         $may_firmado_empresa++;
                     }
-                    if ($recibo->id_estado_recibo==3) 
+                    if ($recibo->id_estado_recibo==3)
                     {
                         $may_firmado_empleado++;
                     }
                 break;
                 case 6:
                     $jun++;
-                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)  
+                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
                     {
                         $jun_firmado_empresa++;
                     }
-                    if ($recibo->id_estado_recibo==3) 
+                    if ($recibo->id_estado_recibo==3)
                     {
                         $jun_firmado_empleado++;
                     }
                 break;
                 case 7:
                     $jul++;
-                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)  
+                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
                     {
                         $jul_firmado_empresa++;
                     }
-                    if ($recibo->id_estado_recibo==3) 
+                    if ($recibo->id_estado_recibo==3)
                     {
                         $jul_firmado_empleado++;
-                    }   
+                    }
                 break;
                 case 8:
                     $ago++;
-                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)  
+                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
                     {
                         $ago_firmado_empresa++;
                     }
-                    if ($recibo->id_estado_recibo==3) 
+                    if ($recibo->id_estado_recibo==3)
                     {
                         $ago_firmado_empleado++;
-                    }  
+                    }
                 break;
                 case 9:
                     $set++;
-                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)  
+                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
                     {
                         $set_firmado_empresa++;
                     }
-                    if ($recibo->id_estado_recibo==3) 
+                    if ($recibo->id_estado_recibo==3)
                     {
                         $set_firmado_empleado++;
-                    }         
+                    }
                 break;
                 case 10:
                     $oct++;
-                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)  
+                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
                     {
                         $oct_firmado_empresa++;
                     }
-                    if ($recibo->id_estado_recibo==3) 
+                    if ($recibo->id_estado_recibo==3)
                     {
                         $oct_firmado_empleado++;
                     }
-                                       
+
                 break;
                 case 11:
                     $nov++;
-                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3) 
+                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
                     {
                         $nov_firmado_empresa++;
                     }
-                    if ($recibo->id_estado_recibo==3) 
+                    if ($recibo->id_estado_recibo==3)
                     {
                         $nov_firmado_empleado++;
-                    }                                       
+                    }
                 break;
                 case 12:
                     $dic++;
-                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)  
+                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
                     {
                         $dic_firmado_empresa++;
                     }
-                    if ($recibo->id_estado_recibo==3) 
+                    if ($recibo->id_estado_recibo==3)
                     {
                         $dic_firmado_empleado++;
-                    }                    
+                    }
                 break;
             }
         }
@@ -861,9 +948,9 @@ class RrhhControlador extends Controller
         $existencia_abr=0;$existencia_may=0;$existencia_jun=0;
         $existencia_jul=0;$existencia_ago=0;$existencia_set=0;
         $existencia_oct=0;$existencia_nov=0;$existencia_dic=0;
-        foreach ($periodos as $periodo) 
+        foreach ($periodos as $periodo)
         {
-            switch ($periodo->mes) 
+            switch ($periodo->mes)
             {
                 case 1:
                 $existencia_ene=1;
@@ -978,7 +1065,7 @@ class RrhhControlador extends Controller
             'mypassword' => 'required',
             'password' => 'required|confirmed|min:4|max:18',
         ];
-        
+
         $messages = [
             'mypassword.required' => 'El campo es requerido',
             'password.required' => 'El campo es requerido',
@@ -986,7 +1073,7 @@ class RrhhControlador extends Controller
             'password.min' => 'El mínimo permitido son 6 caracteres',
             'password.max' => 'El máximo permitido son 18 caracteres',
         ];
-        
+
         $validator = Validator::make($request->all(), $rules, $messages);
         if ($validator->fails()){
             return redirect('rrhh/cambiar_contraseña')->withErrors($validator);
@@ -1005,7 +1092,7 @@ class RrhhControlador extends Controller
                 $auditoria->ip = session()->get('ip_usuario');
                 $auditoria->operacion = "Cambio de Contraseña";
                 $personas =DB::table('personas')->where('correo',Auth::user()->email)->get()->toArray();
-                foreach ($personas as $persona) 
+                foreach ($personas as $persona)
                 {
                     $cedula = $persona->cedula;
                     $nombre = $persona->nombres;

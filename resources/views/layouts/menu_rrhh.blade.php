@@ -7,7 +7,7 @@
                 <li><a href="/rrhh/busqueda_empleado">ABM Empleados</a></li>
                <!--<li><a href="/rrhh/alta_usuario">Alta Usuario</a></li>-->
             </ul>
-         </li>   
+         </li>
         <li><a href="#">Trabajar con Recibos</a>
             <ul>
                 <li><a href="/rrhh/crear_nuevo_periodo">Crear nuevo periodo</a></li>
@@ -15,7 +15,7 @@
                 <li><a href="/rrhh/importar_recibos">Importar Recibos</a></li>
                 <li><a href="/rrhh/empleados_sin_recibos">Empleados sin Recibos</a></li>
                 <li><a href="/rrhh/corregir_recibos">Corregir Recibos</a></li>
-                <li><a href="/rrhh/grupos_recibos">Grupos de Recibos</a></li>
+                <!--<li><a href="/rrhh/grupos_recibos">Grupos de Recibos</a></li>-->
             </ul>
         </li>
         <li><a href="#">Ver Recibos</a>
@@ -25,19 +25,19 @@
                 <li><a href="/rrhh/firmados_empresa_empleados">Firmados Empresa y Empleados</a></li>
                 <li><a href="/rrhh/todos_los_recibos">Todos los Recibos</a></li>
             </ul>
-         </li> 
+         </li>
          <li><a href="#">Informe de Recibos</a>
             <ul>
                 <li><a href="/rrhh/informes_rrhh">Pendientes y Firmados</a></li>
             </ul>
-         </li> 
+         </li>
          <li><a href="#">Más</a>
             <ul>
                 <li><a href="/home">Cambiar de rol</a></li>
                 <li><a href="/rrhh/cambiar_contraseña">Cambiar contraseña</a></li>
                 <li><a href="/salir">Salir del Sistema</a></li>
             </ul>
-         </li> 
+         </li>
     </ul>
 </nav>
 
