@@ -275,7 +275,7 @@ class RrhhControlador extends Controller
 
     public function getCrearNuevoPeriodo()
     {
-        $periodos = DB::table('periodos')->select('mes','año','estado_periodo')->paginate(5);
+        $periodos = DB::table('periodos')->select('mes','año','estado_periodo')->paginate(6);
 
         if ($periodos->count()==0)
         {
@@ -290,43 +290,125 @@ class RrhhControlador extends Controller
         //controla si el periodo que se intenta crear existe, si existe devolver un mensajes de error y sino crea el mismo
 
         $periodos=DB::table('periodos') ->where('año',$request->año)
-        ->where('mes',$request->mes)->paginate(5);
+        ->where('mes',$request->mes)->paginate(6);
 
         if ($periodos->count()==0)
         {
-            $periodo                 = new Periodo();
-            $periodo->estado_periodo = 0;
-            $periodo->mes          =  $request->mes;
-            $periodo->año          = $request->año;
-            $periodo->save();
             $estructura_carpetas_nuevos                     = 'C:/xampp/htdocs/sgfrs/public/recibos/nuevos/' . $request->año . '/' . $request->mes;
             $estructura_carpetas_pendientes                 = 'C:/xampp/htdocs/sgfrs/public/recibos/pendientes/' . $request->año . '/' . $request->mes;
             $estructura_carpetas_firmados_empresa           = 'C:/xampp/htdocs/sgfrs/public/recibos/firmados_empresa/' . $request->año . '/' . $request->mes;
             $estructura_carpetas_firmados_empresa_empleados = 'C:/xampp/htdocs/sgfrs/public/recibos/firmados_empresa_empleados/' . $request->año . '/' . $request->mes;
             $estructura_carpetas_recibos_corregidos = 'C:/xampp/htdocs/sgfrs/public/recibos/recibos_corregidos/' . $request->año . '/' . $request->mes;
-            mkdir($estructura_carpetas_nuevos, 0777, true);
-            mkdir($estructura_carpetas_pendientes, 0777, true);
-            mkdir($estructura_carpetas_firmados_empresa, 0777, true);
-            mkdir($estructura_carpetas_firmados_empresa_empleados, 0777, true);
-            mkdir($estructura_carpetas_recibos_corregidos, 0777, true);
-            //inicio codigo auditoria
-            $auditoria = new Auditoria();
-            $auditoria->fecha_hora = date('Y-m-d H:i:s');
-            $auditoria->cedula = session()->get('cedula_usuario');
-            $auditoria->rol = session()->get('rol_usuario');
-            $auditoria->ip = session()->get('ip_usuario');
-            $auditoria->operacion = "Creación de nuevo periodo";
-            $auditoria->descripcion = "Se procedio a la creación del periodo ". $request->mes . '/' . $request->año;
-            $auditoria->save();
-            //fin codigo auditoria
-            $periodos = DB::table('periodos')->select('mes','año','estado_periodo')->paginate(5);
-            return view('rrhh.crear_nuevo_periodo')->with('msj','Periodo creado correctamente! Mes: '.$request->mes.'  -   Año: '.$request->año)->with('periodos',$periodos)->with('boton','boton');
+            if (file_exists( $estructura_carpetas_nuevos))
+            {
+                $periodos = DB::table('periodos')->paginate(6);
+                return view('rrhh.crear_nuevo_periodo')->with('errormsj','Ya existen carpetas de recibos en el sistema, favor verifique el directorio')->with('periodos',$periodos);
+            }else
+            {
+                if (file_exists($estructura_carpetas_pendientes))
+                {
+                    $periodos = DB::table('periodos')->paginate(6);
+                    return view('rrhh.crear_nuevo_periodo')->with('errormsj','Ya existen carpetas de recibos en el sistema, favor verifique el directorio')->with('periodos',$periodos);
+                }else
+                {
+                    if (file_exists($estructura_carpetas_firmados_empresa))
+                    {
+                        $periodos = DB::table('periodos')->paginate(6);
+                        return view('rrhh.crear_nuevo_periodo')->with('errormsj','Ya existen carpetas de recibos en el sistema, favor verifique el directorio')->with('periodos',$periodos);
+                    }else
+                    {
+                        if (file_exists($estructura_carpetas_firmados_empresa_empleados))
+                        {
+                            $periodos = DB::table('periodos')->paginate(6);
+                            return view('rrhh.crear_nuevo_periodo')->with('errormsj','Ya existen carpetas de recibos en el sistema, favor verifique el directorio')->with('periodos',$periodos);
+                        }else
+                        {
+                            if (file_exists($estructura_carpetas_recibos_corregidos))
+                            {
+                                $periodos = DB::table('periodos')->paginate(6);
+                                return view('rrhh.crear_nuevo_periodo')->with('errormsj','Ya existen carpetas de recibos en el sistema, favor verifique el directorio')->with('periodos',$periodos);
+                            }else
+                            {
+                                mkdir($estructura_carpetas_nuevos, 0777, true);
+                                mkdir($estructura_carpetas_pendientes, 0777, true);
+                                mkdir($estructura_carpetas_firmados_empresa, 0777, true);
+                                mkdir($estructura_carpetas_firmados_empresa_empleados, 0777, true);
+                                mkdir($estructura_carpetas_recibos_corregidos, 0777, true);
+                                $periodo = new Periodo();
+                                $periodo->estado_periodo = 0;
+                                $periodo->mes          =  $request->mes;
+                                $periodo->año          = $request->año;
+                                $periodo->save();
 
-        } else {
-            $periodos = DB::table('periodos')->select('mes','año','estado_periodo')->paginate(5);
-            return view('rrhh.crear_nuevo_periodo')->with('errormsj','Este mes y año de periodo ya existe. Mes: '.$request->mes.'  -   Año: '.$request->año)->with('periodos',$periodos);
+                                //inicio codigo auditoria
+                                $auditoria = new Auditoria();
+                                $auditoria->fecha_hora = date('Y-m-d H:i:s');
+                                $auditoria->cedula = session()->get('cedula_usuario');
+                                $auditoria->rol = session()->get('rol_usuario');
+                                $auditoria->ip = session()->get('ip_usuario');
+                                $auditoria->operacion = "Creación de nuevo periodo";
+                                $auditoria->descripcion = "Se procedio a la creación del periodo ". $request->mes . '/' . $request->año;
+                                $auditoria->save();
+                                //fin codigo auditoria
+                                $periodos = DB::table('periodos')->select('mes','año','estado_periodo')->paginate(6);
+
+                                //inicio codigo control de empleados sin recibos
+                                $Personas = DB::table('personas')
+                                ->where('id_rol', '1')
+                                ->orWhere('id_rol', '2')
+                                ->orWhere('id_rol', '4')
+                                ->orWhere('id_rol', '5')
+                                ->get();
+
+                                $Periodos = DB::table('periodos')
+                                ->where('estado_periodo',0)
+                                ->get();
+
+                                foreach ($Personas as $persona)
+                                {
+                                    foreach ($Periodos as $periodo)
+                                    {
+
+                                        $consulta1 = DB::table('recibos')
+                                        ->where('id_periodo',$periodo->id_periodo)
+                                        ->where('id_recibo',$persona->cedula.$periodo->mes.substr($periodo->año,2))
+                                        ->get();//$periodo->mes) substr($periodo->año
+                                        //echo $periodo->mes.substr($periodo->año,2);
+                                        //echo "<br>";
+                                        if ($consulta1 =='[]')//si esta en blanco le falta un recibo a la persona
+                                        {
+                                            $consulta2 =DB::table('empleados_sin_recibos')
+                                            ->where('cedula',$persona->cedula)
+                                            ->where('id_periodo',$periodo->id_periodo)
+                                            ->get();
+                                            if ($consulta2 =='[]')//si esta en blanco todavía no figura la persona en la tabla de personas sin recibos para este periodo en especifico y se carga en la BD
+                                            {
+                                                $empleados_sin_recibos = new Empleado_sin_recibo();
+                                                $empleados_sin_recibos->cedula = $persona->cedula;
+                                                $empleados_sin_recibos->id_periodo = $periodo->id_periodo;
+                                                $empleados_sin_recibos->save();
+                                            }
+                                        }else //si la persona ya tiene un recibo para ese periodo se eliminan sus datos de la tabla de empleados sin recibos
+                                        {
+                                            DB::table('empleados_sin_recibos')
+                                            ->where('cedula',$persona->cedula)
+                                            ->delete();
+                                        }
+                                    }
+                                }
+                            //fin codigo control de empleados sin recibos
+
+                                return view('rrhh.crear_nuevo_periodo')->with('msj','Periodo creado correctamente! Mes: '.$request->mes.'  -   Año: '.$request->año)->with('periodos',$periodos)->with('boton','boton');
+                            }
+                        }
+                    }
+                }
+            }
+        }else
+        {
+            $periodos = DB::table('periodos')->paginate(6);
+            return view('rrhh.crear_nuevo_periodo')->with('errormsj','Este mes y año de periodo ya existen. Mes: '.$request->mes.'  -   Año: '.$request->año)->with('periodos',$periodos)->with('boton','boton');
         }
-
     }
     public function getValidarRecibos()
     {
@@ -448,8 +530,7 @@ class RrhhControlador extends Controller
 
             if (count(scandir($dir))==2)//busca si hay archivos en el directorio, no se cuenta . ni .. que viene por defecto
             {
-                return view('rrhh.importar_recibos')->with('errormsj','No se encontraron recibos para importar, verifique que fueron cargados en la carpeta de nuevos recibos correspondientes al periodo seleccionado
-                    ');
+                return view('rrhh.importar_recibos')->with('errormsj','No se encontraron recibos para importar, verifique que fueron cargados en la carpeta de nuevos recibos correspondientes al periodo seleccionado, periodo mes: '.$mes.' año: '.$año);
             }
             foreach (scandir($dir) as $f) //esta funcion permite leer el nombre de los archivos contenidos segun directorio especificado y los guarda en la variable $f por cada pasada de la iteraccion hasta leer todos los archivos del directorio
             {
@@ -554,8 +635,10 @@ class RrhhControlador extends Controller
 
                         $consulta1 = DB::table('recibos')
                         ->where('id_periodo',$periodo->id_periodo)
-                        ->where('id_periodo',$persona->cedula.'-'.substr($periodo->año, 1).$periodo->mes)
-                        ->get();
+                        ->where('id_recibo',$persona->cedula.$periodo->mes.substr($periodo->año,2))
+                        ->get();//$periodo->mes) substr($periodo->año
+                        //echo $periodo->mes.substr($periodo->año,2);
+                        //echo "<br>";
                         if ($consulta1 =='[]')//si esta en blanco le falta un recibo a la persona
                         {
                             $consulta2 =DB::table('empleados_sin_recibos')
@@ -589,7 +672,7 @@ class RrhhControlador extends Controller
 
         $periodos = DB::table('periodos')
         ->where('periodos.estado_periodo', 0)
-        ->paginate(10);
+        ->paginate(12);
 
         if ($periodos->count()==0)
         {
@@ -603,7 +686,7 @@ class RrhhControlador extends Controller
     {
         $datos = DB::table('empleados_sin_recibos')
         ->where('id_periodo',$id)
-        ->paginate(10);
+        ->paginate(12);
 
         $periodos = DB::table('periodos')
         ->where('id_periodo',$id)

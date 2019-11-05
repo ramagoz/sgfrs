@@ -27,7 +27,7 @@ class EmpleadoControlador extends Controller
         ->join('personas', 'recibos.cedula','=','personas.cedula')
         ->where('recibos.id_estado_recibo', '2')
         ->where('personas.correo', Auth::user()->email)
-        ->paginate(5);
+        ->paginate(7);
         if ($recibos->count() ==0)
         {
             return view('empleado.recibos_pendientes')->with('recibos',$recibos)->with('msj','No existen recibos pendientes de firma por el empleado!');
@@ -64,7 +64,7 @@ class EmpleadoControlador extends Controller
         $cliente = new \SoapClient($wsdl,$parametros);
 
         // Consumimos el servicio llamando al método que necesitamos, en este caso
-        // func() es un método definido dentro del WSDL 
+        // func() es un método definido dentro del WSDL
 
         $resultado = $cliente->func($datos);
         //Se verifica si hay error durante el proceso de firma y se devuelve el error
@@ -77,7 +77,7 @@ class EmpleadoControlador extends Controller
         return view('empleado.ver_recibo_pendiente_firma_empleado')->with('id',$id)->with('id_recibo',$id_recibo)->with('error',$resultado->funcReturn);
         }
         //fin servicio firma
-          
+
         $recibo =Recibo::find($id);
         $recibo->id_estado_recibo =3;
         $recibo->save();
@@ -95,7 +95,7 @@ class EmpleadoControlador extends Controller
         $auditoria->descripcion = "Se procedio a la firma del siguiente recibo: ".$id;
         $auditoria->save();
         //fin codigo auditoria
-        
+
         $id="/recibos/firmados_empresa_empleados/20". $año . "/" . $mes."/".$id.".pdf";
         return view('empleado.ver_recibo_firmado_empleado')->with('id',$id)->with('msj','Recibo firmado correctamente!');
     }
@@ -105,12 +105,12 @@ class EmpleadoControlador extends Controller
         //aqui se recuperan los identificadores de recibos que fueron selecionados para ser firmados
         $i=0;
         $CadenaRecibos='';
-        if ($request->recibos_a_firmar <> '') 
+        if ($request->recibos_a_firmar <> '')
         {
-            foreach ($request->recibos_a_firmar as $key => $value) 
+            foreach ($request->recibos_a_firmar as $key => $value)
             {
                 $i++;
-                if ($i==1) 
+                if ($i==1)
                 {
                     $CadenaRecibos = $CadenaRecibos.$value;
                 }else
@@ -124,7 +124,7 @@ class EmpleadoControlador extends Controller
             ->join('personas', 'recibos.cedula','=','personas.cedula')
             ->where('recibos.id_estado_recibo', '2')
             ->where('personas.correo', Auth::user()->email)
-            ->paginate(5);
+            ->paginate(7);
             return view('empleado.recibos_pendientes')->with('recibos',$recibos)->with('error','No ha selecionado ningun recibo')->with('boton','boton');
         }
         //Servicio de firma
@@ -145,7 +145,7 @@ class EmpleadoControlador extends Controller
           $cliente = new \SoapClient($wsdl,$parametros);
 
           // Consumimos el servicio llamando al método que necesitamos, en este caso
-          // func() es un método definido dentro del WSDL 
+          // func() es un método definido dentro del WSDL
 
           $resultado = $cliente->func($datos);
             //Se verifica si hay error durante el proceso de firma y se devuelve el error
@@ -160,14 +160,14 @@ class EmpleadoControlador extends Controller
             }
             //fin servicio firma
         //inicio codigo de autitoria
-        foreach ($request->recibos_a_firmar as $key => $value) 
+        foreach ($request->recibos_a_firmar as $key => $value)
         {
             $recibo =Recibo::find($value);
             $recibo->id_estado_recibo =3;
             $recibo->save();
             $mes=substr($value, -4,2);
             $año=substr($value, -2,2);
-            
+
             $auditoria = new Auditoria();
             $auditoria->fecha_hora = date('Y-m-d H:i:s');
             $auditoria->cedula = session()->get('cedula_usuario');
@@ -195,7 +195,7 @@ class EmpleadoControlador extends Controller
         ->join('personas', 'recibos.cedula','=','personas.cedula')
         ->where('recibos.id_estado_recibo', '3')
         ->where('personas.correo', Auth::user()->email)
-         ->paginate(5);
+         ->paginate(8);
         if ($recibos->count()==0)
         {
             return view('empleado.recibos_firmados')->with('recibos',$recibos)->with('msj_error','No se encontraron recibos firmados');
@@ -228,7 +228,7 @@ class EmpleadoControlador extends Controller
             'mypassword' => 'required',
             'password' => 'required|confirmed|min:4|max:18',
         ];
-        
+
         $messages = [
             'mypassword.required' => 'El campo es requerido',
             'password.required' => 'El campo es requerido',
@@ -236,7 +236,7 @@ class EmpleadoControlador extends Controller
             'password.min' => 'El mínimo permitido son 6 caracteres',
             'password.max' => 'El máximo permitido son 18 caracteres',
         ];
-        
+
         $validator = Validator::make($request->all(), $rules, $messages);
         if ($validator->fails()){
             return redirect('empleado/cambiar_contraseña')->withErrors($validator);
@@ -246,7 +246,7 @@ class EmpleadoControlador extends Controller
                 $user = new User;
                 $user->where('email', '=', Auth::user()->email)
                      ->update(['password' => bcrypt($request->password)]);
-                
+
                 //inicio codigo auditoria
                 $auditoria = new Auditoria();
                 $auditoria->fecha_hora = date('Y-m-d H:i:s');
@@ -255,7 +255,7 @@ class EmpleadoControlador extends Controller
                 $auditoria->ip = session()->get('ip_usuario');
                 $auditoria->operacion = "Cambio de Contraseña";
                 $personas =DB::table('personas')->where('correo',Auth::user()->email)->get()->toArray();
-                foreach ($personas as $persona) 
+                foreach ($personas as $persona)
                 {
                     $cedula = $persona->cedula;
                     $nombre = $persona->nombres;

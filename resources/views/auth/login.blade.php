@@ -1,12 +1,18 @@
 @extends('layouts.app')
 
 @section('content')
+<br><br><br><br>
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-6">
             <div class="card">
-                <div class="card-header">{{ __('Ingreso al Sistema de Recibos') }}</div>
-
+                <div align="center" class="card-header">
+                <strong>
+                <h4>
+                {{ __('Ingreso al Sistema de Recibos Electrónicos') }}
+                </div>
+                </h4>
+                </strong>
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
@@ -24,7 +30,6 @@
                                 @endif
                             </div>
                         </div>
-
                         <div class="form-group row">
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Contraseña') }}</label>
 
@@ -38,7 +43,6 @@
                                 @endif
                             </div>
                         </div>
-
                         <div class="form-group row">
                             <div class="col-md-6 offset-md-4">
                                 <div class="checkbox">
@@ -48,9 +52,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        
-                       
                         <div class="form-group row mb-0">
                             <div class="col-md-8 offset-md-4">
                                 <button type="submit" class="btn btn-primary">

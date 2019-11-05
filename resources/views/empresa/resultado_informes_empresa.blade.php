@@ -28,8 +28,8 @@
 					 	@endif
 					</td>
 				</tr>
-				
-				
+
+
 				<tr>
 					<td>{{ $año }}</td>
 					<td>Febrero</td>

@@ -9,7 +9,7 @@ use App\Grupo_recibo;
 use App\Periodo;
 use App\Persona;
 use App\Auditoria;
-use DB;  
+use DB;
 use DataTables;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\FuncionesControlador;
@@ -51,7 +51,7 @@ class EmpresaControlador extends Controller
         $nombre_grupos = DB::table('grupos_recibos')->select('nombre_grupo','id_grupo')->get();
 
 
-      foreach ($persona as $person) 
+      foreach ($persona as $person)
                     {
                         $estado = $person->estado;
 
@@ -77,7 +77,7 @@ class EmpresaControlador extends Controller
     {
        //validacion si el usuario a cargar ya no existe
         $validemail=DB::table('users')->where('email',$request->correo)->get();
-        if ($validemail=='[]') 
+        if ($validemail=='[]')
              { // usuario no existe
             $validcedula=DB::table('personas')->where('cedula',$request->cedula)->get();
             if($validcedula=='[]') //persona no existe, se puede proceder a crear usuario y persona
@@ -91,7 +91,7 @@ class EmpresaControlador extends Controller
                  $user->save();
                 //creacion de persona relacionada al usuario que se creo previamente.
                  $usuario = DB::table('users')->where('email', $request->correo)->get()->toArray();
-                foreach ($usuario as $users) 
+                foreach ($usuario as $users)
                 {
                     $id = $users->id;
                 }
@@ -135,11 +135,11 @@ class EmpresaControlador extends Controller
             }
             else
             {
-                
+
                 return view('/empresa/busqueda_oficial')->with('errorpersona','Ya existe un registro de usuario con el mismo Nro. de CI: '.$request->cedula);
             }
 
-        }         
+        }
         else
         {
             return view('/empresa/busqueda_oficial')->with('erroruser','Ya existe un registro de usuario con el mismo correo: '.$request->correo);
@@ -155,15 +155,15 @@ class EmpresaControlador extends Controller
     {
     	$persona =DB::table('personas')->where('cedula',$request->cedula)->get()->toArray();
         $nombre_grupos = DB::table('grupos_recibos')->select('nombre_grupo','id_grupo')->get();
-       
+
         return view('empresa.modificacion_oficial', compact('persona'),compact('nombre_grupos'));
 
       }
       public function getOficialModificado(Request $request)
-    {   
-      
+    {
+
         $persona =Persona::find($request->cedula);
-    
+
         $persona->id_grupo   = $request->grupo;
         $persona->nombres    = $request->nombre;
         $persona->apellidos  = $request->apellido;
@@ -199,18 +199,18 @@ class EmpresaControlador extends Controller
 
        # return view('rrhh.empleado_cargado');
         return view('/empresa/busqueda_oficial')->with('msj','Los datos del usuario con CI Nro. '.$request->cedula.' se actualizaron correctamente!!!');
-        
+
     }
     public function getOficialDesactivado(Request $request)
-    {   
-      
+    {
+
         $persona =Persona::find($request->cedula);
         $persona->estado = $request->estado;
         $persona->save();
-       
+
         #user baja
         $iduser = DB::table('users')->where('email', $request->correo)->get()->toArray();
-                foreach ($iduser as $users) 
+                foreach ($iduser as $users)
                     {
                         $id = $users->id;
                     }
@@ -235,18 +235,18 @@ class EmpresaControlador extends Controller
         //fin codigo auditoria
 
         return view('/empresa/busqueda_oficial')->with('msjbaja','El usuario con CI Nro. '.$request->cedula.' se desactivo del Sistema !!!');
-        
+
     }
     public function getOficialActivado(Request $request)
-    {   
-      
+    {
+
         $persona =Persona::find($request->cedula);
         $persona->estado = $request->estado;
         $persona->save();
-       
+
         #user alta
         $iduser = DB::table('users')->where('email', $request->correo)->get()->toArray();
-                foreach ($iduser as $users) 
+                foreach ($iduser as $users)
                     {
                         $id = $users->id;
                     }
@@ -271,7 +271,7 @@ class EmpresaControlador extends Controller
         //fin codigo auditoria
 
         return view('/empresa/busqueda_oficial')->with('msjactivado','El usuario con CI Nro. '.$request->cedula.' se activo correctamente!!');
-        
+
     }
      public function getBusquedaOficial()
     {
@@ -285,7 +285,7 @@ class EmpresaControlador extends Controller
         $recibos = DB::table('recibos')
         ->join('personas', 'recibos.cedula','=','personas.cedula')
         ->where('recibos.id_estado_recibo', '1')
-        ->paginate(5);
+        ->paginate(8);
         if ($recibos->count() ==0)
         {
             return view('empresa.recibos_pendientes_empresa')->with('recibos',$recibos)->with('msj','No existen recibos pendientes de firma por la empresa!');
@@ -321,7 +321,7 @@ class EmpresaControlador extends Controller
         $cliente = new \SoapClient($wsdl,$parametros);
 
         // Consumimos el servicio llamando al método que necesitamos, en este caso
-        // func() es un método definido dentro del WSDL 
+        // func() es un método definido dentro del WSDL
 
         $resultado = $cliente->func($datos);
         //Se verifica si hay error durante el proceso de firma y se devuelve el error
@@ -334,7 +334,7 @@ class EmpresaControlador extends Controller
             return view('empresa.ver_recibo_pendiente_firma_empresa')->with('id',$id)->with('id_recibo',$id_recibo)->with('error',$resultado->funcReturn);
         }
         //fin servicio firma
-          
+
         $recibo =Recibo::find($id);
         $recibo->id_estado_recibo =2;
         $recibo->save();
@@ -352,22 +352,22 @@ class EmpresaControlador extends Controller
         $auditoria->descripcion = "Se procedio a la firma del siguiente recibo: ".$id;
         $auditoria->save();
         //fin codigo auditoria
-        
+
         $id="/recibos/firmados_empresa/20". $año . "/" . $mes."/".$id.".pdf";
         return view('empresa.ver_recibo_pendiente_firma_empleado')->with('id',$id)->with('msj','Recibo firmado correctamente!');
     }
-    
+
      public function postFirmaMasivaRecibosPendientesEmpresa(Request $request)
     {
         //aqui se recuperan los identificadores de recibos que fueron selecionados para ser firmados, todos separados por ","
         $i=0;
         $CadenaRecibos='';
-        if ($request->recibos_a_firmar <> '') 
+        if ($request->recibos_a_firmar <> '')
         {
-            foreach ($request->recibos_a_firmar as $key => $value) 
+            foreach ($request->recibos_a_firmar as $key => $value)
             {
                 $i++;
-                if ($i==1) 
+                if ($i==1)
                 {
                     $CadenaRecibos = $CadenaRecibos.$value;
                 }else
@@ -380,7 +380,7 @@ class EmpresaControlador extends Controller
             $recibos = DB::table('recibos')
             ->join('personas', 'recibos.cedula','=','personas.cedula')
             ->where('recibos.id_estado_recibo', '1')
-            ->paginate(5);
+            ->paginate(8);
             return view('empresa.recibos_pendientes_empresa')->with('recibos',$recibos)->with('error','No ha selecionado ningun recibo')->with('boton','boton');
         }
 
@@ -402,7 +402,7 @@ class EmpresaControlador extends Controller
           $cliente = new \SoapClient($wsdl,$parametros);
 
           // Consumimos el servicio llamando al método que necesitamos, en este caso
-          // func() es un método definido dentro del WSDL 
+          // func() es un método definido dentro del WSDL
 
           $resultado = $cliente->func($datos);
             //Se verifica si hay error durante el proceso de firma y se devuelve el error
@@ -411,12 +411,12 @@ class EmpresaControlador extends Controller
             $recibos = DB::table('recibos')
             ->join('personas', 'recibos.cedula','=','personas.cedula')
             ->where('recibos.id_estado_recibo', '1')
-            ->paginate(5);
+            ->paginate(8);
             return view('empresa.recibos_pendientes_empresa')->with('recibos',$recibos)->with('error',$resultado->funcReturn)->with('boton','boton');
             }
             //fin servicio firma
             //inicio codigo de autitoria
-        foreach ($request->recibos_a_firmar as $key => $value) 
+        foreach ($request->recibos_a_firmar as $key => $value)
         {
             $recibo =Recibo::find($value);
             $recibo->id_estado_recibo =2;
@@ -437,7 +437,7 @@ class EmpresaControlador extends Controller
         $recibos = DB::table('recibos')
         ->join('personas', 'recibos.cedula','=','personas.cedula')
         ->where('recibos.id_estado_recibo', '2')
-        ->paginate(5);
+        ->paginate(8);
 
         return view('empresa.recibos_pendientes_empleados')->with('recibos',$recibos)->with('msj','Recibos firmados correctamente!')->with('boton','boton');
     }
@@ -446,7 +446,7 @@ class EmpresaControlador extends Controller
         $recibos = DB::table('recibos')
         ->join('personas', 'recibos.cedula','=','personas.cedula')
         ->where('recibos.id_estado_recibo', '2')
-        ->paginate(5);
+        ->paginate(9);
         if ($recibos->count()==0)
         {
             return view('empresa.recibos_pendientes_empleados')->with('recibos',$recibos)->with('msj_error','No existen recibos pendientes de firma por los empleados!');
@@ -465,7 +465,7 @@ class EmpresaControlador extends Controller
         $recibos = DB::table('recibos')
         ->join('personas', 'recibos.cedula','=','personas.cedula')
         ->where('recibos.id_estado_recibo', '3')
-        ->paginate(5);
+        ->paginate(9);
         if ($recibos->count()==0)
         {
             return view('empresa.recibos_firmados_empresa_empleados')->with('recibos',$recibos)->with('msj','No existen recibos firmados por la empresa y empleados!');
@@ -505,7 +505,7 @@ class EmpresaControlador extends Controller
            ->get();
         $cantidad_empleados = DB::table('personas')->where('id_rol', '1')->orWhere('id_rol', '2')->orWhere('id_rol', '4')->orWhere('id_rol', '5')->count();
 
-        $ene=0; $feb=0; $mar=0; $abr=0; $may=0; $jun=0; 
+        $ene=0; $feb=0; $mar=0; $abr=0; $may=0; $jun=0;
         $jul=0; $ago=0; $set=0; $oct=0; $nov=0; $dic=0;
         $ene_firmado_empresa=0;$feb_firmado_empresa=0;
         $mar_firmado_empresa=0;$abr_firmado_empresa=0;
@@ -519,142 +519,142 @@ class EmpresaControlador extends Controller
         $jul_firmado_empleado=0;$ago_firmado_empleado=0;
         $set_firmado_empleado=0;$oct_firmado_empleado=0;
         $nov_firmado_empleado=0;$dic_firmado_empleado=0;
-        foreach ($recibos as $recibo) 
+        foreach ($recibos as $recibo)
         {
-            switch ($recibo->mes) 
+            switch ($recibo->mes)
             {
                 case 1:
                     $ene++;
-                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3) 
+                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
                     {
                         $ene_firmado_empresa++;
                     }
-                    if ($recibo->id_estado_recibo==3) 
+                    if ($recibo->id_estado_recibo==3)
                     {
                         $ene_firmado_empleado++;
                     }
                 break;
                 case 2:
                     $feb++;
-                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3) 
+                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
                     {
                         $feb_firmado_empresa++;
                     }
-                    if ($recibo->id_estado_recibo==3) 
+                    if ($recibo->id_estado_recibo==3)
                     {
                         $feb_firmado_empleado++;
                     }
                 break;
                 case 3:
                     $mar++;
-                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)  
+                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
                     {
                         $mar_firmado_empresa++;
                     }
-                    if ($recibo->id_estado_recibo==3) 
+                    if ($recibo->id_estado_recibo==3)
                     {
                         $mar_firmado_empleado++;
                     }
                 break;
                 case 4:
-                    $abr=$abr++;
-                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3) 
+                    $abr++;
+                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
                     {
                         $abr_firmado_empresa++;
                     }
-                    if ($recibo->id_estado_recibo==3) 
+                    if ($recibo->id_estado_recibo==3)
                     {
                         $abr_firmado_empleado++;
-                    } 
+                    }
                 break;
                 case 5:
                     $may++;
-                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)  
+                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
                     {
                         $may_firmado_empresa++;
                     }
-                    if ($recibo->id_estado_recibo==3) 
+                    if ($recibo->id_estado_recibo==3)
                     {
                         $may_firmado_empleado++;
                     }
                 break;
                 case 6:
                     $jun++;
-                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)  
+                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
                     {
                         $jun_firmado_empresa++;
                     }
-                    if ($recibo->id_estado_recibo==3) 
+                    if ($recibo->id_estado_recibo==3)
                     {
                         $jun_firmado_empleado++;
                     }
                 break;
                 case 7:
                     $jul++;
-                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)  
+                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
                     {
                         $jul_firmado_empresa++;
                     }
-                    if ($recibo->id_estado_recibo==3) 
+                    if ($recibo->id_estado_recibo==3)
                     {
                         $jul_firmado_empleado++;
-                    }   
+                    }
                 break;
                 case 8:
                     $ago++;
-                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)  
+                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
                     {
                         $ago_firmado_empresa++;
                     }
-                    if ($recibo->id_estado_recibo==3) 
+                    if ($recibo->id_estado_recibo==3)
                     {
                         $ago_firmado_empleado++;
-                    }  
+                    }
                 break;
                 case 9:
                     $set++;
-                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)  
+                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
                     {
                         $set_firmado_empresa++;
                     }
-                    if ($recibo->id_estado_recibo==3) 
+                    if ($recibo->id_estado_recibo==3)
                     {
                         $set_firmado_empleado++;
-                    }         
+                    }
                 break;
                 case 10:
                     $oct++;
-                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)  
+                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
                     {
                         $oct_firmado_empresa++;
                     }
-                    if ($recibo->id_estado_recibo==3) 
+                    if ($recibo->id_estado_recibo==3)
                     {
                         $oct_firmado_empleado++;
                     }
-                                       
+
                 break;
                 case 11:
                     $nov++;
-                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3) 
+                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
                     {
                         $nov_firmado_empresa++;
                     }
-                    if ($recibo->id_estado_recibo==3) 
+                    if ($recibo->id_estado_recibo==3)
                     {
                         $nov_firmado_empleado++;
-                    }                                       
+                    }
                 break;
                 case 12:
                     $dic++;
-                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)  
+                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
                     {
                         $dic_firmado_empresa++;
                     }
-                    if ($recibo->id_estado_recibo==3) 
+                    if ($recibo->id_estado_recibo==3)
                     {
                         $dic_firmado_empleado++;
-                    }                    
+                    }
                 break;
             }
         }
@@ -664,9 +664,9 @@ class EmpresaControlador extends Controller
         $existencia_abr=0;$existencia_may=0;$existencia_jun=0;
         $existencia_jul=0;$existencia_ago=0;$existencia_set=0;
         $existencia_oct=0;$existencia_nov=0;$existencia_dic=0;
-        foreach ($periodos as $periodo) 
+        foreach ($periodos as $periodo)
         {
-            switch ($periodo->mes) 
+            switch ($periodo->mes)
             {
                 case 1:
                 $existencia_ene=1;
@@ -782,7 +782,7 @@ class EmpresaControlador extends Controller
             'mypassword' => 'required',
             'password' => 'required|confirmed|min:4|max:18',
         ];
-        
+
         $messages = [
             'mypassword.required' => 'El campo es requerido',
             'password.required' => 'El campo es requerido',
@@ -790,7 +790,7 @@ class EmpresaControlador extends Controller
             'password.min' => 'El mínimo permitido son 6 caracteres',
             'password.max' => 'El máximo permitido son 18 caracteres',
         ];
-        
+
         $validator = Validator::make($request->all(), $rules, $messages);
         if ($validator->fails()){
             return redirect('empresa/cambiar_contraseña')->withErrors($validator);
@@ -809,7 +809,7 @@ class EmpresaControlador extends Controller
                 $auditoria->ip = session()->get('ip_usuario');
                 $auditoria->operacion = "Cambio de Contraseña";
                 $personas =DB::table('personas')->where('correo',Auth::user()->email)->get()->toArray();
-                foreach ($personas as $persona) 
+                foreach ($personas as $persona)
                 {
                     $cedula = $persona->cedula;
                     $nombre = $persona->nombres;

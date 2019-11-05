@@ -11,36 +11,34 @@
 		<div class="alert alert-danger" role="alert" align="center">{{ $errormsj }}</div>
 	@endisset
 
-	<form action="/rrhh/crear_nuevo_periodo" method="POST">	
+	<form action="/rrhh/crear_nuevo_periodo" method="POST">
 	{{csrf_field()}}
 	<div align="center" id="prueba">
 		<table style="width:20%" >
-			<tr> 
+			<tr>
 				<th>Mes: </th>
-				<td><select name="mes" id="mes"> 
-				   <option value="01">Enero</option> 
-				   <option value="02">Febrero</option> 
-				   <option value="03">Marzo</option>
-				   <option value="04">Abril</option> 
-				   <option value="05">Mayo</option> 
-				   <option value="06">Junio</option>
-				   <option value="07">Julio</option> 
-				   <option value="08">Agosto</option> 
-				   <option value="09">Setiembre</option>
-				   <option value="10">Octubre</option> 
-				   <option value="11">Noviembre</option> 
-				   <option value="12">Diciembre</option>
+				<td><select name="mes" id="mes">
+				   <option value="01">1- Enero</option>
+				   <option value="02">2- Febrero</option>
+				   <option value="03">3- Marzo</option>
+				   <option value="04">4- Abril</option>
+				   <option value="05">5- Mayo</option>
+				   <option value="06">6- Junio</option>
+				   <option value="07">7- Julio</option>
+				   <option value="08">8- Agosto</option>
+				   <option value="09">9- Setiembre</option>
+				   <option value="10">10- Octubre</option>
+				   <option value="11">11- Noviembre</option>
+				   <option value="12">12- Diciembre</option>
 				</select></td>
 			</tr>
-			<tr> 
-				<th>Año:</th>
-				<td><input type="text" value="{{ date("Y") }}" name="año" id="año" size="12" maxlength="4" required></td>
-			</tr>
-			<br>
 			<tr>
-				<td colspan="2" align="center"><button class="btn btn-primary" type="submit">Crear periodo</button></td>
+				<th>Año:</th>
+				<td><input type="text" value="{{ date("Y") }}" name="año" id="año" size="4" maxlength="4" required></td>
 			</tr>
 		</table>
+		<br>
+		<button class="btn btn-primary" type="submit">Crear periodo</button>
 	</div>
 	<br>
 	</form>

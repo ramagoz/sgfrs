@@ -19,65 +19,8 @@
 
 </head>
 <body>
-
-   <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    SGFRS
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
-
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                        <!--
-                            <li><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li>
-                            <li><a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a></li>
-                          -->
-                        @else
-                            <li class="nav-item dropdown">    
-                                  <strong> Usuario:</strong>  
-                                  {{ Auth::user()->name }}
-                                  <!--<strong>- Rol:</strong>  
-                                  @if (Session::get('rol_usuario') ==1)
-                                  Empleado
-                                  @endif
-                                   @if (Session::get('rol_usuario') ==2)
-                                  RRHH
-                                  @endif
-                                   @if (Session::get('rol_usuario') ==3)
-                                  Empresa
-                                  @endif
-                                   @if (Session::get('rol_usuario') ==4)
-                                  Empresa
-                                  @endif
-                                   @if (Session::get('rol_usuario') ==5)
-                                  Oficial de Seguridad
-                                  @endif-->
-                            </li>
-                        @endguest
-                    </ul>
-                </div>
-            </div>
-        </nav>
-
-        <main class="py-4">
-
-            @yield('content')
-
-        </main>
-    </div>
-
-
+<main class="py-4">
+  @yield('content')
+</main>
 </body>
 </html>

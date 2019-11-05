@@ -8,12 +8,11 @@
 
 <table id="example"  align="center" border="2">
 <thead>
-<tr><th WIDTH="50">ID</th><th WIDTH="50">Año</th><th WIDTH="50">Mes</th><th WIDTH="150">Seleccionar Periodo</th></tr>
+<tr><th WIDTH="50">Año</th><th WIDTH="50">Mes</th><th WIDTH="150">Seleccionar Periodo</th></tr>
 </thead>
 @foreach ($periodos as $periodo)
 	<tbody>
 	<tr>
-		<td>{{ $periodo->id_periodo }}</td>
 		<td>{{ $periodo->año }}</td>
 		<td>{{ $periodo->mes }}</td>
 		<td><a href="{{ url('/rrhh/ver_empleados_sin_recibos/'.$periodo->id_periodo) }}">Ver Periodo</a></td>
