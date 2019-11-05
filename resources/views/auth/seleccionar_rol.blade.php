@@ -1,10 +1,12 @@
+
 @extends('layouts.app')
+<link href="{{ asset('css/app.css') }}" rel="stylesheet">
 @section('content')
 {{-- Dentro de section va el contenido de la vista--}}
 	<br><br><br><br>
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-3">
+        <div class="col-md-4">
             <div class="card">
     <div align="center" class="card-header">
 	<h3 align="center">Selección de Rol</h1>
