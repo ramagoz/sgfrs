@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
     {
         self::seedRol();
   		$this->command->info('Tabla de Roles inicializada con datos!');
-        
+
         self::seedUser();
         $this->command->info('Tabla de Usuarios inicializada con datos!');
 
@@ -35,32 +35,32 @@ class DatabaseSeeder extends Seeder
         self::seedEstado_recibo();
         $this->command->info('Tabla de Estado de Recibos inicializada con datos!');
 
-        self::seedPeriodo();
-        $this->command->info('Tabla de Periodos inicializada con datos!');
+        //self::seedPeriodo();
+        //$this->command->info('Tabla de Periodos inicializada con datos!');
 
-        self::seedImportacion();
-        $this->command->info('Tabla de Importaciones inicializada con datos!');
+        //self::seedImportacion();
+        //$this->command->info('Tabla de Importaciones inicializada con datos!');
 
         self::seedPersona();
         $this->command->info('Tabla de Personas inicializada con datos!');
 
-        self::seedEmpleado_sin_recibo();
-        $this->command->info('Tabla de Empleados sin recibos inicializada con datos!');
+        //self::seedEmpleado_sin_recibo();
+        //$this->command->info('Tabla de Empleados sin recibos inicializada con datos!');
 
-        self::seedRecibo();
-        $this->command->info('Tabla de Recibos inicializada con datos!');
+        //self::seedRecibo();
+        //$this->command->info('Tabla de Recibos inicializada con datos!');
 
-        self::seedAuditoria();
-        $this->command->info('Tabla de Auditoria inicializada con datos!');
+        //self::seedAuditoria();
+        //$this->command->info('Tabla de Auditoria inicializada con datos!');
 
-        self::seedFirma_empresa();
-        $this->command->info('Tabla de Firma Empresa inicializada con datos!');
+        //self::seedFirma_empresa();
+        //$this->command->info('Tabla de Firma Empresa inicializada con datos!');
     }
      private function seedRol()
     {
     	DB::table('roles')->delete();
 
-    	foreach( $this->arrayRoles as $roles) 
+    	foreach( $this->arrayRoles as $roles)
     	{
 	    $p = new Rol;
 	    $p->id_rol = $roles['id_rol'];
@@ -74,7 +74,7 @@ class DatabaseSeeder extends Seeder
     {
     	DB::table('users')->delete();
 
-        foreach( $this->arrayUsers as $users) 
+        foreach( $this->arrayUsers as $users)
         {
         $p = new User;
         $p->id = $users['id'];
@@ -89,7 +89,7 @@ class DatabaseSeeder extends Seeder
     {
     	DB::table('grupos_recibos')->delete();
 
-        foreach( $this->arrayGrupos_recibos as $grupos_recibos) 
+        foreach( $this->arrayGrupos_recibos as $grupos_recibos)
         {
         $p = new Grupo_recibo;
         $p->id_grupo = $grupos_recibos['id_grupo'];
@@ -113,7 +113,7 @@ class DatabaseSeeder extends Seeder
     {
     	DB::table('estado_recibos')->delete();
 
-        foreach( $this->arrayEstado_recibos as $estado_recibos) 
+        foreach( $this->arrayEstado_recibos as $estado_recibos)
         {
         $p = new Estado_Recibo;
         $p->ubicacion_recibo = $estado_recibos['ubicacion_recibo'];
@@ -125,7 +125,7 @@ class DatabaseSeeder extends Seeder
     {
     	DB::table('periodos')->delete();
 
-        foreach( $this->arrayPeriodos as $periodos) 
+        foreach( $this->arrayPeriodos as $periodos)
         {
         $p = new Periodo;
         $p->estado_periodo = $periodos['estado_periodo'];
@@ -138,7 +138,7 @@ class DatabaseSeeder extends Seeder
     {
     	DB::table('importaciones')->delete();
 
-        foreach( $this->arrayImportaciones as $importaciones) 
+        foreach( $this->arrayImportaciones as $importaciones)
         {
         $p = new Importacion;
         $p->id_importacion = $importaciones['id_importacion'];
@@ -154,7 +154,7 @@ class DatabaseSeeder extends Seeder
     {
     	DB::table('personas')->delete();
 
-        foreach( $this->arrayPersonas as $personas) 
+        foreach( $this->arrayPersonas as $personas)
         {
         $p = new Persona;
         $p->cedula = $personas['cedula'];
@@ -177,7 +177,7 @@ class DatabaseSeeder extends Seeder
     {
     	DB::table('empleados_sin_recibos')->delete();
 
-        foreach( $this->arrayEmpleados_sin_recibos as $empleados_sin_recibos) 
+        foreach( $this->arrayEmpleados_sin_recibos as $empleados_sin_recibos)
         {
         $p = new Empleado_sin_recibo;
         $p->id_emp_sin_rec = $empleados_sin_recibos['id_emp_sin_rec'];
@@ -190,7 +190,7 @@ class DatabaseSeeder extends Seeder
     {
     	DB::table('recibos')->delete();
 
-        foreach( $this->arrayRecibos as $recibos) 
+        foreach( $this->arrayRecibos as $recibos)
         {
         $p = new Recibo;
         $p->id_recibo = $recibos['id_recibo'];
@@ -204,7 +204,7 @@ class DatabaseSeeder extends Seeder
     {
     	DB::table('auditorias')->delete();
 
-        foreach( $this->arrayAuditorias as $auditorias) 
+        foreach( $this->arrayAuditorias as $auditorias)
         {
         $p = new Auditoria;
         $p->fecha_hora = $auditorias['fecha_hora'];
@@ -220,7 +220,7 @@ class DatabaseSeeder extends Seeder
     {
     	DB::table('firma_empresa')->delete();
 
-        foreach( $this->arrayFirma_empresas as $firma_empresas) 
+        foreach( $this->arrayFirma_empresas as $firma_empresas)
         {
         $p = new Firma_empresa;
         $p->cedula = $firma_empresas['cedula'];
@@ -229,35 +229,31 @@ class DatabaseSeeder extends Seeder
         }
     }
 
-    private $arrayRoles = 
+    private $arrayRoles =
     array(
 		array(
-			'id_rol' => 0,
-			'rol' => 'sin rol'
-			),
-		array(
 			'id_rol' => 1,
-			'rol' => 'empleado'
+			'rol' => 'Empleado'
 			),
 		array(
 			'id_rol' => 2,
-			'rol' => 'rrhh - empleado'
+			'rol' => 'RRHH/Empleado'
 			),
 		array(
 			'id_rol' => 3,
-			'rol' => 'empresa 0'
+			'rol' => 'Empresa'
 			),
 		array(
 			'id_rol' => 4,
-			'rol' => 'empresa 1 - empleado'
+			'rol' => 'Empresa/Empleado'
 			),
 		array(
 			'id_rol' => 5,
-			'rol' => 'oficial de seguridad - empleado'
+			'rol' => 'Oficial de Seguridad/Empleado'
 			)
 	);
 
-    private $arrayUsers = 
+    private $arrayUsers =
     array(
         array(
             'id'=>'1',
@@ -265,7 +261,6 @@ class DatabaseSeeder extends Seeder
             'email' => 'a@a.c',
             'status'=>'1',
             'password' => '$2y$10$bsZ1EpQwakjKIPlXUEbQwe.x2MusZu5jjgvo7yy80IdyPaH9tIBey',
-            
             ),
         array(
              'id'=>'2',
@@ -273,7 +268,6 @@ class DatabaseSeeder extends Seeder
             'email' => 'b@b.c',
              'status'=>'1',
             'password' => '$2y$10$bsZ1EpQwakjKIPlXUEbQwe.x2MusZu5jjgvo7yy80IdyPaH9tIBey',
-          
             ),
         array(
              'id'=>'3',
@@ -281,7 +275,6 @@ class DatabaseSeeder extends Seeder
             'email' => 'c@c.c',
              'status'=>'1',
             'password' => '$2y$10$bsZ1EpQwakjKIPlXUEbQwe.x2MusZu5jjgvo7yy80IdyPaH9tIBey',
-         
             ),
         array(
              'id'=>'4',
@@ -289,15 +282,13 @@ class DatabaseSeeder extends Seeder
             'email' => 'd@d.c',
              'status'=>'1',
             'password' => '$2y$10$bsZ1EpQwakjKIPlXUEbQwe.x2MusZu5jjgvo7yy80IdyPaH9tIBey',
-           
-            ),
+            )/*,
         array(
              'id'=>'5',
             'name' => 'EEEE',
             'email' => 'e@e.c',
              'status'=>'1',
             'password' => '$2y$10$bsZ1EpQwakjKIPlXUEbQwe.x2MusZu5jjgvo7yy80IdyPaH9tIBey',
-           
             ),
         array(
              'id'=>'6',
@@ -305,10 +296,9 @@ class DatabaseSeeder extends Seeder
             'email' => 'f@f.c',
              'status'=>'1',
             'password' => '$2y$10$bsZ1EpQwakjKIPlXUEbQwe.x2MusZu5jjgvo7yy80IdyPaH9tIBey',
-          
-            )
+            )*/
     );
-    private $arrayGrupos_recibos = 
+    private $arrayGrupos_recibos =
     array(
         array(
             'id_grupo' => '1',
@@ -324,8 +314,8 @@ class DatabaseSeeder extends Seeder
             'set' => '1',
             'oct' => '1',
             'nov' => '1',
-            'dic' => '2'
-            ),
+            'dic' => '1'
+            )/*,
 
         array(
             'id_grupo' => '2',
@@ -342,9 +332,9 @@ class DatabaseSeeder extends Seeder
             'oct' => '2',
             'nov' => '2',
             'dic' => '2'
-            )
+            )*/
     );
-    private $arrayEstado_recibos = 
+    private $arrayEstado_recibos =
     array(
         array(
             'id_estado_recibo' => '1',
@@ -361,27 +351,26 @@ class DatabaseSeeder extends Seeder
             'ubicacion_recibo' => 'c:/recibos/firmados_empresa_empleados',
             'estado' => 'firmado_empresa_empleado'
             )
-        
     );
-    private $arrayPeriodos = 
+    private $arrayPeriodos =
     array(
         array(
             'estado_periodo' => '1',
             'mes' => '01',
-            'año' => '2018'
+            'año' => '2019'
             ),
         array(
             'estado_periodo' => '0',
             'mes' => '02',
-            'año' => '2018'
+            'año' => '2019'
             ),
         array(
             'estado_periodo' => '0',
             'mes' => '03',
-            'año' => '2018'
+            'año' => '2019'
             ),
     );
-    private $arrayImportaciones = 
+    private $arrayImportaciones =
     array(
         array(
             'id_importacion' => '1',
@@ -408,7 +397,7 @@ class DatabaseSeeder extends Seeder
             'rec_con_err' => '0'
             )
     );
-    private $arrayPersonas = 
+    private $arrayPersonas =
     array(
         array(
             'cedula' => '1000000',
@@ -469,7 +458,7 @@ class DatabaseSeeder extends Seeder
             'correo' => 'd@d.c',
             'estado' => '1',
             'obs' => 'ninguna'
-            ),
+            )/*,
         array(
             'cedula' => '4444444',
             'id_usuario' => '5',
@@ -499,9 +488,9 @@ class DatabaseSeeder extends Seeder
             'correo' => 'f@f.c',
             'estado' => '1',
             'obs' => 'ninguna'
-            )
+            )*/
     );
-    private $arrayEmpleados_sin_recibos = 
+    private $arrayEmpleados_sin_recibos =
     array(
         array(
             'id_emp_sin_rec' => '1',
@@ -519,7 +508,7 @@ class DatabaseSeeder extends Seeder
             'id_periodo' => '3'
             )
     );
-    private $arrayRecibos = 
+    private $arrayRecibos =
     array(
         array(
             'id_recibo' => '1111111-0118',
@@ -594,7 +583,7 @@ class DatabaseSeeder extends Seeder
             'id_periodo' => '3'
             )
     );
-    private $arrayAuditorias = 
+    private $arrayAuditorias =
     array(
         array(
             'fecha_hora' => '2018-01-01',
@@ -605,7 +594,7 @@ class DatabaseSeeder extends Seeder
             'descripcion' => 'ingreso al sistema'
             )
     );
-    private $arrayFirma_empresas = 
+    private $arrayFirma_empresas =
     array(
         array(
             'cedula' => '1000000',
@@ -658,7 +647,7 @@ class DatabaseSeeder extends Seeder
     );
 /*
 formato para vector de carga de datos semilla
-	private $arrayRoles = 
+	private $arrayRoles =
     array(
 		array(
 			'colum_tabla1' => 'dato',

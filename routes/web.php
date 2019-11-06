@@ -13,7 +13,7 @@ Route::get('/sin_rol', function()
     return view('error');
 });
 
-Route::group(['middleware' => 'auth'], function() 
+Route::group(['middleware' => 'auth'], function()
 {
 //Salir del Sistema
 	Route::get('/salir','HomeController@getSalirSistema');
@@ -74,14 +74,17 @@ Route::group(['middleware' => 'auth'], function()
 
 	Route::get('rrhh/importar_recibos', 'RrhhControlador@getImportarRecibos');
 	Route::post('rrhh/importar_recibos', 'RrhhControlador@getRecibosImportados');
-	
+
 	Route::get('rrhh/empleados_sin_recibos', 'RrhhControlador@getEmpleadosSinRecibos');
+	Route::get('rrhh/ver_empleados_sin_recibos/{id}','RrhhControlador@getVerEmpleadosSinRecibos');
+
 	Route::get('rrhh/corregir_recibos', 'RrhhControlador@getCorregirRecibos');
+	Route::post('rrhh/corregir_recibos', 'RrhhControlador@postCorregirRecibos');
 
 	Route::get('rrhh/grupos_recibos', 'RrhhControlador@getGruposRecibos');
 	Route::post('rrhh/grupos_recibos', 'RrhhControlador@postCrearGrupoRecibo');
 
-	
+
 	Route::get('rrhh/pendientes_firma_empresa', 'RrhhControlador@getPendientesFirmaEmpresa');
 	Route::get('rrhh/ver_recibo/{id}', 'RrhhControlador@getVerRecibo');
 
@@ -101,7 +104,7 @@ Route::group(['middleware' => 'auth'], function()
 	Route::get('rrhh/cambiar_contraseña', 'RrhhControlador@getCambiarContraseña');
 	Route::post('rrhh/update_password', 'RrhhControlador@postUpdatePassword');
 
- 
+
 
 //Sección rutas oficial----------------------------------------------
 
@@ -129,7 +132,7 @@ Route::group(['middleware' => 'auth'], function()
 	Route::get('oficial/empresa_activar', 'OficialControlador@getEmpresaActivado');
 	Route::get('oficial/alta_rrhh', 'OficialControlador@getAltaRrhh');
 	Route::get('oficial/baja_rrhh', 'OficialControlador@getBajaRrhh');
-	
+
 	Route::get('oficial/busqueda_rrhh', 'OficialControlador@getBusquedaRrhh');
 	Route::get('oficial/alta_empresa', 'OficialControlador@getAltaEmpresa');
 	Route::get('oficial/baja_empresa', 'OficialControlador@getBajaEmpresa');
@@ -158,7 +161,7 @@ Route::group(['middleware' => 'auth'], function()
 	Route::post('empleado/update_password', 'EmpleadoControlador@postUpdatePassword');
 
 	Route::get('empleado/contactar_rrhh', 'EmpleadoControlador@getContactarRrhh');
-	
+
 
 });
 

@@ -4,18 +4,18 @@
 	@include('layouts.menu_rrhh')
 	<h3 align="center">SELECCIONAR AÑO DEL INFORME</h1>
 	<p align="center"><strong>Usuario: </strong> {{ Auth::user()->name }}, esta conectado con el Rol de <strong>Recursos Humanos</strong></p>
-	
+
 	@if(isset($boton))
-	<form action="/rrhh/resultado_informes_rrhh" method="POST">	
+	<form action="/rrhh/resultado_informes_rrhh" method="POST">
 	{{csrf_field()}}
 
 	<div align="center" id="prueba">
 
-	<table style="width:20%" >		
-			<tr> 
+	<table style="width:20%" >
+			<tr>
 				<th>Año:</th>
 				<td>
-					<select class="form-control" id="año" name="año">
+					<select class="form-control" id="año" name="año" maxlength="4" required>
 						@foreach($años as $año)
 				            <option value="{{$año->año}}">
 				                {{$año->año}}
@@ -25,6 +25,7 @@
 				</td>
 			</tr>
 	</table>
+	<br>
 	<button class="btn btn-primary" type="submit">Ver Informe</button>
 	@endif
 	</div>

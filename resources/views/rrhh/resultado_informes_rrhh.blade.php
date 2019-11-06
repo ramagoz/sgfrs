@@ -5,7 +5,7 @@
 	<h3 align="center">INFORMES PARA RRHH</h1>
 	<p align="center"><strong>Usuario: </strong> {{ Auth::user()->name }}, esta conectado con el Rol de <strong>Recursos Humanos</strong></p>
 	<div align="center">
-	<table id="example" class="display" style="width:90%" align="center" border="1">
+	<table id="example" class="display" style="width:80%" align="center" border="1">
 		<thead>
 		<tr><th>Año</th><th>Mes</th><th>Total Recibos</th><th>Firmados Empresa</th><th>Pendientes Firma Empresa</th><th>Firmados Empleados</th><th>Pendientes Firma Empleados</th><th>Estado Periodo</th></tr>
 		</thead>
@@ -28,8 +28,8 @@
 					 	@endif
 					</td>
 				</tr>
-				
-				
+
+
 				<tr>
 					<td>{{ $año }}</td>
 					<td>Febrero</td>
