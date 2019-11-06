@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('content')
+
 {{-- Dentro de section va el contenido de la vista--}}
 	@include('layouts.menu_rrhh')
 	<h3 align="center">MODIFICACION DE DATOS DEL EMPLEADO</h1>
@@ -14,11 +15,11 @@
     	@foreach($persona as $persona)
           <!--Primera columna de Carga de Datos-->
 		  <div class="col-5">
-				
+
 				<div class="form-group row">
                 		<label for="cedula" class="col-lg-2 col-form-label">Cédula:</label>
                 			<div class="col-lg-10">
-                  				<input class="form-control" id="cedula" name="cedula" type="text" value="{{$persona->cedula}}" readonly> 
+                  				<input class="form-control" id="cedula" name="cedula" type="text" value="{{$persona->cedula}}" readonly>
                 			</div>
               	</div>
               	<div class="form-group row">
@@ -51,7 +52,7 @@
                   				<input class="form-control" id="dpto" name="dpto" type="text" value="{{$persona->dpto}}">
                 			</div>
               	</div>
-				    
+
 		  </div>
 		<!--Segunda columna de Carga de Datos -->
     	  <div class="col-md-5 col-md-offset-5">
@@ -78,8 +79,8 @@
                         <option value="1" >Activo</option>
                         <option value="0" selected="true">Inactivo</option>
                         @endif
-                        
-                        
+
+
 			        			</select>
                 			</div>
               	</div>-->
@@ -95,7 +96,7 @@
 						            				 <option value="{{$grupo->id_grupo}}">{{$grupo->nombre_grupo}}</option>
 						            			@endif
 						            		@endforeach
-						         
+
 						        </select>
                 			</div>
               	 </div>

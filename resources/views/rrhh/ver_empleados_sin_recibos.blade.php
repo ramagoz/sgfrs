@@ -5,17 +5,19 @@
 	<h3 align="center">EMPLEADOS CON RECIBOS PENDIENTES</h1>
 	<p align="center"><strong>Usuario: </strong> {{ Auth::user()->name }}, esta conectado con el Rol de <strong>Recursos Humanos</strong></p>
 
-	<table id="example" style="width:20%" align="center" border="2">
+	<table id="example" style="width:20%" align="center" border="2" class="table">
 		<thead>
-		<tr><th>Año</th><th>Mes</th><th>Cedula</th></tr>
+		<tr><th scope="col">Cedula</th><th scope="col">Nombres</th><th scope="col">Apellidos</th><th scope="col">Mes</th><th>Año</th></tr>
 		</thead>
 
 	@foreach ($datos as $dato)
 		<tbody>
 		<tr>
-			<td>{{  $año }}</td>
-			<td>{{  $mes }}</td>
 			<td>{{ $dato->cedula }}</td>
+			<td>{{$dato->nombres}}</td>
+			<td>{{$dato->apellidos}}</td>
+			<td>{{  $mes }}</td>
+			<td>{{  $año }}</td>
 		</tr>
 		</tbody>
 	@endforeach

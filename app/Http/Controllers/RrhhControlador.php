@@ -685,6 +685,7 @@ class RrhhControlador extends Controller
     public function getVerEmpleadosSinRecibos($id)
     {
         $datos = DB::table('empleados_sin_recibos')
+        ->join('personas','empleados_sin_recibos.cedula','=','personas.cedula')
         ->where('id_periodo',$id)
         ->paginate(12);
 
