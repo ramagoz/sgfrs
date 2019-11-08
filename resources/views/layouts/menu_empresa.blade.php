@@ -1,8 +1,7 @@
-
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="/empresa">Inicio</a>
+      <a class="navbar-brand" href="/empresa/inicio">Inicio</a>
     </div>
     <ul class="nav navbar-nav">
         <li><a href="/empresa/busqueda_oficial">ABM Oficial de Seguridad</a></li>

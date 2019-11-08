@@ -13,6 +13,7 @@ use App\Empleado_sin_recibo;
 use App\Recibo;
 use App\Auditoria;
 use App\Firma_empresa;
+use App\Recibo_con_error;
 
 class DatabaseSeeder extends Seeder
 {

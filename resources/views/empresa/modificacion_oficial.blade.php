@@ -2,9 +2,8 @@
 @section('content')
 {{-- Dentro de section va el contenido de la vista--}}
 	@include('layouts.menu_empresa')
-
+  <p align="center"><strong>Usuario: </strong> {{ Auth::user()->name }}, esta conectado con el Rol de <strong>Empresa</strong></p>
 	<h3 align="center">MOFICIACION DE DATOS OFICIAL DE SEGURIDAD</h1>
-	<p align="center"><strong>Usuario: </strong> {{ Auth::user()->name }}, esta conectado con el Rol de <strong>Empresa</strong></p>
 
   <form action="{{url('/empresa/oficial_modificado')}}" id="formulario-form" method="get"  role="form"> {{ csrf_field() }}
     <div class="row justify-content-md-center">
@@ -13,37 +12,37 @@
 	  <div class="col-5">
 			<div class="form-group row">
         <label for="cedula" class="col-lg-2 col-form-label">Cédula:</label>
-        <div class="col-lg-10">
+        <div class="col-lg-5">
         <input class="form-control" id="cedula" name="cedula" type="text" value="{{$persona->cedula}}" readonly>
         </div>
       </div>
       	<div class="form-group row">
         		<label for="nombre" class="col-lg-2 col-form-label">Nombres:</label>
-        			<div class="col-lg-10">
+        			<div class="col-lg-5">
           				<input class="form-control" id="nombre" name="nombre" type="text" value="{{$persona->nombres}}">
         			</div>
       	</div>
       	<div class="form-group row">
         		<label for="apellido" class="col-lg-2 col-form-label">Apellidos:</label>
-        			<div class="col-lg-10">
+        			<div class="col-lg-5">
           				<input class="form-control" id="apellido" name="apellido" type="text" value="{{$persona->apellidos}}">
         			</div>
       	</div>
       	<div class="form-group row">
         		<label for="telefono" class="col-lg-2 col-form-label">Teléfono:</label>
-        			<div class="col-lg-10">
+        			<div class="col-lg-5">
           				<input class="form-control" id="telefono" name="telefono" type="text" value="{{$persona->tel}}">
         			</div>
       	</div>
        	<div class="form-group row">
           		<label for="celular" class="col-lg-2 col-form-label">Celular:</label>
-          			<div class="col-lg-10">
+          			<div class="col-lg-5">
             				<input class="form-control" id="celular" name="celular" type="text" value="{{$persona->cel}}">
           			</div>
         	</div>
         	<div class="form-group row">
           		<label for="dpto" class="col-lg-2 col-form-label">Dpto:</label>
-          			<div class="col-lg-10">
+          			<div class="col-lg-5">
             				<input class="form-control" id="dpto" name="dpto" type="text" value="{{$persona->dpto}}">
           			</div>
         	</div>

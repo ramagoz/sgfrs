@@ -1,11 +1,10 @@
-
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
       <a class="navbar-brand" href="/oficial">Inicio</a>
     </div>
     <ul class="nav navbar-nav">
-        <li><a href="/oficial/busqueda_empres">ABM Empresa</a></li>
+        <li><a href="/oficial/busqueda_empresa">ABM Empresa</a></li>
         <li><a href="/oficial/busqueda_rrhh">ABM RRHH</a></li>
         <li><a href="/oficial/roles">Roles</a></li>
         <li><a href="/oficial/auditoria">Auditoria</a></li>

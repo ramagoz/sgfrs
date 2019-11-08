@@ -21,7 +21,7 @@ Route::group(['middleware' => 'auth'], function()
 //Sección de rol----------------------------------------------
 	Route::post('auth/rol_seleccionado', 'HomeController@postRolSeleccionado');
 //Sección rutas empresa----------------------------------------------
-	//Route::get('empresa', 'EmpresaControlador@getIndexEmpresa');
+	Route::get('empresa/inicio', 'EmpresaControlador@getIndexEmpresa');
 	Route::get('empresa', 'EmpresaControlador@getRecibosPendientesEmpresa');
 	Route::get('empresa/alta_oficial', 'EmpresaControlador@getAltaOficial');
 	Route::post('empresa/oficial_cargado', 'EmpresaControlador@postOficialCargado');
@@ -78,8 +78,9 @@ Route::group(['middleware' => 'auth'], function()
 	Route::get('rrhh/empleados_sin_recibos', 'RrhhControlador@getEmpleadosSinRecibos');
 	Route::get('rrhh/ver_empleados_sin_recibos/{id}','RrhhControlador@getVerEmpleadosSinRecibos');
 
-	Route::get('rrhh/corregir_recibos', 'RrhhControlador@getCorregirRecibos');
-	Route::post('rrhh/corregir_recibos', 'RrhhControlador@postCorregirRecibos');
+	Route::get('rrhh/lista_recibos', 'RrhhControlador@getListaRecibos');
+	Route::get('rrhh/ver_recibo_a_corregir/{id}', 'RrhhControlador@getVerReciboACorregir');
+	Route::post('rrhh/corregir_recibo', 'RrhhControlador@postCorregirRecibo');
 
 	Route::get('rrhh/grupos_recibos', 'RrhhControlador@getGruposRecibos');
 	Route::post('rrhh/grupos_recibos', 'RrhhControlador@postCrearGrupoRecibo');

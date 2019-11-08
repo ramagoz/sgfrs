@@ -19,7 +19,7 @@
 	<label>Ingresar ID del Recibo a corregir: </label>
 	<input type="text" name="id" id="id" size="15" minlength="11" maxlength="12" placeholder="Eje.: 1234567-0119" required>
 	<br>
-	<button type="sumibt" class="btn btn-primary">Corregir</button>
+	<button type="sumibt" class="btn btn-success">Corregir</button>
 </form>
 </div>
 

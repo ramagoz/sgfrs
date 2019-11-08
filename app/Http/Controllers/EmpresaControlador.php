@@ -41,7 +41,7 @@ class EmpresaControlador extends Controller
         echo $encrypted2;
         //$decrypted = Crypt::decryptString($encrypted);
         */
-    	return view('empresa.indexempresa');
+    	return view('empresa.inicio');
     }
 
     public function getRecuperarGrupo(request $request)

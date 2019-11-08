@@ -1,4 +1,3 @@
-
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
@@ -12,7 +11,7 @@
                     <li><a href="/rrhh/validar_recibos">Validar Recibos</a></li>
                     <li><a href="/rrhh/importar_recibos">Importar Recibos</a></li>
                     <li><a href="/rrhh/empleados_sin_recibos">Empleados sin Recibos</a></li>
-                    <li><a href="/rrhh/corregir_recibos">Corregir Recibos</a></li>
+                    <li><a href="/rrhh/lista_recibos">Corregir Recibos</a></li>
                 </ul>
         </li>
         <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Ver Recibos<span class="caret"></span></a>

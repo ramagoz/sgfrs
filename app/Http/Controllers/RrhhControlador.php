@@ -9,6 +9,7 @@ use App\Persona;
 use App\Recibo;
 use App\Auditoria;
 use App\Empleado_sin_recibo;
+use App\Recibo_con_error;
 use DB;
 use Illuminate\Http\Request;
 use DataTables;
@@ -708,11 +709,44 @@ class RrhhControlador extends Controller
         }
     }
 
-    public function getCorregirRecibos()
+    public function getListaRecibos()
     {
-        return view('rrhh.corregir_recibos');
+        $recibos = DB::table('recibos')
+        ->join('personas','personas.cedula','=','recibos.cedula')
+        ->paginate(10);
+
+        if ($recibos->count()==0)
+        {
+            return view('rrhh.lista_recibos')->with('error','No existe ningún recibo en el sistema');
+        }
+        else
+        {
+            return view('rrhh.lista_recibos')->with('recibos',$recibos);
+        }
     }
-    public function postCorregirRecibos(Request $request )
+    public function getVerReciboACorregir ($id)
+    {
+        $recibo = DB::table('recibos')
+        ->where('id_recibo',$id)
+        ->first();
+
+        switch ($recibo->id_estado_recibo)
+        {
+            case '1':
+                $url = "/recibos/pendientes/20".substr($id,-2,2)."/".substr($id,-4,2)."/".$id.".pdf";
+                return view('rrhh.ver_recibo_a_corregir',compact('id'),compact('url'));
+            break;
+            case '2':
+                $url = "/recibos/firmados_empresa/20".substr($id,-2,2)."/".substr($id,-4,2)."/".$id.".pdf";
+                return view('rrhh.ver_recibo_a_corregir',compact('id'),compact('url'));
+            break;
+            case '3':
+                $url = "/recibos/firmados_empresa_empleados/20".substr($id,-2,2)."/".substr($id,-4,2)."/".$id.".pdf";
+                return view('rrhh.ver_recibo_a_corregir',compact('id'),compact('url'));
+            break;
+        }
+    }
+    public function postCorregirRecibo(Request $request )
     {
         $consulta = DB::table('recibos')
         ->where('id_recibo',$request->id)
@@ -721,11 +755,12 @@ class RrhhControlador extends Controller
         foreach ($consulta as $dato)
         {
             $var = $dato->id_estado_recibo;
+            $cedula = $dato->cedula;
         }
         //var_dump($var);
         if ($consulta == '[]')
         {
-            return view('rrhh.corregir_recibos')->with('errormsj','No existe un recibo con este identidicador: '.$request->id);
+            return view('rrhh.ver_recibo_a_corregir')->with('error','No existe este recibo');
         }
         else
         {
@@ -744,9 +779,15 @@ class RrhhControlador extends Controller
                     break;
             }
 
+            $recibo_corregido = new Recibo_con_error();
+            $recibo_corregido->id_recibo = $request->id;
+            $recibo_corregido->cedula = $cedula;
+            $recibo_corregido->fecha_hora = date('Y-m-d H:i:s');
+            $recibo_corregido->save();
+
             DB::table('recibos')
             ->where('id_recibo',$request->id)
-            ->delete();//se puede crear un tabla de recibos corregidos
+            ->delete();
 
             return view('rrhh.corregir_recibos')->with('msj','El recibo fue corregido, favor importe un nuevo recibo con el mismo ID: '.$request->id);
         }

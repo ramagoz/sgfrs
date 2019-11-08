@@ -7,9 +7,6 @@
 
 <head>
         <link  href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>  
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
         <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
@@ -17,19 +14,19 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
         <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
         <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
-    
+
 		<style type="text/css">
 		  div.container {
-		        width: 70%;
+		        width: 90%;
 		    }
 		</style>
-    
+
 </head>
 
 <div class="container">
 <!--Estructura de columnas para Datatables-->
             <table class="table table-bordered" id="table">
-                
+
                <thead>
                   <tr>
                      <th>Id</th>
@@ -40,7 +37,7 @@
                      <th>Operación</th>
                      <th>Descripción</th>
                  </tr>
-<!--Javascript de Datatables-->                
+<!--Javascript de Datatables-->
 <script type="text/javascript">
      $(document).ready(function ()  {
      var datatable = $('#table').DataTable
@@ -84,7 +81,7 @@
                         { data: 'fecha_hora', name: 'fecha_hora' },
                         { data: 'cedula', name: 'cedula'},
                         { data: 'rol', name: 'rol'},
-                        { data: 'ip', name: 'ip'},              
+                        { data: 'ip', name: 'ip'},
                         { data: 'operacion', name: 'operacion'},
                         { data: 'descripcion', name: 'descripcion'},
                  ]

@@ -27,20 +27,20 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    
+
 
     public function index()
     {
         $id = Auth::user()->id;
         $roles= DB::table('personas')->where('id_usuario',$id)->get()->toArray();
-        foreach ($roles as $role) 
+        foreach ($roles as $role)
         {
             Session::put('rol_usuario', $role->id_rol);
             Session::put('cedula_usuario', $role->cedula);
         }
-         if (Auth::check()) 
+         if (Auth::check())
         {
-               switch (session()->get('rol_usuario')) 
+               switch (session()->get('rol_usuario'))
                 {
                 case 0:
                     return redirect('sin_rol');
@@ -118,8 +118,8 @@ class HomeController extends Controller
         }
     }
     public function postRolSeleccionado(Request $request)
-    { 
-        switch ($request->rol_seleccionado) 
+    {
+        switch ($request->rol_seleccionado)
         {
             case 'empleado':
                 //registro de auditoria
