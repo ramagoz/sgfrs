@@ -353,51 +353,8 @@ class RrhhControlador extends Controller
                                 //fin codigo auditoria
                                 $periodos = DB::table('periodos')->select('mes','año','estado_periodo')->paginate(6);
 
-                                //inicio codigo control de empleados sin recibos
-                                $Personas = DB::table('personas')
-                                ->where('id_rol', '1')
-                                ->orWhere('id_rol', '2')
-                                ->orWhere('id_rol', '4')
-                                ->orWhere('id_rol', '5')
-                                ->get();
-
-                                $Periodos = DB::table('periodos')
-                                ->where('estado_periodo',0)
-                                ->get();
-
-                                foreach ($Personas as $persona)
-                                {
-                                    foreach ($Periodos as $periodo)
-                                    {
-
-                                        $consulta1 = DB::table('recibos')
-                                        ->where('id_periodo',$periodo->id_periodo)
-                                        ->where('id_recibo',$persona->cedula.$periodo->mes.substr($periodo->año,2))
-                                        ->get();//$periodo->mes) substr($periodo->año
-                                        //echo $periodo->mes.substr($periodo->año,2);
-                                        //echo "<br>";
-                                        if ($consulta1 =='[]')//si esta en blanco le falta un recibo a la persona
-                                        {
-                                            $consulta2 =DB::table('empleados_sin_recibos')
-                                            ->where('cedula',$persona->cedula)
-                                            ->where('id_periodo',$periodo->id_periodo)
-                                            ->get();
-                                            if ($consulta2 =='[]')//si esta en blanco todavía no figura la persona en la tabla de personas sin recibos para este periodo en especifico y se carga en la BD
-                                            {
-                                                $empleados_sin_recibos = new Empleado_sin_recibo();
-                                                $empleados_sin_recibos->cedula = $persona->cedula;
-                                                $empleados_sin_recibos->id_periodo = $periodo->id_periodo;
-                                                $empleados_sin_recibos->save();
-                                            }
-                                        }else //si la persona ya tiene un recibo para ese periodo se eliminan sus datos de la tabla de empleados sin recibos
-                                        {
-                                            DB::table('empleados_sin_recibos')
-                                            ->where('cedula',$persona->cedula)
-                                            ->delete();
-                                        }
-                                    }
-                                }
-                            //fin codigo control de empleados sin recibos
+                                //esta funcion controla si existen empleados sin recibos para actualizarlos en la BD
+                                $funcion = (new FuncionesControlador)->ControlEmpleadosSinRecibos();
 
                                 return view('rrhh.crear_nuevo_periodo')->with('msj','Periodo creado correctamente! Mes: '.$request->mes.'  -   Año: '.$request->año)->with('periodos',$periodos)->with('boton','boton');
                             }
@@ -617,51 +574,8 @@ class RrhhControlador extends Controller
             }
             $resultado[5] = $e; //aqui se guardan la cantidad de archivos que fueron procesados
 
-            //inicio codigo control de empleados sin recibos
-                $Personas = DB::table('personas')
-                ->where('id_rol', '1')
-                ->orWhere('id_rol', '2')
-                ->orWhere('id_rol', '4')
-                ->orWhere('id_rol', '5')
-                ->get();
-
-                $Periodos = DB::table('periodos')
-                ->where('estado_periodo',0)
-                ->get();
-
-                foreach ($Personas as $persona)
-                {
-                    foreach ($Periodos as $periodo)
-                    {
-
-                        $consulta1 = DB::table('recibos')
-                        ->where('id_periodo',$periodo->id_periodo)
-                        ->where('id_recibo',$persona->cedula.$periodo->mes.substr($periodo->año,2))
-                        ->get();//$periodo->mes) substr($periodo->año
-                        //echo $periodo->mes.substr($periodo->año,2);
-                        //echo "<br>";
-                        if ($consulta1 =='[]')//si esta en blanco le falta un recibo a la persona
-                        {
-                            $consulta2 =DB::table('empleados_sin_recibos')
-                            ->where('cedula',$persona->cedula)
-                            ->where('id_periodo',$periodo->id_periodo)
-                            ->get();
-                            if ($consulta2 =='[]')//si esta en blanco todavía no figura la persona en la tabla de personas sin recibos para este periodo en especifico y se carga en la BD
-                            {
-                                $empleados_sin_recibos = new Empleado_sin_recibo();
-                                $empleados_sin_recibos->cedula = $persona->cedula;
-                                $empleados_sin_recibos->id_periodo = $periodo->id_periodo;
-                                $empleados_sin_recibos->save();
-                            }
-                        }else //si la persona ya tiene un recibo para ese periodo se eliminan sus datos de la tabla de empleados sin recibos
-                        {
-                            DB::table('empleados_sin_recibos')
-                            ->where('cedula',$persona->cedula)
-                            ->delete();
-                        }
-                    }
-                }
-            //fin codigo control de empleados sin recibos
+            //esta funcion controla si existen empleados sin recibos para actualizarlos en la BD
+            $funcion = (new FuncionesControlador)->ControlEmpleadosSinRecibos();
 
             return view('rrhh.importar_recibos')->with('msj','Se procedio correctamente con la importación del periodo seleccionado. Mes: '.$request->mes.'  -  Año: '.$request->año)->with('resultados', $resultado)->with('mes',$request->mes)->with('año',$request->año); //se envia los resultados de la validacion a la vista
         }
@@ -764,24 +678,31 @@ class RrhhControlador extends Controller
         }
         else
         {
+            $id_nuevo = $request->id.'-'.date('dmY-His');
+
+            $nuevo_nombre_recibo = $id_nuevo.'.pdf';
+            
             $recibo = $request->id.'.pdf';
+            
             switch ($var)
             {
                 case 1:
                      rename("C:/xampp/htdocs/sgfrs/public/recibos/pendientes/20".substr($request->id,-2,2)."/".substr($request->id,-4,2)."/".$recibo,
-                     "C:/xampp/htdocs/sgfrs/public/recibos/recibos_corregidos/20".substr($request->id,-2,2)."/".substr($request->id,-4,2)."/".$recibo);
+                     "C:/xampp/htdocs/sgfrs/public/recibos/recibos_corregidos/20".substr($request->id,-2,2)."/".substr($request->id,-4,2)."/".$nuevo_nombre_recibo);
                     break;
                 case 2:
-                    rename("C:/xampp/htdocs/sgfrs/public/recibos/firmados_empresa/20".substr($request->id,-2,2)."/".substr($request->id,-4,2)."/".$recibo, "C:/xampp/htdocs/sgfrs/public/recibos/recibos_corregidos/20".substr($request->id,-2,2)."/".substr($request->id,-4,2)."/".$recibo);
+                    rename("C:/xampp/htdocs/sgfrs/public/recibos/firmados_empresa/20".substr($request->id,-2,2)."/".substr($request->id,-4,2)."/".$recibo, "C:/xampp/htdocs/sgfrs/public/recibos/recibos_corregidos/20".substr($request->id,-2,2)."/".substr($request->id,-4,2)."/".$nuevo_nombre_recibo);
                     break;
                 case 3:
-                    rename("C:/xampp/htdocs/sgfrs/public/recibos/firmados_empresa_empleados/20".substr($request->id,-2,2)."/".substr($request->id,-4,2)."/".$recibo, "C:/xampp/htdocs/sgfrs/public/recibos/recibos_corregidos/20".substr($request->id,-2,2)."/".substr($request->id,-4,2)."/".$recibo);
+                    rename("C:/xampp/htdocs/sgfrs/public/recibos/firmados_empresa_empleados/20".substr($request->id,-2,2)."/".substr($request->id,-4,2)."/".$recibo, "C:/xampp/htdocs/sgfrs/public/recibos/recibos_corregidos/20".substr($request->id,-2,2)."/".substr($request->id,-4,2)."/".$nuevo_nombre_recibo);
                     break;
             }
 
             $recibo_corregido = new Recibo_con_error();
+            $recibo_corregido->id = $id_nuevo;
             $recibo_corregido->id_recibo = $request->id;
             $recibo_corregido->cedula = $cedula;
+            $recibo_corregido->motivo_error = $request->motivo;
             $recibo_corregido->fecha_hora = date('Y-m-d H:i:s');
             $recibo_corregido->save();
 
@@ -789,8 +710,51 @@ class RrhhControlador extends Controller
             ->where('id_recibo',$request->id)
             ->delete();
 
-            return view('rrhh.corregir_recibos')->with('msj','El recibo fue corregido, favor importe un nuevo recibo con el mismo ID: '.$request->id);
+            $recibos = DB::table('recibos')
+            ->join('personas','personas.cedula','=','recibos.cedula')
+            ->paginate(10);
+
+            //esta funcion controla si existen empleados sin recibos para actualizarlos en la BD
+            $funcion = (new FuncionesControlador)->ControlEmpleadosSinRecibos();
+
+
+            if ($recibos->count()==0)
+            {
+                return view('rrhh.lista_recibos')->with('msj','El recibo fue corregido, favor importe un nuevo recibo con el mismo ID: '.$request->id);
+            }
+            else
+            {
+                return view('rrhh.lista_recibos')->with('recibos',$recibos)->with('msj','El recibo fue corregido, favor importe un nuevo recibo con el mismo ID: '.$request->id);
+            }
         }
+    }
+    public function getVerHistorial()
+    {
+        $recibos = DB::table('recibos_con_errores')
+        ->join('personas','personas.cedula','=','recibos_con_errores.cedula')
+        ->paginate(10);
+
+        //dd($recibos);
+        if ($recibos->count()==0) 
+        {
+            return view("rrhh.historial_recibos_corregidos")->with('error','No existen recibos corregidos');
+        }else
+        {
+            return view("rrhh.historial_recibos_corregidos")->with('recibos',$recibos);
+        }   
+
+    }
+    
+    public function getVerReciboCorregido($id)
+    {
+     $recibo = DB::table('recibos_con_errores')
+    ->where('id',$id)
+    ->first();
+    
+    $url = "/recibos/recibos_corregidos/20".substr($recibo->id_recibo,-2,2)."/".substr($recibo->id_recibo,-4,2)."/".$id.".pdf";
+
+    return view('rrhh.ver_recibo_corregido',compact('url'));
+    
     }
 
     public function getGruposRecibos()
@@ -799,6 +763,7 @@ class RrhhControlador extends Controller
 
         return view('rrhh.grupos_recibos')->with('grupos', $grupos);
     }
+
     public function postCrearGrupoRecibo(Request $request)
     {
         $consulta = DB::table('grupos_recibos')->where('nombre_grupo',$request->nombre_grupo)->get();

@@ -12,6 +12,7 @@
                     <li><a href="/rrhh/importar_recibos">Importar Recibos</a></li>
                     <li><a href="/rrhh/empleados_sin_recibos">Empleados sin Recibos</a></li>
                     <li><a href="/rrhh/lista_recibos">Corregir Recibos</a></li>
+                    <li><a href="/rrhh/historial_recibos_corregidos">Historial Recibos Corregidos</a></li>
                 </ul>
         </li>
         <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Ver Recibos<span class="caret"></span></a>

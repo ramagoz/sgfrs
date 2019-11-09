@@ -80,7 +80,9 @@ Route::group(['middleware' => 'auth'], function()
 
 	Route::get('rrhh/lista_recibos', 'RrhhControlador@getListaRecibos');
 	Route::get('rrhh/ver_recibo_a_corregir/{id}', 'RrhhControlador@getVerReciboACorregir');
-	Route::post('rrhh/corregir_recibo', 'RrhhControlador@postCorregirRecibo');
+	Route::post('rrhh/lista_recibos', 'RrhhControlador@postCorregirRecibo');
+	Route::get('rrhh/historial_recibos_corregidos', 'RrhhControlador@getVerHistorial');
+	Route::get('rrhh/ver_recibo_corregido/{id}', 'RrhhControlador@getVerReciboCorregido');
 
 	Route::get('rrhh/grupos_recibos', 'RrhhControlador@getGruposRecibos');
 	Route::post('rrhh/grupos_recibos', 'RrhhControlador@postCrearGrupoRecibo');
