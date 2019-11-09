@@ -46,6 +46,7 @@ Route::group(['middleware' => 'auth'], function()
 
 	Route::get('empresa/informes_empresa', 'EmpresaControlador@getInformesEmpresa');
 	Route::post('empresa/resultado_informes_empresa', 'EmpresaControlador@postVerInformesEmpresa');
+	Route::get('empresa/pdf/{id}', 'RrhhControlador@getPdf');
 
 	Route::get('empresa/cambiar_contraseña', 'EmpresaControlador@getCambiarContraseña');
 	Route::post('empresa/update_password', 'EmpresaControlador@postUpdatePassword');
@@ -102,6 +103,7 @@ Route::group(['middleware' => 'auth'], function()
 
 	Route::get('rrhh/informes_rrhh', 'RrhhControlador@getInformesRrhh');
 	Route::post('rrhh/resultado_informes_rrhh', 'RrhhControlador@postVerInformesRrhh');
+	Route::get('rrhh/pdf/{id}', 'RrhhControlador@getPdf');
 
 	Route::get('rrhh/contactar_rrhh', 'RrhhControlador@getContactarRrhh');
 	Route::get('rrhh/cambiar_contraseña', 'RrhhControlador@getCambiarContraseña');

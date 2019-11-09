@@ -2,8 +2,8 @@
 @section('content')
 {{-- Dentro de section va el contenido de la vista--}}
 	@include('layouts.menu_rrhh')
-	<h3 align="center">INFORMES PARA RRHH</h1>
 	<p align="center"><strong>Usuario: </strong> {{ Auth::user()->name }}, esta conectado con el Rol de <strong>Recursos Humanos</strong></p>
+	<h3 align="center">Informe de Gestión de Recibos Electrónicos - Año 2019</h1>
 	<div align="center">
 	<table id="example" class="display" style="width:80%" align="center" border="1">
 		<thead>
@@ -232,5 +232,6 @@
 	</table>
 	<br>
 	<a class="btn btn-primary"  href="{{ url('/rrhh/informes_rrhh' ) }}" role="button">Volver</a>
+	<a class="btn btn-success"  href="{{ url('rrhh/pdf/'.$año) }}" role="button">Generar Informe en PDF</a>
 	</div>
 @endsection

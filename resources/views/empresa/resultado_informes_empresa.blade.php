@@ -232,5 +232,6 @@
 	</table>
 	<br>
 	<a class="btn btn-primary"  href="{{ url('/empresa/informes_empresa' ) }}" role="button">Volver</a>
+	<a class="btn btn-success"  href="{{ url('empresa/pdf/'.$año) }}" role="button">Generar Informe en PDF</a>
 	</div>
 @endsection
