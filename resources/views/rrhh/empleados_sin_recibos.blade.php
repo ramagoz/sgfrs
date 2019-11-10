@@ -26,6 +26,8 @@
 	<a class="btn btn-outline-info" href="{{ $periodos->previousPageUrl() }}" role="button">Anterior</a>
 	<a class="btn btn-outline-info" href="{{ $periodos->nextPageUrl() }}" role="button">Siguiente</a>
 	@endif
+	<br>
+	<a class="btn btn-success"  href="{{ url('rrhh/excel/') }}" role="button">Exportar Informe en Excel</a>
 
 </div>
 	@if(isset($msj))

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Auditoria;
 use App\Empleado_sin_recibo;
+use App\Exports\EmpleadosSinRecibosExport;
 use App\Grupo_recibo;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FuncionesControlador;
@@ -19,6 +20,7 @@ use DB;
 use DataTables;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
 use Validator;
 
 
@@ -871,6 +873,10 @@ class RrhhControlador extends Controller
         {
              return view('rrhh.empleados_sin_recibos')->with('periodos',$periodos)->with('boton','boton');
         }
+    }
+    public function getExcel()
+    {
+        return (new EmpleadosSinRecibosExport)->download('InformeExcel-'.date('dmY-Hi').'.xlsx');
     }
     public function getVerEmpleadosSinRecibos($id)
     {

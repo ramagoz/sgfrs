@@ -77,6 +77,7 @@ Route::group(['middleware' => 'auth'], function()
 	Route::post('rrhh/importar_recibos', 'RrhhControlador@getRecibosImportados');
 
 	Route::get('rrhh/empleados_sin_recibos', 'RrhhControlador@getEmpleadosSinRecibos');
+	Route::get('rrhh/excel', 'RrhhControlador@getExcel');
 	Route::get('rrhh/ver_empleados_sin_recibos/{id}','RrhhControlador@getVerEmpleadosSinRecibos');
 
 	Route::get('rrhh/lista_recibos', 'RrhhControlador@getListaRecibos');
