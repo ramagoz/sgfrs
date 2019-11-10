@@ -6,12 +6,12 @@ Route::get('/', 'HomeController@index')->name('home');
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-
-
 Route::get('/sin_rol', function()
 {
     return view('error');
 });
+
+
 
 Route::group(['middleware' => 'auth'], function()
 {

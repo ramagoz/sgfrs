@@ -60,7 +60,7 @@
             </div>
             <div class="card-footer">
                 <div class="d-flex justify-content-center links">
-                    <a href="#">¿Olvidaste tu contraseña?</a>
+                    <a href="{{ route('password.request') }}">¿Olvidaste tu contraseña?</a>
                 </div>
             </div>
         </div>
