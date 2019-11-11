@@ -32,22 +32,24 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-user"></i></span>
                         </div>
-                            <input id="email" type="email" class="form-control" placeholder="Correo Electrónico" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}"name="email" value="{{ old('email') }}" required autofocus>
-                            @if ($errors->has('email'))
-                                        <span class="invalid-feedback">
-                                            <strong>{{ $errors->first('email') }}</strong>
-                                        </span>
-                            @endif
+                        <input id="email" type="text" class="form-control" placeholder="{{ __('Correo electrónico') }}" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}"name="email" value="{{ old('email') }}" required autofocus>
+                        @if ($errors->has('email'))
+                            <div class="row align-items-center remember">
+                           {{ $errors->first('email') }}
+                            </div>
+                        @endif
                     </div>
                     <div class="input-group form-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-key"></i></span>
                         </div>
-                        <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="Contraseña" name="password" required>
+                        <input id="password" name="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="{{ __('Contraseña') }}" required autofocus>
+
                         @if ($errors->has('password'))
-
-                                        <strong>{{ $errors->first('password') }}</strong>
-
+                            <br>
+                            <div class="row align-items-center remember">
+                                {{ $errors->first('password') }}
+                            </div>
                         @endif
                     </div>
                     <div class="row align-items-center remember">
@@ -57,10 +59,11 @@
                         <input type="submit" value="Ingresar" class="btn float-right login_btn">
                     </div>
                 </form>
-            </div>
-            <div class="card-footer">
-                <div class="d-flex justify-content-center links">
-                    <a href="{{ route('password.request') }}">¿Olvidaste tu contraseña?</a>
+                <br>
+                <div class="card-footer">
+                    <div class="d-flex justify-content-center links">
+                        <a href="#">¿Olvidaste tu contraseña?</a>
+                    </div>
                 </div>
             </div>
         </div>
