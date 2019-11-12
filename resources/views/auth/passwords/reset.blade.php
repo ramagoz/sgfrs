@@ -12,12 +12,11 @@
     <meta charset="utf-8">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-  
+
     <!--Custom styles-->
     <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
 </head>
 <body>
-
 <div class="container">
      <div class="d-flex justify-content-center h-150">
       <div class="card bg-secondary text-white" style="width: 25rem;">
@@ -26,11 +25,11 @@
             <div class="text-center">
                   <h5><i class="fa fa-unlock fa-3x"></i></h5>
                   <h2 class="text-center">Restaurar Contraseña</h2>
-                     <div class="card-body"> 
+                     <div class="card-body">
                           <div class="input-group form-group">
                               <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-user"></i></span>
-                              </div>                 
+                              </div>
                                 <input type="hidden" name="token" value="{{ $token }}">
                                 <input id="email" type="email" class="form-control {{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ $email ?? old('email') }}" required autofocus placeholder="Correo Electrónico">
                                     @if ($errors->has('email'))
@@ -59,7 +58,7 @@
                                 </div>
                                  <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required placeholder="Confirmar Contraseña">
                             </div>
-                         </div>   
+                         </div>
                   </form>
                <div class="card-footer">
 
@@ -68,11 +67,11 @@
                                         {{ __('Restaurar Contraseña') }}
                                     </button>
                                  </div>
-                    
-                </div>      
+
+                </div>
       </div>
-  </div> 
-</div>  
+  </div>
+</div>
 </body>
 </html>
 

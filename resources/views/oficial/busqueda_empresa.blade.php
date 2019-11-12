@@ -1,32 +1,27 @@
 @extends('layouts.app')
+@include('layouts.menu_oficial')
 @section('content')
 {{-- Dentro de section va el contenido de la vista--}}
-	@include('layouts.menu_oficial')
-	<h3 align="center">BUSQUEDA DE DATOS DE EMPRESA</h1>
-	<p align="center"><strong>Usuario: </strong> {{ Auth::user()->name }}, esta conectado con el Rol de <strong>Oficial de Seguridad</strong></p>
-<html >
-<head>
-        <link  href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>  
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-        <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-        <script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>  
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
-        <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
-        <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
-    
-<style type="text/css">
-  div.container {
-        width: 70%;
-    }
-</style>
-    
-</head>
+<h3 align="center">BUSQUEDA DE DATOS DE EMPRESA</h1>
+{{-- <link  href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script> --}}
 
-        <div class="container">
+<link rel="stylesheet" type="text/css" href="{{asset('otros/datatable/jquery.dataTables.min.css')}}" >
+<script src="{{ asset('otros/datatable/jquery.dataTables.min.js') }}" defer></script>
+<script src="{{ asset('otros/datatable/dataTables.buttons.min.js') }}" defer></script>
+<script src="{{ asset('otros/datatable/jszip.min.js') }}" defer></script>
+<script src="{{ asset('otros/datatable/pdfmake.min.js') }}" defer></script>
+<script src="{{ asset('otros/datatable/vfs_fonts.js') }}" defer></script>
+<script src="{{ asset('otros/datatable/buttons.html5.min.js') }}" defer></script>
+<script src="{{ asset('otros/datatable/buttons.print.min.js') }}" defer></script>
+
+<div class="container">
     <br>
 <!--Alerta si hubo modificacion de usuario-->
                @isset($errorpersona)
@@ -35,7 +30,7 @@
                    <script type="text/javascript">
                        window.setTimeout(function() {
                                 $(".alert").fadeTo(300, 0).slideUp(400, function(){
-                                    $(this).remove(); 
+                                    $(this).remove();
                                 });
                             }, 20000);
                    </script>
@@ -49,7 +44,7 @@
                    <script type="text/javascript">
                        window.setTimeout(function() {
                                 $(".alert").fadeTo(300, 0).slideUp(400, function(){
-                                    $(this).remove(); 
+                                    $(this).remove();
                                 });
                             }, 20000);
                    </script>
@@ -62,7 +57,7 @@
                    <script type="text/javascript">
                        window.setTimeout(function() {
                                 $(".alert").fadeTo(300, 0).slideUp(400, function(){
-                                    $(this).remove(); 
+                                    $(this).remove();
                                 });
                             }, 20000);
                    </script>
@@ -75,7 +70,7 @@
                    <script type="text/javascript">
                        window.setTimeout(function() {
                                 $(".alert").fadeTo(300, 0).slideUp(400, function(){
-                                    $(this).remove(); 
+                                    $(this).remove();
                                 });
                             }, 20000);
                    </script>
@@ -88,7 +83,7 @@
                    <script type="text/javascript">
                        window.setTimeout(function() {
                                 $(".alert").fadeTo(300, 0).slideUp(400, function(){
-                                    $(this).remove(); 
+                                    $(this).remove();
                                 });
                             }, 20000);
                    </script>
@@ -100,7 +95,7 @@
             <p></p>
 <!--Estructura de columnas para Datatables-->
             <table class="table table-bordered" id="table">
-                
+
                <thead>
                   <tr>
                      <th>Cédula</th>
@@ -109,8 +104,8 @@
                      <th>Correo</th>
                      <th>Estado</th>
                      <th>Acciones</th>
-                 </tr>                       
-  <!--Javascript de Datatables-->                
+                 </tr>
+  <!--Javascript de Datatables-->
 <script type="text/javascript">
      $(document).ready(function ()  {
      var datatable = $('#table').DataTable
@@ -155,20 +150,20 @@
                                 $('td', row).eq(4).addClass('text-success').text('Activo');
                                 $('td', row).eq(5).html("<button type='button' class='modif btn btn-info'>Editar<span class='glyphicon glyphicon-edit'></span> </button>"+" "+"<button type='button' class='baj btn btn-danger'>Desactivar<span class='glyphicon glyphicon-circle-arrow-down'></span> </button>");
                               }
-                            },                            
+                            },
         columns: [
                         { data: 'cedula', name: 'cedula' },
                         { data: 'nombres', name: 'nombres' },
                         { data: 'apellidos', name: 'apellidos'},
                         { data: 'correo', name: 'correo'},
                         { data: 'estado', name: 'estado'},
-                        {"defaultContent": "<button type='button' class='modif btn btn-success'>Editar<span class='glyphicon glyphicon-edit'></span> </button>"+" "+"<button type='button' class='baj btn btn-danger'>Baja<span class='glyphicon glyphicon-circle-arrow-down'></span> </button>"},              
+                        {"defaultContent": "<button type='button' class='modif btn btn-success'>Editar<span class='glyphicon glyphicon-edit'></span> </button>"+" "+"<button type='button' class='baj btn btn-danger'>Baja<span class='glyphicon glyphicon-circle-arrow-down'></span> </button>"},
                  ]
 
     });
 
             /*Javascript para captura de la cedula y redirección a la ruta para modificación*/
-             
+
             $('#table').on('click', 'button.modif', function(){
                 var data = datatable.row( $(this).closest('tr') ).data();
                      var cedula=( data['cedula']);
@@ -193,7 +188,4 @@
 });
 </script>
 
-</body>
-</html>
-
-@endsection 
+@endsection

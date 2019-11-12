@@ -1,10 +1,9 @@
 @extends('layouts.app')
+@include('layouts.menu_rrhh')
 @section('content')
 {{-- Dentro de section va el contenido de la vista--}}
-	@include('layouts.menu_rrhh')
-	<h3 align="center">SELECCIONAR AÑO DEL INFORME</h1>
-	<p align="center"><strong>Usuario: </strong> {{ Auth::user()->name }}, esta conectado con el Rol de <strong>Recursos Humanos</strong></p>
 
+	<h3 align="center">SELECCIONAR AÑO DEL INFORME</h1>
 	@if(isset($boton))
 	<form action="/rrhh/resultado_informes_rrhh" method="POST">
 	{{csrf_field()}}

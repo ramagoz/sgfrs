@@ -1,9 +1,10 @@
 @extends('layouts.app')
+@include('layouts.menu_empresa')
 @section('content')
 {{-- Dentro de section va el contenido de la vista--}}
-	@include('layouts.menu_empresa')
+
 	<h3 align="center">INFORMES EMPRESA</h1>
-	<p align="center"><strong>Usuario: </strong> {{ Auth::user()->name }}, esta conectado con el Rol de <strong>Empresa</strong></p>
+""
 	<div align="center">
 	<table id="example" class="display" style="width:90%" align="center" border="1">
 		<thead>

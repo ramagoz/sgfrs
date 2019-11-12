@@ -1,18 +1,18 @@
 @extends('layouts.app')
+@include('layouts.menu_empleado')
 @section('content')
 {{-- Dentro de section va el contenido de la vista--}}
-	@include('layouts.menu_empleado')
 	<h3 align="center">RECIBOS FIRMADOS</h1>
-	<p align="center"><strong>Usuario: </strong> {{ Auth::user()->name }}, esta conectado con el Rol de <strong>Empleado</strong></p>
+
 	@isset($msj)
 		<div class="alert alert-success" role="alert" align="center">{{ $msj }}</div>
 	@endisset
-	
+
 	<table id="example" style="width:70%" align="center" border="2">
 		<thead>
 		<tr><th>Año</th><th>Mes</th><th>Cedula</th><th>Nombres</th><th>Apellidos</th><th>Ver Recibo</th></tr>
 		</thead>
-	
+
 	@foreach ($recibos as $recibo)
 		<tbody>
 		<tr>

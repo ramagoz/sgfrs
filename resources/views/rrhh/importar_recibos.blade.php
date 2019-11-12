@@ -1,9 +1,9 @@
 @extends('layouts.app')
+@include('layouts.menu_rrhh')
 @section('content')
 {{-- Dentro de section va el contenido de la vista--}}
-	@include('layouts.menu_rrhh')
+
 	<h3 align="center">IMPORTAR RECIBO</h1>
-	<p align="center"><strong>Usuario: </strong> {{ Auth::user()->name }}, esta conectado con el Rol de <strong>Recursos Humanos</strong></p>
 
 	@isset($msj)
 		<div class="alert alert-success" role="alert" align="center">{{ $msj }}</div>

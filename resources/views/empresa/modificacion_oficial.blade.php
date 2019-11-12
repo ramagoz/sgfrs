@@ -1,8 +1,8 @@
 @extends('layouts.app')
+@include('layouts.menu_empresa')
 @section('content')
 {{-- Dentro de section va el contenido de la vista--}}
-	@include('layouts.menu_empresa')
-  <p align="center"><strong>Usuario: </strong> {{ Auth::user()->name }}, esta conectado con el Rol de <strong>Empresa</strong></p>
+
 	<h3 align="center">MOFICIACION DE DATOS OFICIAL DE SEGURIDAD</h1>
 
   <form action="{{url('/empresa/oficial_modificado')}}" id="formulario-form" method="get"  role="form"> {{ csrf_field() }}

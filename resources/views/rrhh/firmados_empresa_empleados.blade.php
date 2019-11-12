@@ -1,15 +1,14 @@
 @extends('layouts.app')
+@include('layouts.menu_rrhh')
 @section('content')
 {{-- Dentro de section va el contenido de la vista--}}
-	@include('layouts.menu_rrhh')
-	<h3 align="center">FIRMADOS EMPRESA Y EMPLEADOS</h1>
-	<p align="center"><strong>Usuario: </strong> {{ Auth::user()->name }}, esta conectado con el Rol de <strong>Recursos Humanos</strong></p>
 
+	<h3 align="center">FIRMADOS EMPRESA Y EMPLEADOS</h1>
 	<table id="example" style="width:70%" align="center" border="2">
 		<thead>
 		<tr><th>Año</th><th>Mes</th><th>Cedula</th><th>Nombres</th><th>Apellidos</th><th>Ver Recibo</th></tr>
 		</thead>
-	
+
 	@foreach ($recibos as $recibo)
 		<tbody>
 		<tr>

@@ -1,30 +1,27 @@
 @extends('layouts.app')
-@section('content')
-{{-- Dentro de section va el contenido de la vista--}}
 @include('layouts.menu_rrhh')
+@section('content')
 
-<html >
-<head>
-        <link  href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
-        <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-        <script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
-        <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
-        <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+{{-- Dentro de section va el contenido de la vista--}}
+{{-- <link  href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script> --}}
 
-<style type="text/css">
-  div.container {
-        width: 70%;
-    }
-</style>
-
-</head>
-
-    <h3 align="center">BUSQUEDA DE EMPLEADO</h1>
-    <p align="center"><strong>Usuario: </strong> {{ Auth::user()->name }}, esta conectado con el Rol de <strong>Recursos Humanos</strong></p>
-        <div class="container">
+<link rel="stylesheet" type="text/css" href="{{asset('otros/datatable/jquery.dataTables.min.css')}}" >
+<script src="{{ asset('otros/datatable/jquery.dataTables.min.js') }}" defer></script>
+<script src="{{ asset('otros/datatable/dataTables.buttons.min.js') }}" defer></script>
+<script src="{{ asset('otros/datatable/jszip.min.js') }}" defer></script>
+<script src="{{ asset('otros/datatable/pdfmake.min.js') }}" defer></script>
+<script src="{{ asset('otros/datatable/vfs_fonts.js') }}" defer></script>
+<script src="{{ asset('otros/datatable/buttons.html5.min.js') }}" defer></script>
+<script src="{{ asset('otros/datatable/buttons.print.min.js') }}" defer></script>
+<h3 align="center">BUSQUEDA DE EMPLEADO</h1>
+<div class="container">
     <br>
 <!--Alerta si hubo modificacion de usuario-->
                @isset($errorpersona)
@@ -190,8 +187,5 @@
 /*Cierre de llave de javascript del datatables*/
 });
 </script>
-
-</body>
-</html>
 @endsection
 

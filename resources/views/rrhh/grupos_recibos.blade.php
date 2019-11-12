@@ -1,10 +1,9 @@
 @extends('layouts.app')
+@include('layouts.menu_rrhh')
 @section('content')
 {{-- Dentro de section va el contenido de la vista--}}
-	@include('layouts.menu_rrhh')
-	<h3 align="center">GRUPOS DE RECIBOS</h1>
-	<p align="center"><strong>Usuario: </strong> {{ Auth::user()->name }}, esta conectado con el Rol de <strong>Recursos Humanos</strong></p>
 
+	<h3 align="center">GRUPOS DE RECIBOS</h1>
 	@isset($msj)
 		<div class="alert alert-success" role="alert" align="center">{{ $msj }}</div>
 	@endisset
@@ -12,14 +11,14 @@
 		<div class="alert alert-danger" role="alert" align="center">{{ $errormsj }}</div>
 	@endisset
 
-<form action="/rrhh/grupos_recibos" method="POST">	
+<form action="/rrhh/grupos_recibos" method="POST">
 {{ csrf_field() }}
 
 
 <table border="1" align="center">
 
 	<tr><th>Nombre Grupo</th><th>Ene</th><th>Feb</th><th>Mar</th><th>Abr</th><th>May</th><th>Jun</th><th>Jul</th><th>Ago</th><th>Set</th><th>Oct</th><th>Nov</th><th>Dic</th></tr>
-	
+
     @foreach ($grupos as $grupo)
     <tr>
 	<td>

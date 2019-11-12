@@ -1,9 +1,8 @@
 @extends('layouts.app')
+@include('layouts.menu_empresa')
 @section('content')
 {{-- Dentro de section va el contenido de la vista--}}
-@include('layouts.menu_empresa')
 <h3 align="center">RECIBOS PENDIENTES FIRMA EMPRESA</h1>
-<p align="center"><strong>Usuario: </strong> {{ Auth::user()->name }}, esta conectado con el Rol de <strong>Empresa</strong></p>
 
 @isset($error)
 <div class="alert alert-warning" role="alert" align="center">{{ $error }}</div>
@@ -50,7 +49,7 @@
 	<div class="alert alert-warning" role="alert" align="center">{{ $msj }}</div>
 @endif
 <script type="text/javascript">
-	function marcar(source) 
+	function marcar(source)
 	{
 		checkboxes=document.getElementsByTagName('input'); //obtenemos todos los controles del tipo Input
 		for(i=0;i<checkboxes.length;i++) //recoremos todos los controles

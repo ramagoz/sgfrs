@@ -1,9 +1,9 @@
 @extends('layouts.app')
+@include('layouts.menu_empleado')
 @section('content')
 {{-- Dentro de section va el contenido de la vista--}}
-	@include('layouts.menu_empleado')
+
 	<h3 align="center">RECIBOS PENDIENTES</h1>
-	<p align="center"><strong>Usuario: </strong> {{ Auth::user()->name }}, esta conectado con el Rol de <strong>Empleado</strong></p>
 
 	@isset($error)
 		<div class="alert alert-warning" role="alert" align="center">{{ $error }}</div>
@@ -15,7 +15,7 @@
 		<thead>
 		<tr><th>Año</th><th>Mes</th><th>Cedula</th><th>Nombres</th><th>Apellidos</th><th>Ver Recibo</th><th>Seleccionar</th></tr>
 		</thead>
-	
+
 	@foreach ($recibos as $recibo)
 		<tbody>
 		<tr>
@@ -51,7 +51,7 @@
 	@endif
 
 	<script type="text/javascript">
-	function marcar(source) 
+	function marcar(source)
 	{
 		checkboxes=document.getElementsByTagName('input'); //obtenemos todos los controles del tipo Input
 		for(i=0;i<checkboxes.length;i++) //recoremos todos los controles

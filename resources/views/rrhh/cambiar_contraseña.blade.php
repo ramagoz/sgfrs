@@ -1,16 +1,15 @@
 @extends('layouts.app')
+@include('layouts.menu_rrhh')
 @section('content')
 {{-- Dentro de section va el contenido de la vista--}}
-	@include('layouts.menu_rrhh')
-	<h3 align="center">CAMBIAR CONTRASEÑA RRHH</h1>
-	<p align="center"><strong>Usuario: </strong> {{ Auth::user()->name }}, esta conectado con el Rol de <strong>Recursos Humanos</strong></p>
 
+	<h3 align="center">CAMBIAR CONTRASEÑA RRHH</h1>
 	<head>
-        
+
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 		  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 		  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-  
+
 </head>
 
 
@@ -20,7 +19,7 @@
                    <script type="text/javascript">
                        window.setTimeout(function() {
                                 $(".alert").fadeTo(300, 0).slideUp(400, function(){
-                                    $(this).remove(); 
+                                    $(this).remove();
                                 });
                             }, 20000);
                    </script>
@@ -33,7 +32,7 @@
                    <script type="text/javascript">
                        window.setTimeout(function() {
                                 $(".alert").fadeTo(300, 0).slideUp(400, function(){
-                                    $(this).remove(); 
+                                    $(this).remove();
                                 });
                             }, 20000);
                    </script>

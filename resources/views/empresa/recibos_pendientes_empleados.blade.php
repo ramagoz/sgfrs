@@ -1,9 +1,9 @@
 @extends('layouts.app')
+@include('layouts.menu_empresa')
 @section('content')
 {{-- Dentro de section va el contenido de la vista--}}
-	@include('layouts.menu_empresa')
 	<h3 align="center">RECIBOS PENDIENTES FIRMA EMPLEADOS</h1>
-	<p align="center"><strong>Usuario: </strong> {{ Auth::user()->name }}, esta conectado con el Rol de <strong>Empresa</strong></p>
+
 	@isset($msj)
 		<div class="alert alert-success" role="alert" align="center">{{ $msj }}</div>
 	@endisset
@@ -11,7 +11,7 @@
 		<thead>
 		<tr><th>Año</th><th>Mes</th><th>Cedula</th><th>Nombres</th><th>Apellidos</th><th>Ver Recibo</th></tr>
 		</thead>
-	
+
 	@foreach ($recibos as $recibo)
 		<tbody>
 		<tr>

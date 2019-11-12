@@ -1,9 +1,8 @@
 @extends('layouts.app')
+@include('layouts.menu_empleado')
 @section('content')
 {{-- Dentro de section va el contenido de la vista--}}
-	@include('layouts.menu_empleado')
 	<h3 align="center">VER RECIBO</h1>
-	<p align="center"><strong>Usuario: </strong> {{ Auth::user()->name }}, esta conectado con el Rol de <strong>Empleado</strong></p>
 
 	@isset($error)
 			<div class="alert alert-warning" role="alert" align="center">{{ $error }}</div>

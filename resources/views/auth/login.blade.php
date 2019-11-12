@@ -1,21 +1,11 @@
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<!------ Include the above in your HEAD tag ---------->
-
 <!DOCTYPE html>
 <html>
 <head>
     <title>Página de ingreso al sistema</title>
-   <!--Made with love by Mutiullah Samim -->
-
-    <!--Bootsrap 4 CDN-->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-
-    <!--Fontawesome CDN-->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-
-    <!--Custom styles-->
+    <link rel="stylesheet" type="text/css" href="{{asset('otros/bootstrap.min.css')}}" >
+    <script src="{{ asset('otros/js/all.js') }}" defer></script>
+    <script src="{{ asset('otros/datatable/bootstrap.min.js') }}" defer></script>
+    <script src="{{ asset('otros/datatable/jquery.min.js') }}" defer></script>
     <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
 </head>
 <body>
@@ -32,26 +22,24 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-user"></i></span>
                         </div>
-                        <input id="email" type="text" class="form-control" placeholder="{{ __('Correo electrónico') }}" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}"name="email" value="{{ old('email') }}" required autofocus>
-                        @if ($errors->has('email'))
-                            <div class="row align-items-center remember">
-                           {{ $errors->first('email') }}
-                            </div>
-                        @endif
+                        <input id="email" type="email" class="form-control" placeholder="Correo electrónico" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}"name="email" value="{{ old('email') }}" >
                     </div>
+                    @if ($errors->has('email'))
+                        <div class="row align-items-center remember">
+                           {{ $errors->first('email') }}
+                        </div>
+                    @endif
                     <div class="input-group form-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-key"></i></span>
                         </div>
-                        <input id="password" name="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="{{ __('Contraseña') }}" required autofocus>
-
-                        @if ($errors->has('password'))
-                            <br>
-                            <div class="row align-items-center remember">
-                                {{ $errors->first('password') }}
-                            </div>
-                        @endif
+                        <input id="password" name="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="Contraseña" >
                     </div>
+                    @if ($errors->has('password'))
+                        <div class="row align-items-center remember">
+                            {{ $errors->first('password') }}
+                        </div>
+                    @endif
                     <div class="row align-items-center remember">
                         <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}>Recordar mi contraseña
                     </div>
@@ -62,7 +50,7 @@
                 <br>
                 <div class="card-footer">
                     <div class="d-flex justify-content-center links">
-                        <a href="#">¿Olvidaste tu contraseña?</a>
+                        <a href="{{ route('password.request') }}">¿Olvidaste tu contraseña?</a>
                     </div>
                 </div>
             </div>

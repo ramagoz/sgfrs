@@ -1,8 +1,8 @@
 @extends('layouts.app')
+@include('layouts.menu_rrhh')
 @section('content')
 {{-- Dentro de section va el contenido de la vista--}}
-	@include('layouts.menu_rrhh')
-<p align="center"><strong>Usuario: </strong> {{ Auth::user()->name }}, esta conectado con el Rol de <strong>Recursos Humanos</strong></p>
+
 <h3 align="center">VER RECIBO A CORREGIR</h1>
 
 <form action="/rrhh/lista_recibos/" method="post">

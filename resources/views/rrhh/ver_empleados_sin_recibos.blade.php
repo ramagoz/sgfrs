@@ -1,9 +1,9 @@
 @extends('layouts.app')
+@include('layouts.menu_rrhh')
 @section('content')
 {{-- Dentro de section va el contenido de la vista--}}
-	@include('layouts.menu_rrhh')
+
 	<h3 align="center">EMPLEADOS CON RECIBOS PENDIENTES</h1>
-	<p align="center"><strong>Usuario: </strong> {{ Auth::user()->name }}, esta conectado con el Rol de <strong>Recursos Humanos</strong></p>
 
 	@isset($datos)
 	<table id="example" style="width:20%" align="center" border="2" class="table">
@@ -24,7 +24,7 @@
 	@endforeach
 	</table>
 	@endisset
-	
+
 	@if(isset($msj))
 		<div class="alert alert-warning" role="alert" align="center">{{ $msj }}</div>
 	@endif

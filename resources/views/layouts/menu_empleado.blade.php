@@ -1,22 +1,38 @@
-
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="/empleado">Inicio</a>
-    </div>
-    <ul class="nav navbar-nav">
-      <li><a href="/empleado/recibos_pendientes">Recibos Pendientes</a></li>
-      <li><a href="/empleado/recibos_firmados">Recibos Firmados</a></li>
-    </ul>
-    <ul class="nav navbar-nav navbar-right">
-        @if (Session::get('rol_usuario') ==2 or Session::get('rol_usuario') ==4 or Session::get('rol_usuario') ==4 or Session::get('rol_usuario') ==5)
+<nav class="navbar navbar-light navbar-expand-lg bg-white shadow-sm">
+<div class="container">
+  <a class="navbar-brand" href="/empleado">SGFRS
+  </a>
+  <button class="navbar-toggler" type="button"
+    data-toggle="collapse"
+    data-target="#navbarSupportedContent"
+    aria-controls="#navbarSupportedContent"
+    aria-expanded="false"
+    aria-label="{{ __('Toggle navigation') }}">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="nav nav-pills">
+      <li class="nav-item">
+        <a class="nav-link" href="/empleado/recibos_pendientes">Recibos Pendientes</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/empleado/recibos_firmados">Recibos Firmados</a>
+      </li>
+      @if (Session::get('rol_usuario') ==2 or Session::get('rol_usuario') ==4 or Session::get('rol_usuario') ==5)
         <li><a href="/home">Cambiar de rol</a></li>
-        @endif
-        <li><a href="/empleado/contactar_rrhh">Contactar con RRHH</a></li>
-        <li><a href="/empleado/cambiar_contraseña">Cambiar contraseña</a></li>
-        <li><a href="/salir"><span class="glyphicon glyphicon-log-in"></span> Salir del Sistema</a></li>
+      @endif
+      <li class="nav-item">
+        <a class="nav-link" href="/empleado/contactar_rrhh">Contactar con RRHH</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/empleado/cambiar_contraseña">Cambiar contraseña</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/salir">Salir del Sistema</a>
+      </li>
     </ul>
   </div>
+</div>
 </nav>
 
 
