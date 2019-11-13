@@ -14,19 +14,19 @@ class CreatePersonasTable extends Migration
     public function up()
     {
         Schema::create('personas', function (Blueprint $table) {
-            $table->string('cedula')->primary();
+            $table->string('cedula',8)->primary();
             $table->integer('id_usuario')->references('id')->on('users')->unique();
             $table->integer('id_grupo')->references('id_grupo')->on('grupos_recibos');
-            $table->integer('id_rol')->foreign('id_rol')->references('id_rol')->on('roles');
-            $table->string('nombres');
-            $table->string('apellidos');
-            $table->string('tel')->nullable();
-            $table->string('cel');
-            $table->string('dpto')->nullable();
-            $table->string('cargo')->nullable();
-            $table->string('correo');
+            $table->integer('id_rol')->foreign('id_rol')->references('id_rol')->on('roles')->unique();
+            $table->string('nombres',50);
+            $table->string('apellidos',50);
+            $table->string('tel',20)->nullable();
+            $table->string('cel',20);
+            $table->string('dpto',100)->nullable();
+            $table->string('cargo',100)->nullable();
+            $table->string('correo',100);
             $table->boolean('estado');
-            $table->string('obs')->nullable();
+            $table->string('obs',500->nullable();
         });
     }
 

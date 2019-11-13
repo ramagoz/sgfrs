@@ -1,165 +1,109 @@
 <?php
-
 namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Crypt;
-use App\Recibo;
+use App\Auditoria;
 use App\Grupo_recibo;
+use App\Http\Controllers\FuncionesControlador;
+use App\Http\Requests\ValidacionCargaUsuario;
+use App\Http\Requests;
 use App\Periodo;
 use App\Persona;
-use App\Auditoria;
+use App\Recibo;
+use App\User;
+use Auth;
 use DB;
 use DataTables;
+use Illuminate\Auth\validate;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
-use App\Http\Controllers\FuncionesControlador;
-use App\User;
 use Validator;
-use Auth;
-
-
 
 class EmpresaControlador extends Controller
 {
-      //devuelve a la vista en formato json los datos de los empleados
-    //para ser procesado por el datatable
+    //Se obtienen datos para el datatable de ABM Oficial de Seguridad
     public function datatable()
     {
          $persona_rol= DB::table('personas')->where('id_rol', '5')->get();
-         //return Datatables::of(Persona::query())->make(true);
          return Datatables::of($persona_rol)->make(true);
-
     }
 
     public function getIndexEmpresa()
     {
-        /*
-        $encrypted1 = Crypt::encryptString('1111');
-        $encrypted2 = encrypt('1111');
-        echo $encrypted1;
-        echo "<br>";
-        echo $encrypted2;
-        //$decrypted = Crypt::decryptString($encrypted);
-        */
     	return view('empresa.inicio');
     }
 
-    public function getRecuperarGrupo(request $request)
+    public function getBusquedaOficial()
     {
-
-        $persona =DB::table('personas')->where('cedula',$request->cedula)->get()->toArray();
-        $nombre_grupos = DB::table('grupos_recibos')->select('nombre_grupo','id_grupo')->get();
-
-
-      foreach ($persona as $person)
-                    {
-                        $estado = $person->estado;
-
-                    }
-
-     if ($estado=='1')
-       {
-        return view('empresa.desactivar_oficial', compact('persona'),compact('nombre_grupos'));
-        }
-    else
-    {
-        return view('empresa.activar_oficial', compact('persona'),compact('nombre_grupos'));
+        return view('empresa.busqueda_oficial');
     }
-   }
+
     public function getAltaOficial()
     {
-    	//Consulta DB para ver grupos disponibles los compacta en de array y los envia a la vista//
-        $nombre_grupos = DB::table('grupos_recibos')->select('nombre_grupo','id_grupo')->get();
-        return view('empresa.alta_oficial', compact('nombre_grupos'));
+        return view('empresa.alta_oficial');
     }
 
-    public function postOficialCargado(Request $request)
+    public function postOficialCargado(ValidacionCargaUsuario $request)
     {
-       //validacion si el usuario a cargar ya no existe
-        $validemail=DB::table('users')->where('email',$request->correo)->get();
-        if ($validemail=='[]')
-             { // usuario no existe
-            $validcedula=DB::table('personas')->where('cedula',$request->cedula)->get();
-            if($validcedula=='[]') //persona no existe, se puede proceder a crear usuario y persona
-            {
-                //creacion de usuario
-                 $user = new User();
-                 $user->name = $request->nombre;
-                 $user->email = $request->correo;
-                 $user->status= '1';
-                 $user->password = Hash::make($request->cedula);
-                 $user->save();
-                //creacion de persona relacionada al usuario que se creo previamente.
-                 $usuario = DB::table('users')->where('email', $request->correo)->get()->toArray();
-                foreach ($usuario as $users)
-                {
-                    $id = $users->id;
-                }
-                $persona             = new Persona();
-                $persona->id_usuario = $id;
-                $id_rol='5';
-                $persona->id_rol   = $id_rol;
-                $persona->id_grupo   = $request->grupo;
-                $persona->nombres    = $request->nombre;
-                $persona->apellidos  = $request->apellido;
-                $persona->cedula     = $request->cedula;
-                $persona->cel        = $request->celular;
-                $persona->tel        = $request->telefono;
-                $persona->dpto       = $request->dpto;
-                $persona->cargo      = $request->cargo;
-                $persona->correo     = $request->correo;
-                $persona->estado     = $request->estado;
-                $persona->obs        = $request->observacion;
-                $persona->save();
-                //inicio codigo auditoria
-                    $auditoria = new Auditoria();
-                    $auditoria->fecha_hora = date('Y-m-d H:i:s');
-                    $auditoria->cedula = session()->get('cedula_usuario');
-                    $auditoria->rol = session()->get('rol_usuario');
-                    $auditoria->ip = session()->get('ip_usuario');
-                    $auditoria->operacion = "Alta de Oficial de Seguridad";
-                    $auditoria->descripcion = "Se procedio a la alta en el sistema del usuario con rol de Oficial de Seguridad con los siguientes datos:"."\n"
-                    ."número de cédula: ".$request->cedula."\n"
-                    ."Nombre: ".$request->nombre."\n"
-                    ."Apellido: ".$request->apellido."\n"
-                    ."Cel.: ".$request->celular."\n"
-                    ."Tel.: ".$request->telefono."\n"
-                    ."Correo: ".$request->correo."\n"
-                    ."Dpto.: ".$request->dpto."\n"
-                    ."Cargo: ".$request->cargo."\n"
-                    ."Obs.: ".$request->observacion;
-
-                    $auditoria->save();
-                //fin codigo auditoria
-                return view('empresa.busqueda_oficial')->with('$msjcargado','Se un registro el usuario con CI Nro.'.$request->cedula);
-            }
-            else
-            {
-
-                return view('/empresa/busqueda_oficial')->with('errorpersona','Ya existe un registro de usuario con el mismo Nro. de CI: '.$request->cedula);
-            }
-
-        }
-        else
+        //Validación de datos obtenidos del formulario se realiza con la clase ValidacionCargaUsuario
+        //creacion de usuario
+        $user = new User();
+        $user->name = $request->nombre;
+        $user->email = $request->correo;
+        $user->status= '1';
+        $user->password = Hash::make($request->cedula);
+        $user->save();
+        //creacion de persona relacionada al usuario que se creo previamente.
+        $usuario = DB::table('users')->where('email', $request->correo)->get();
+        foreach ($usuario as $users)
         {
-            return view('/empresa/busqueda_oficial')->with('erroruser','Ya existe un registro de usuario con el mismo correo: '.$request->correo);
+            $id = $users->id;
         }
+        $persona             = new Persona();
+        $persona->id_usuario = $id;
+        $persona->id_rol   = '5';//rol de oficial de seguridad
+        $persona->nombres    = $request->nombre;
+        $persona->apellidos  = $request->apellido;
+        $persona->cedula     = $request->cedula;
+        $persona->cel        = $request->celular;
+        $persona->tel        = $request->telefono;
+        $persona->dpto       = $request->dpto;
+        $persona->cargo      = $request->cargo;
+        $persona->correo     = $request->correo;
+        $persona->estado     = $request->estado;
+        $persona->obs        = $request->observacion;
+        $persona->save();
+        //inicio codigo auditoria
+            $auditoria = new Auditoria();
+            $auditoria->fecha_hora = date('Y-m-d H:i:s');
+            $auditoria->cedula = session()->get('cedula_usuario');
+            $auditoria->rol = session()->get('rol_usuario');
+            $auditoria->ip = session()->get('ip_usuario');
+            $auditoria->operacion = "Alta de Oficial de Seguridad";
+            $auditoria->descripcion = "Se procedio a la alta en el sistema del usuario con rol de Oficial de Seguridad con los siguientes datos:"."\n"
+            ."número de cédula: ".$request->cedula."\n"
+            ."Nombre: ".$request->nombre."\n"
+            ."Apellido: ".$request->apellido."\n"
+            ."Cel.: ".$request->celular."\n"
+            ."Tel.: ".$request->telefono."\n"
+            ."Correo: ".$request->correo."\n"
+            ."Dpto.: ".$request->dpto."\n"
+            ."Cargo: ".$request->cargo."\n"
+            ."Obs.: ".$request->observacion;
+
+            $auditoria->save();
+        //fin codigo auditoria
+        return view('empresa.busqueda_oficial')->with('$msj','Se registro el usuario'.$request->nombre.' '.$request->apellido.' con CI Nro.'.$request->cedula);
+    }
+
+    public function getModificacionOficial(Request $request)
+    {
+    	$persona =DB::table('personas')->where('cedula',$request->cedula)->first();
+
+        return view('empresa.modificacion_oficial', compact('persona'));
 
     }
 
-     public function getBajaOficial()
-    {
-    	return view('empresa.baja_oficial');
-    }
-     public function getModificacionOficial(Request $request)
-    {
-    	$persona =DB::table('personas')->where('cedula',$request->cedula)->get()->toArray();
-        $nombre_grupos = DB::table('grupos_recibos')->select('nombre_grupo','id_grupo')->get();
-
-        return view('empresa.modificacion_oficial', compact('persona'),compact('nombre_grupos'));
-
-      }
-      public function getOficialModificado(Request $request)
+    public function getOficialModificado(Request $request)
     {
 
         $persona =Persona::find($request->cedula);
@@ -173,7 +117,7 @@ class EmpresaControlador extends Controller
         $persona->dpto       = $request->dpto;
         $persona->cargo      = $request->cargo;
         $persona->correo     = $request->correo;
-       # $persona->estado     = $request->estado;
+        $persona->estado     = $request->estado;
         $persona->obs        = $request->observacion;
         $persona->save();
         //inicio codigo auditoria
@@ -201,83 +145,8 @@ class EmpresaControlador extends Controller
         return view('/empresa/busqueda_oficial')->with('msj','Los datos del usuario con CI Nro. '.$request->cedula.' se actualizaron correctamente!!!');
 
     }
-    public function getOficialDesactivado(Request $request)
-    {
 
-        $persona =Persona::find($request->cedula);
-        $persona->estado = $request->estado;
-        $persona->save();
-
-        #user baja
-        $iduser = DB::table('users')->where('email', $request->correo)->get()->toArray();
-                foreach ($iduser as $users)
-                    {
-                        $id = $users->id;
-                    }
-
-         $user=User::find($id);
-         $user->status=   $request->estado;
-         $user->save();
-
-         //inicio codigo auditoria
-            $auditoria = new Auditoria();
-            $auditoria->fecha_hora = date('Y-m-d H:i:s');
-            $auditoria->cedula = session()->get('cedula_usuario');
-            $auditoria->rol = session()->get('rol_usuario');
-            $auditoria->ip = session()->get('ip_usuario');
-            $auditoria->operacion = "Desactivación acceso usuario";
-            $auditoria->descripcion = "Se procedio a la Inactivación del acceso al sistema para el usuario con los siguientes datos:"."\n"
-            ."Número de cédula: ".$request->cedula."\n"
-            ."Nombre: ".$request->nombre."\n"
-            ."Apellido: ".$request->apellido;
-
-            $auditoria->save();
-        //fin codigo auditoria
-
-        return view('/empresa/busqueda_oficial')->with('msjbaja','El usuario con CI Nro. '.$request->cedula.' se desactivo del Sistema !!!');
-
-    }
-    public function getOficialActivado(Request $request)
-    {
-
-        $persona =Persona::find($request->cedula);
-        $persona->estado = $request->estado;
-        $persona->save();
-
-        #user alta
-        $iduser = DB::table('users')->where('email', $request->correo)->get()->toArray();
-                foreach ($iduser as $users)
-                    {
-                        $id = $users->id;
-                    }
-
-         $user=User::find($id);
-         $user->status=   $request->estado;
-         $user->save();
-
-         //inicio codigo auditoria
-            $auditoria = new Auditoria();
-            $auditoria->fecha_hora = date('Y-m-d H:i:s');
-            $auditoria->cedula = session()->get('cedula_usuario');
-            $auditoria->rol = session()->get('rol_usuario');
-            $auditoria->ip = session()->get('ip_usuario');
-            $auditoria->operacion = "Activación acceso usuario";
-            $auditoria->descripcion = "Se procedio a la Activación del acceso al sistema para el usuario con los siguientes datos:"."\n"
-            ."Número de cédula: ".$request->cedula."\n"
-            ."Nombre: ".$request->nombre."\n"
-            ."Apellido: ".$request->apellido;
-
-            $auditoria->save();
-        //fin codigo auditoria
-
-        return view('/empresa/busqueda_oficial')->with('msjactivado','El usuario con CI Nro. '.$request->cedula.' se activo correctamente!!');
-
-    }
-     public function getBusquedaOficial()
-    {
-    	return view('empresa.busqueda_oficial');
-    }
-     public function getRecibosPendientesEmpresa()
+    public function getRecibosPendientesEmpresa()
     {
         //esta funcion controla si se cierran los periodos
         $resultado = (new FuncionesControlador)->getControlPeriodos();
@@ -294,12 +163,14 @@ class EmpresaControlador extends Controller
             return view('empresa.recibos_pendientes_empresa')->with('recibos',$recibos)->with('boton','boton');
         }
     }
+
     public function getVerRecibo($id)
     {
         $id_recibo=$id;
         $id="/recibos/pendientes/"."20".substr($id, -2, 2)."/".substr($id, -4, 2)."/".$id.".pdf";
         return view('empresa.ver_recibo_pendiente_firma_empresa')->with('id',$id)->with('id_recibo',$id_recibo);
     }
+
     public function postFirmarReciboPendienteEmpresa(Request $request)
     {
         //Servicio de firma
@@ -357,7 +228,7 @@ class EmpresaControlador extends Controller
         return view('empresa.ver_recibo_pendiente_firma_empleado')->with('id',$id)->with('msj','Recibo firmado correctamente!');
     }
 
-     public function postFirmaMasivaRecibosPendientesEmpresa(Request $request)
+    public function postFirmaMasivaRecibosPendientesEmpresa(Request $request)
     {
         //aqui se recuperan los identificadores de recibos que fueron selecionados para ser firmados, todos separados por ","
         $i=0;
@@ -441,7 +312,8 @@ class EmpresaControlador extends Controller
 
         return view('empresa.recibos_pendientes_empleados')->with('recibos',$recibos)->with('msj','Recibos firmados correctamente!')->with('boton','boton');
     }
-     public function getRecibosPendientesEmpleados()
+
+    public function getRecibosPendientesEmpleados()
     {
         $recibos = DB::table('recibos')
         ->join('personas', 'recibos.cedula','=','personas.cedula')
@@ -455,12 +327,14 @@ class EmpresaControlador extends Controller
             return view('empresa.recibos_pendientes_empleados')->with('recibos',$recibos)->with('boton','boton');
         }
     }
-    public function getVerReciboPendienteFirmaEmpleado($id) {
+
+    public function getVerReciboPendienteFirmaEmpleado($id)
+    {
         $id="/recibos/firmados_empresa/"."20".substr($id, -2, 2)."/".substr($id, -4, 2)."/".$id.".pdf";
         return view('empresa.ver_recibo_pendiente_firma_empleado')->with('id',$id);
     }
 
-     public function getRecibosFirmadosEmpresaEmpleados()
+    public function getRecibosFirmadosEmpresaEmpleados()
     {
         $recibos = DB::table('recibos')
         ->join('personas', 'recibos.cedula','=','personas.cedula')
@@ -474,12 +348,14 @@ class EmpresaControlador extends Controller
             return view('empresa.recibos_firmados_empresa_empleados')->with('recibos',$recibos)->with('boton','boton');
         }
     }
+
     public function getVerReciboFirmadoEmpresaEmpleado($id)
     {
         $id="/recibos/firmados_empresa_empleados/"."20".substr($id, -2, 2)."/".substr($id, -4, 2)."/".$id.".pdf";
         return view('empresa.ver_recibo_firmado_empresa_empleado')->with('id',$id);
     }
-     public function getInformesEmpresa()
+
+    public function getInformesEmpresa()
     {
         //esta funcion controla si se cierran los periodos
         $resultado = (new FuncionesControlador)->getControlPeriodos();
@@ -497,6 +373,7 @@ class EmpresaControlador extends Controller
             return view('empresa.informes_empresa')->with('años',$años)->with('boton','boton');
         }
     }
+
     public function postVerInformesEmpresa(Request $request)
     {
        $recibos = DB::table('recibos')
@@ -771,7 +648,7 @@ class EmpresaControlador extends Controller
         ;//los informes no son correctos
     }
 
-     public function getCambiarContraseña()
+    public function getCambiarContraseña()
     {
     	return view('empresa.cambiar_contraseña');
     }

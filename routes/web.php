@@ -7,7 +7,6 @@ Route::get('/', 'HomeController@index')->name('home');
 Route::get('/home', 'HomeController@index')->name('home');
 
 
-
 Route::get('/sin_rol', function()
 {
     return view('error');
@@ -23,15 +22,15 @@ Route::group(['middleware' => 'auth'], function()
 //Sección rutas empresa----------------------------------------------
 	Route::get('empresa/inicio', 'EmpresaControlador@getIndexEmpresa');
 	Route::get('empresa', 'EmpresaControlador@getRecibosPendientesEmpresa');
+
+	Route::get('empresa/busqueda_oficial', 'EmpresaControlador@getBusquedaOficial');
+
 	Route::get('empresa/alta_oficial', 'EmpresaControlador@getAltaOficial');
 	Route::post('empresa/oficial_cargado', 'EmpresaControlador@postOficialCargado');
-	Route::get('empresa/desactivar_oficial/{cedula}', 'EmpresaControlador@getRecuperarGrupo');
-	Route::get('empresa/activar_oficial/{cedula}', 'EmpresaControlador@getRecuperarGrupo');
-	Route::get('empresa/oficial_desactivar', 'EmpresaControlador@getOficialDesactivado');
-	Route::get('empresa/oficial_activar', 'EmpresaControlador@getOficialActivado');
+
 	Route::get('empresa/modificacion_oficial/{cedula}', 'EmpresaControlador@getModificacionOficial');
 	Route::get('empresa/oficial_modificado', 'EmpresaControlador@getOficialModificado');
-	Route::get('empresa/busqueda_oficial', 'EmpresaControlador@getBusquedaOficial');
+
 
 	Route::get('empresa/recibos_pendientes_empresa', 'EmpresaControlador@getRecibosPendientesEmpresa');
 	Route::get('empresa/ver_recibo_pendiente_firma_empresa/{id}', 'EmpresaControlador@getVerRecibo');
