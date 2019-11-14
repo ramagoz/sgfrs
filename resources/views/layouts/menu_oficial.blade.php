@@ -13,25 +13,22 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="nav nav-pills">
         <li class="nav-item">
-            <a class="nav-link" href="/oficial/busqueda_empresa">ABM Empresa</a>
+            <a class="nav-link {{ setActive('oficial/busqueda_empresa')}}" href="/oficial/busqueda_empresa">ABM Empresa</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/oficial/busqueda_rrhh">ABM RRHH</a>
+            <a class="nav-link {{ setActive('oficial/busqueda_rrhh')}}" href="/oficial/busqueda_rrhh">ABM RRHH</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/oficial/roles">Roles de usuarios</a>
+            <a class="nav-link {{ setActive('oficial/roles')}}" href="/oficial/roles">Roles</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/oficial/auditoria">Auditoria</a>
+            <a class="nav-link {{ setActive('oficial/auditoria')}}" href="/oficial/auditoria">Auditoria</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/oficial/restablecer_contraseña">Restablecer contraseña usuario</a>
+            <a class="nav-link {{ setActive('oficial/cambiar_contraseña')}}" href="/oficial/cambiar_contraseña">Cambiar contraseña</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/oficial/cambiar_contraseña">Cambiar contraseña</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/salir">Salir del Sistema</a>
+            <a class="nav-link" href="/salir">Salir</a>
         </li>
     </ul>
   </div>

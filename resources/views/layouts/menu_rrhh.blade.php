@@ -45,7 +45,7 @@
             <a class="nav-link" href="/rrhh/cambiar_contraseña">Cambiar contraseña</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/salir">Salir del Sistema</a>
+            <a class="nav-link" href="/salir">Salir</a>
         </li>
     </ul>
   </div>

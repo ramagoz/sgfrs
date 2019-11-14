@@ -13,22 +13,24 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="nav nav-pills">
       <li class="nav-item">
-        <a class="nav-link" href="/empleado/recibos_pendientes">Recibos Pendientes</a>
+        <a class="nav-link {{ setActive('empleado/recibos_pendientes')}}" href="/empleado/recibos_pendientes">Recibos Pendientes</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/empleado/recibos_firmados">Recibos Firmados</a>
+        <a class="nav-link {{ setActive('empleado/recibos_firmados')}}" href="/empleado/recibos_firmados">Recibos Firmados</a>
       </li>
       @if (Session::get('rol_usuario') ==2 or Session::get('rol_usuario') ==4 or Session::get('rol_usuario') ==5)
-        <li><a href="/home">Cambiar de rol</a></li>
+        <li lass="nav-item">
+          <a class="nav-link" href="/home">Cambiar de rol</a>
+        </li>
       @endif
       <li class="nav-item">
-        <a class="nav-link" href="/empleado/contactar_rrhh">Contactar con RRHH</a>
+        <a class="nav-link {{ setActive('empleado/contactar_rrhh')}}" href="/empleado/contactar_rrhh">Contactar con RRHH</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/empleado/cambiar_contraseña">Cambiar contraseña</a>
+        <a class="nav-link {{ setActive('empleado/cambiar_contraseña')}}" href="/empleado/cambiar_contraseña">Cambiar contraseña</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/salir">Salir del Sistema</a>
+        <a class="nav-link" href="/salir">Salir</a>
       </li>
     </ul>
   </div>

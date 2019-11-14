@@ -92,7 +92,7 @@ class EmpresaControlador extends Controller
 
             $auditoria->save();
         //fin codigo auditoria
-        return view('empresa.busqueda_oficial')->with('$msj','Se registro el usuario'.$request->nombre.' '.$request->apellido.' con CI Nro.'.$request->cedula);
+        return view('empresa.busqueda_oficial')->with('msj','Se registro al usuario '.$request->nombre.' '.$request->apellido.' con CI Nro.'.$request->cedula);
     }
 
     public function getModificacionOficial(Request $request)
@@ -120,6 +120,13 @@ class EmpresaControlador extends Controller
         $persona->estado     = $request->estado;
         $persona->obs        = $request->observacion;
         $persona->save();
+
+        $user =User::find($request->id_usuario);
+
+        $user->email = $request->correo;
+        $user->status = $request->estado;
+        $user->save();
+
         //inicio codigo auditoria
             $auditoria = new Auditoria();
             $auditoria->fecha_hora = date('Y-m-d H:i:s');

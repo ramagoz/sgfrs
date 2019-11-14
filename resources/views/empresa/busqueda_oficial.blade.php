@@ -14,7 +14,8 @@
         <div class="alert alert-success" role="alert" align="center">{{ $msj }}</div>
     @endisset
 
-    <table class="table table-sm" border="1" id="table">
+
+    <table class="table table-sm compact" border="1" id="table">
        <thead class="thead-dark">
           <tr>
              <th>Cédula</th>
@@ -38,6 +39,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: '{{ url('empresa/datatable') }}',
+                "lengthMenu": [[7, 25, 50, -1], [7, 25, 50, "All"]],
                 "language":
                 {
                     "sProcessing":     "Procesando...",
@@ -70,11 +72,11 @@
                     if ( data.estado == 0 )
                     {
                       $('td', row).eq(4).addClass('text-danger').text('Inactivo');
-                      $('td', row).eq(5).html("<button type='button' class='modif btn btn-info btn-block'>Actualizar<span class='glyphicon glyphicon-edit'></span> </button>");
+                      $('td', row).eq(5).html("<button type='button' class='modif btn btn-info btn-block'>Actualizar</button>");
 
                     } else {
                       $('td', row).eq(4).addClass('text-success').text('Activo');
-                      $('td', row).eq(5).html("<button type='button' class='modif btn btn-info btn-block'>Actualizar<span class='glyphicon glyphicon-edit'></span> </button>");
+                      $('td', row).eq(5).html("<button type='button' class='modif btn btn-info btn-block'>Actualizar</button>");
                     }
                 },
                 columns:
@@ -84,7 +86,7 @@
                     { data: 'apellidos', name: 'apellidos'},
                     { data: 'correo', name: 'correo'},
                     { data: 'estado', name: 'estado'},
-                    {"defaultContent": "<button type='button' class='modif btn btn-success btn-block'>Actualizar<span class='glyphicon glyphicon-edit'></span> </button>"},
+                    {"defaultContent": "<button type='button' class='modif btn btn-success btn-block'>Actualizar</button>"},
                 ]
             });
             /*Javascript para captura de la cedula y redirección a la ruta para modificación*/

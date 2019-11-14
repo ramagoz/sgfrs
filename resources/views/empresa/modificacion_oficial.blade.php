@@ -13,6 +13,7 @@
       <div class="alert alert-warning" role="alert" align="center">{{ $error }}</div>
     @endisset
 
+
     <form action="{{url('/empresa/oficial_modificado')}}" id="formulario-form" method="get"  role="form">
       {{ csrf_field() }}
         <div class="row justify-content-md-center">
@@ -90,7 +91,7 @@
               <div class="form-group row">
                 <label for="estado" class="col-lg-2 col-form-label">Estado:</label>
                 <div class="col-lg-10">
-                  <select class="form-control" id="estado" name="estado" value="{{$persona->estado}}" required focus max="1">
+                  <select class="form-control" id="estado" name="estado" required focus max="1">
                     @if ($persona->estado ==1)
                       <option selected value="1">Activo</option>
                       <option value="0">Inactivo</option>
@@ -112,7 +113,10 @@
               </div>
             </div>
         </div>
-        <button class="btn btn-success" type="submit">Actualizar Datos</button>
+
+        <input type="hidden" name="id_usuario" id="id_usuario" value={{ $persona->id_usuario }} >
+        <button class="btn btn-success" type="submit">Actualizar</button>
+        <a class="btn btn-danger" href="/empresa/busqueda_oficial">Cancelar</a>
     </form>
 
   </div>

@@ -27,7 +27,7 @@ class EmpleadoControlador extends Controller
         ->join('personas', 'recibos.cedula','=','personas.cedula')
         ->where('recibos.id_estado_recibo', '2')
         ->where('personas.correo', Auth::user()->email)
-        ->paginate(7);
+        ->paginate(8);
         if ($recibos->count() ==0)
         {
             return view('empleado.recibos_pendientes')->with('recibos',$recibos)->with('msj','No existen recibos pendientes de firma por el empleado!');
@@ -124,7 +124,7 @@ class EmpleadoControlador extends Controller
             ->join('personas', 'recibos.cedula','=','personas.cedula')
             ->where('recibos.id_estado_recibo', '2')
             ->where('personas.correo', Auth::user()->email)
-            ->paginate(7);
+            ->paginate(8);
             return view('empleado.recibos_pendientes')->with('recibos',$recibos)->with('error','No ha selecionado ningun recibo')->with('boton','boton');
         }
         //Servicio de firma
@@ -155,7 +155,7 @@ class EmpleadoControlador extends Controller
                 ->join('personas', 'recibos.cedula','=','personas.cedula')
                 ->where('recibos.id_estado_recibo', '2')
                 ->where('personas.correo', Auth::user()->email)
-                ->paginate(5);
+                ->paginate(8);
                 return view('empleado.recibos_pendientes')->with('recibos',$recibos)->with('error',$resultado->funcReturn)->with('boton','boton');
             }
             //fin servicio firma
@@ -183,7 +183,7 @@ class EmpleadoControlador extends Controller
         ->join('personas', 'recibos.cedula','=','personas.cedula')
         ->where('recibos.id_estado_recibo', '3')
         ->where('personas.correo', Auth::user()->email)
-        ->paginate(5);
+        ->paginate(8);
 
         return view('empleado.recibos_firmados')->with('recibos',$recibos)->with('msj','Recibos firmados correctamente!')->with('boton','boton');
     }
@@ -210,7 +210,7 @@ class EmpleadoControlador extends Controller
         $mes=substr($id, -4,2);
         $año=substr($id, -2,2);
         $id="/recibos/firmados_empresa_empleados/20". $año . "/" . $mes."/".$id.".pdf";
-        return view('empleado.ver_recibo_firmado_empresa_empleado')->with('id',$id);
+        return view('empleado.ver_recibo_firmado_empleado')->with('id',$id);
     }
 
     public function getContactarRrhh()

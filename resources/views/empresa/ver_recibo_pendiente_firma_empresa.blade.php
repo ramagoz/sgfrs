@@ -16,8 +16,8 @@
 			</div>
 		@endisset
 
-		<iframe src='{{$id}}' width="90%" height="65%" frameborder="0" allowfullscreen>
-		</iframe>
+		<iframe src='{{$id}}' width="100%" height="75%" frameborder="0" allowfullscreen>
+		</iframe><br><br>
 
 		<form action="/empresa/firmar_recibo_empresa/" method="post">
 			{{ csrf_field() }}
@@ -28,7 +28,4 @@
 			<input type="hidden" name="id" id="id" value={{ $id_recibo }} >
 		</form>
 </div>
-
-
-
 @endsection

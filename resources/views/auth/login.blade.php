@@ -22,7 +22,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-user"></i></span>
                         </div>
-                        <input id="email" type="email" class="form-control" placeholder="Correo electrónico" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}"name="email" value="{{ old('email') }}" >
+                        <input id="email" type="email" class="form-control" placeholder="Correo electrónico" class="form-control {{ $errors->has('email') ? ' is-invalid' : '' }}"name="email" value="{{ old('email') }}" >
                     </div>
                     @if ($errors->has('email'))
                         <div class="row align-items-center remember">
@@ -33,7 +33,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-key"></i></span>
                         </div>
-                        <input id="password" name="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="Contraseña" >
+                        <input id="password" name="password" type="password" class="form-control {{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="Contraseña">
                     </div>
                     @if ($errors->has('password'))
                         <div class="row align-items-center remember">

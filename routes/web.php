@@ -23,7 +23,7 @@ Route::group(['middleware' => 'auth'], function()
 	Route::get('empresa/inicio', 'EmpresaControlador@getIndexEmpresa');
 	Route::get('empresa', 'EmpresaControlador@getRecibosPendientesEmpresa');
 
-	Route::get('empresa/busqueda_oficial', 'EmpresaControlador@getBusquedaOficial')->name('busqueda_oficial');
+	Route::get('empresa/busqueda_oficial', 'EmpresaControlador@getBusquedaOficial')->name('empresa/busqueda_oficial');
 
 	Route::get('empresa/alta_oficial', 'EmpresaControlador@getAltaOficial');
 	Route::post('empresa/oficial_cargado', 'EmpresaControlador@postOficialCargado');
@@ -32,22 +32,22 @@ Route::group(['middleware' => 'auth'], function()
 	Route::get('empresa/oficial_modificado', 'EmpresaControlador@getOficialModificado');
 
 
-	Route::get('empresa/recibos_pendientes_empresa', 'EmpresaControlador@getRecibosPendientesEmpresa')->name('recibos_pendientes_empresa');
+	Route::get('empresa/recibos_pendientes_empresa', 'EmpresaControlador@getRecibosPendientesEmpresa')->name('empresa/recibos_pendientes_empresa');
 	Route::get('empresa/ver_recibo_pendiente_firma_empresa/{id}', 'EmpresaControlador@getVerRecibo');
-	Route::get('empresa/recibos_pendientes_empleados', 'EmpresaControlador@getRecibosPendientesEmpleados')->name('recibos_pendientes_empleados');
+	Route::get('empresa/recibos_pendientes_empleados', 'EmpresaControlador@getRecibosPendientesEmpleados')->name('empresa/recibos_pendientes_empleados');
 
 	Route::post('empresa/firmar_recibo_empresa/', 'EmpresaControlador@postFirmarReciboPendienteEmpresa');
 	Route::post('empresa/firma_masiva_empresa', 'EmpresaControlador@postFirmaMasivaRecibosPendientesEmpresa');
 
 	Route::get('empresa/ver_recibo_pendiente_firma_empleado/{id}', 'EmpresaControlador@getVerReciboPendienteFirmaEmpleado');
-	Route::get('empresa/recibos_firmados_empresa_empleados', 'EmpresaControlador@getRecibosFirmadosEmpresaEmpleados')->name('recibos_firmados_empresa_empleados');
+	Route::get('empresa/recibos_firmados_empresa_empleados', 'EmpresaControlador@getRecibosFirmadosEmpresaEmpleados')->name('empresa/recibos_firmados_empresa_empleados');
 	Route::get('empresa/ver_recibo_firmado_empresa_empleado/{id}', 'EmpresaControlador@getVerReciboFirmadoEmpresaEmpleado');
 
-	Route::get('empresa/informes_empresa', 'EmpresaControlador@getInformesEmpresa')->name('informes_empresa');
+	Route::get('empresa/informes_empresa', 'EmpresaControlador@getInformesEmpresa')->name('empresa/informes_empresa');
 	Route::post('empresa/resultado_informes_empresa', 'EmpresaControlador@postVerInformesEmpresa');
 	Route::get('empresa/pdf/{id}', 'RrhhControlador@getPdf');
 
-	Route::get('empresa/cambiar_contraseña', 'EmpresaControlador@getCambiarContraseña')->name('cambiar_contraseña');
+	Route::get('empresa/cambiar_contraseña', 'EmpresaControlador@getCambiarContraseña')->name('empresa/cambiar_contraseña');
 	Route::post('empresa/update_password', 'EmpresaControlador@postUpdatePassword');
 
 	Route::get('empresa/datatable', 'EmpresaControlador@datatable');
@@ -138,34 +138,41 @@ Route::group(['middleware' => 'auth'], function()
 	Route::get('oficial/alta_rrhh', 'OficialControlador@getAltaRrhh');
 	Route::get('oficial/baja_rrhh', 'OficialControlador@getBajaRrhh');
 
-	Route::get('oficial/busqueda_rrhh', 'OficialControlador@getBusquedaRrhh');
+	Route::get('oficial/busqueda_rrhh', 'OficialControlador@getBusquedaRrhh')->name('oficial/busqueda_rrhh');
+
 	Route::get('oficial/alta_empresa', 'OficialControlador@getAltaEmpresa');
 	Route::get('oficial/baja_empresa', 'OficialControlador@getBajaEmpresa');
 	Route::get('oficial/modificacion_empresa', 'OficialControlador@getModificacionEmpresa');
-	Route::get('oficial/busqueda_empresa', 'OficialControlador@getBusquedaEmpresa');
-	Route::get('oficial/roles', 'OficialControlador@getRoles');
-	Route::get('oficial/auditoria', 'OficialControlador@getAuditoria');
+
+	Route::get('oficial/busqueda_empresa', 'OficialControlador@getBusquedaEmpresa')->name('oficial/busqueda_empresa');
+
+	Route::get('oficial/roles', 'OficialControlador@getRoles')->name('oficial/roles');
+
+	Route::get('oficial/auditoria', 'OficialControlador@getAuditoria')->name('oficial/auditoria');
 	Route::get('oficial/datatableauditoria', 'OficialControlador@getDatatableAuditoria');
 	Route::get('oficial/restablecer_contraseña', 'OficialControlador@getRestablecerContraseña');
-	Route::get('oficial/cambiar_contraseña', 'OficialControlador@getCambiarContraseña');
+
+	Route::get('oficial/cambiar_contraseña', 'OficialControlador@getCambiarContraseña')->name('oficial/cambiar_contraseña');
 	Route::post('oficial/update_password', 'OficialControlador@postUpdatePassword');
 
 //Sección rutas empleado----------------------------------------------
 
 	Route::get('empleado', 'EmpleadoControlador@getRecibosPendientes');
 
-	Route::get('empleado/recibos_pendientes', 'EmpleadoControlador@getRecibosPendientes');
+	Route::get('empleado/recibos_pendientes', 'EmpleadoControlador@getRecibosPendientes')->name('empleado/recibos_pendientes');
 	Route::get('empleado/ver_recibo_pendiente_firma_empleado/{id}', 'EmpleadoControlador@getVerReciboPendienteFirmaEmpleado');
 
 	Route::post('empleado/firmar_recibo','EmpleadoControlador@postFirmarRecibo');
 	Route::post('empleado/firma_recibos', 'EmpleadoControlador@postFirmaMasiva');
 
-	Route::get('empleado/recibos_firmados', 'EmpleadoControlador@getRecibosFirmados');
-	Route::get('empleado/ver_recibo_firmado_empresa_empleado/{id}', 'EmpleadoControlador@getVerReciboFirmadoEmpresaEmpleado');
-	Route::get('empleado/cambiar_contraseña', 'EmpleadoControlador@getCambiarContraseña');
+	Route::get('empleado/recibos_firmados', 'EmpleadoControlador@getRecibosFirmados')->name('empleado/recibos_firmados');
+
+	Route::get('empleado/ver_recibo_firmado_empleado/{id}', 'EmpleadoControlador@getVerReciboFirmadoEmpresaEmpleado');
+
+	Route::get('empleado/cambiar_contraseña', 'EmpleadoControlador@getCambiarContraseña')->name('empleado/cambiar_contraseña');
 	Route::post('empleado/update_password', 'EmpleadoControlador@postUpdatePassword');
 
-	Route::get('empleado/contactar_rrhh', 'EmpleadoControlador@getContactarRrhh');
+	Route::get('empleado/contactar_rrhh', 'EmpleadoControlador@getContactarRrhh')->name('empleado/contactar_rrhh');
 
 
 });

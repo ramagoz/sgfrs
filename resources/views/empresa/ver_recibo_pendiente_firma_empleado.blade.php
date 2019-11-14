@@ -17,8 +17,8 @@
 		</div>
 	@endisset
 
-	<iframe src='{{$id}}' width="90%" height="65%" frameborder="0" allowfullscreen>
-	</iframe><br>
+	<iframe src='{{$id}}' width="100%" height="75%" frameborder="0" allowfullscreen>
+	</iframe><br><br>
 
 	<a class="btn btn-primary" href="{{ url('/empresa/recibos_pendientes_empleados' ) }}" role="button">Volver</a>
 

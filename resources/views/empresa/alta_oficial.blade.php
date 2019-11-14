@@ -21,15 +21,15 @@
               <div class="form-group row">
                 <label for="cedula" class="col-lg-2 col-form-label">Cédula:</label>
                 <div class="col-lg-10">
-                    <input class="form-control" id="cedula" name="cedula" type="text" value="{{old('cedula')}}" maxlength="7">
-                    {!! $errors->first('nombre','<small class=error>:message</small><br>') !!}
+                    <input class="form-control" id="cedula" name="cedula" type="text" value="{{old('cedula')}}" maxlength="7" required focus min="5">
+                    {!! $errors->first('cedula','<small class=error>:message</small><br>') !!}
                 </div>
               </div>
 
               <div class="form-group row">
                 <label for="nombre" class="col-lg-2 col-form-label">Nombres:</label>
                 <div class="col-lg-10">
-                    <input class="form-control" id="nombre" name="nombre" type="text" value="{{old('nombre')}}" maxlength="50">
+                    <input class="form-control" id="nombre" name="nombre" type="text" value="{{old('nombre')}}" maxlength="50" required focus>
                     {!! $errors->first('nombre','<small class=error>:message</small><br>') !!}
                 </div>
               </div>
@@ -107,6 +107,7 @@
             </div>
         </div>
         <button class="btn btn-success" type="submit">Cargar usuario</button>
+        <a class="btn btn-danger" href="/empresa/busqueda_oficial">Cancelar</a>
     </form>
 
   </div>
