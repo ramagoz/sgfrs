@@ -1,16 +1,28 @@
 @extends('layouts.app')
 @include('layouts.menu_empresa')
 @section('content')
-{{-- Dentro de section va el contenido de la vista--}}
 
-	<h3 align="center">VER RECIBO PENDIENTE FIRMA EMPLEADO</h1>
+<div class="container">
+
+	<div class="page-header">
+	    <h2>Ver recibo pendiente de firma empleados</h2>
+	</div>
+
 	@isset($msj)
-		<div class="alert alert-success" role="alert" align="center">{{ $msj }}</div>
+		<div class="alert alert-success alert-dismissible fade show" role="alert">
+			<strong>{{ $msj }}</strong>
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		    	<span aria-hidden="true">&times;</span>
+		  	</button>
+		</div>
 	@endisset
 
-<div align="center">
-<iframe src='{{$id}}' width="1200" height="400" style="border: none;" ></iframe>
-<br>
-<a class="btn btn-primary" href="{{ url('/empresa/recibos_pendientes_empresa' ) }}" role="button">Volver</a>
+	<iframe src='{{$id}}' width="90%" height="65%" frameborder="0" allowfullscreen>
+	</iframe><br>
+
+	<a class="btn btn-primary" href="{{ url('/empresa/recibos_pendientes_empleados' ) }}" role="button">Volver</a>
+
 </div>
+
 @endsection
+

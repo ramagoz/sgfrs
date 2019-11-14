@@ -11651,11 +11651,29 @@ a.text-dark:focus {
 }
 
 .h-screen {
-  height: 100vh;
+  height: 90vh;
+}
+
+.centrarelemento {
+  height: 70vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .error {
   color: red;
   font-size: 15px;
+}
+
+.big-checkbox {
+  width: 20px;
+  height: 20px;
 }
 

@@ -6,7 +6,6 @@
 <script src="{{ asset('otros/datatable/jquery.dataTables.min.js') }}" defer></script>
 
 <div class="container-fluid">
-    <br>
     <div class="page-header">
         <h2>ABM Oficial de Seguridad</h2>
     </div>
@@ -15,7 +14,7 @@
         <div class="alert alert-success" role="alert" align="center">{{ $msj }}</div>
     @endisset
 
-    <table class="table table-hover" border="1" id="table">
+    <table class="table table-sm" border="1" id="table">
        <thead class="thead-dark">
           <tr>
              <th>Cédula</th>
@@ -71,11 +70,11 @@
                     if ( data.estado == 0 )
                     {
                       $('td', row).eq(4).addClass('text-danger').text('Inactivo');
-                      $('td', row).eq(5).html("<button type='button' class='modif btn btn-info'>Actualizar<span class='glyphicon glyphicon-edit'></span> </button>");
+                      $('td', row).eq(5).html("<button type='button' class='modif btn btn-info btn-block'>Actualizar<span class='glyphicon glyphicon-edit'></span> </button>");
 
                     } else {
                       $('td', row).eq(4).addClass('text-success').text('Activo');
-                      $('td', row).eq(5).html("<button type='button' class='modif btn btn-info'>Actualizar<span class='glyphicon glyphicon-edit'></span> </button>");
+                      $('td', row).eq(5).html("<button type='button' class='modif btn btn-info btn-block'>Actualizar<span class='glyphicon glyphicon-edit'></span> </button>");
                     }
                 },
                 columns:
@@ -85,7 +84,7 @@
                     { data: 'apellidos', name: 'apellidos'},
                     { data: 'correo', name: 'correo'},
                     { data: 'estado', name: 'estado'},
-                    {"defaultContent": "<button type='button' class='modif btn btn-success'>Actualizar<span class='glyphicon glyphicon-edit'></span> </button>"},
+                    {"defaultContent": "<button type='button' class='modif btn btn-success btn-block'>Actualizar<span class='glyphicon glyphicon-edit'></span> </button>"},
                 ]
             });
             /*Javascript para captura de la cedula y redirección a la ruta para modificación*/

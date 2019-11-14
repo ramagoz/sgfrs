@@ -1,38 +1,37 @@
 @extends('layouts.app')
 @include('layouts.menu_empresa')
 @section('content')
-<div class="container-fluid">
+<div class="container">
+
 	<div class="page-header">
-	    <h2>Informes anual de gestión de recibos</h2>
+    	<h2>Informes anuales de gestión de recibos</h2>
 	</div>
-
 	<div>
-    	<div class="mx-auto">
-		    @if(isset($boton))
-				<form action="/empresa/resultado_informes_empresa" method="POST">
-					{{csrf_field()}}
-
-					<div align="center" id="prueba">
-					<table style="width:20%" >
-							<tr>
-								<th>Año:</th>
-								<td>
-									<select class="form-control" id="año" name="año" maxlength="4" required>
+		<br><br><br><br>
+		<div class="row">
+				<div class="col-12 col-sm-5 col-lg-3 mx-auto ">
+				    @if(isset($boton))
+						<form class="bg-white shadow rounded py-3 px-4" action="/empresa/resultado_informes_empresa" method="POST">
+							{{csrf_field()}}
+							<div class="form-group">
+								<div class="col">
+									<label for="año" class="form-control">
+										Año:
+									</label>
+									<select class="form-control bg-ligth shadow-sm" id="año" name="año" maxlength="4" required>
 										@foreach($años as $año)
 								            <option value="{{$año->año}}">
 								                {{$año->año}}
 								            </option>
 							            @endforeach
 									</select>
-								</td>
-							</tr>
-					</table>
-					<br>
+								</div>
+							</div>
 							<button class="btn btn-primary" type="submit">Ver Informe</button>
-					</div>
-				</form>
-			@endif
-    	</div>
+						</form>
+					@endif
+				</div>
+		</div>
 	</div>
 
 	@if(isset($msj))

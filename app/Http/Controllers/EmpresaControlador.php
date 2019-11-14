@@ -154,7 +154,7 @@ class EmpresaControlador extends Controller
         $recibos = DB::table('recibos')
         ->join('personas', 'recibos.cedula','=','personas.cedula')
         ->where('recibos.id_estado_recibo', '1')
-        ->paginate(8);
+        ->paginate(7);
         if ($recibos->count() ==0)
         {
             return view('empresa.recibos_pendientes_empresa')->with('recibos',$recibos)->with('msj','No existen recibos pendientes de firma por la empresa!');

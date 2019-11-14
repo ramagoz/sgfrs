@@ -7,7 +7,6 @@
         <h2>Alta de usuario Oficial de Seguridad</h2>
     </div>
     <br>
-    {{-- Mensaje de error --}}
 
     @isset($error)
       <div class="alert alert-warning" role="alert" align="center">{{ $error }}</div>
@@ -22,15 +21,15 @@
               <div class="form-group row">
                 <label for="cedula" class="col-lg-2 col-form-label">Cédula:</label>
                 <div class="col-lg-10">
-                    <input class="form-control" id="cedula" name="cedula" type="text" value="{{old('cedula')}}" maxlength="7" required focus>
-                    {!! $errors->first('cedula','<small class=error>:message</small><br>') !!}
+                    <input class="form-control" id="cedula" name="cedula" type="text" value="{{old('cedula')}}" maxlength="7">
+                    {!! $errors->first('nombre','<small class=error>:message</small><br>') !!}
                 </div>
               </div>
 
               <div class="form-group row">
                 <label for="nombre" class="col-lg-2 col-form-label">Nombres:</label>
                 <div class="col-lg-10">
-                    <input class="form-control" id="nombre" name="nombre" type="text" value="{{old('nombre')}}" maxlength="50" required focus>
+                    <input class="form-control" id="nombre" name="nombre" type="text" value="{{old('nombre')}}" maxlength="50">
                     {!! $errors->first('nombre','<small class=error>:message</small><br>') !!}
                 </div>
               </div>

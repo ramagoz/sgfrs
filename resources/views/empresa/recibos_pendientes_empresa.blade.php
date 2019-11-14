@@ -8,19 +8,27 @@
 		    <h2>Recibos pendientes de firma empresa</h2>
 		</div>
 
+		@if(isset($msj))
+			<div class="alert alert-warning" role="alert" align="center">{{ $msj }}</div>
+		@endif
+
+		@isset($error)
+		<div class="alert alert-warning" role="alert" align="center">{{ $error }}</div>
+		@endisset
+
 		<form action="/empresa/firma_masiva_empresa/" method="POST">
 			{{csrf_field()}}
-			<div class="table-responsive">
+			<div class="table table-sm">
 				<table class="table table-hover" border="1">
 					<thead class="thead-dark">
 						<tr>
-							<th scope="col">Año</th>
-							<th scope="col">Mes</th>
-							<th scope="col">Cedula</th>
-							<th scope="col">Nombres</th>
-							<th scope="col">Apellidos</th>
-							<th scope="col">Ver Recibo</th>
-							<th scope="col">Seleccionar</th>
+							<th>Año</th>
+							<th>Mes</th>
+							<th>Cedula</th>
+							<th>Nombres</th>
+							<th>Apellidos</th>
+							<th>Ver Recibo</th>
+							<th>Seleccionar</th>
 						</tr>
 					</thead>
 					@foreach ($recibos as $recibo)
@@ -32,10 +40,10 @@
 							<td>{{ $recibo->nombres }}</td>
 							<td>{{ $recibo->apellidos }}</td>
 							<td>
-								<a class="btn btn-primary" data-toggle="collapse" aria-expanded="false" aria-controls="collapseExample" href="{{ url('/empresa/ver_recibo_pendiente_firma_empresa/'.$recibo->id_recibo ) }}" role="button">VER</a></td>
+								<a class="btn btn-primary btn-block" href="{{ url('/empresa/ver_recibo_pendiente_firma_empresa/'.$recibo->id_recibo ) }}" role="button">VER</a></td>
 							<td>
 								<div class="form-check">
-									<input type="checkbox" name="recibos_a_firmar[]" value="{{$recibo->id_recibo}}">
+									<input class="big-checkbox" type="checkbox" name="recibos_a_firmar[]" value="{{$recibo->id_recibo}}">
 								</div>
 							</td>
 						</tr>
@@ -43,15 +51,16 @@
 					@endforeach
 				</table>
 			</div>
-			@if(isset($boton))
-				<div class="row">
+			@if(isset($recibos))
+				<div class="row" align="center">
 					<div class="col-md-4">
-						<input type="checkbox" onclick="marcar(this);" /> Marcar/Desmarcar todos
+						<input class="big-checkbox" type="checkbox" onclick="marcar(this);" /> Marcar/Desmarcar todos
 					</div>
+
 					<div class="col-md-4">
-						<a class="btn btn-outline-info" href="{{ $recibos->previousPageUrl() }}" role="button">Anterior</a>
-						<a class="btn btn-outline-info" href="{{ $recibos->nextPageUrl() }}" role="button">Siguiente</a>
+						{{ $recibos->links() }}
 					</div>
+
 					<div class="col-md-4">
 						<label>Contraseña de firma: </label>
 						<input type="password" name="contraseña" id="contraseña" size="15" maxlength="15" required>
@@ -60,14 +69,6 @@
 				</div>
 			@endif
 		</form>
-
-		@if(isset($msj))
-			<div class="alert alert-warning" role="alert" align="center">{{ $msj }}</div>
-		@endif
-
-		@isset($error)
-		<div class="alert alert-warning" role="alert" align="center">{{ $error }}</div>
-		@endisset
 
 @endsection
 

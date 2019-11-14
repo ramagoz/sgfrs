@@ -1,22 +1,23 @@
 @extends('layouts.app')
 @include('layouts.menu_empresa')
 @section('content')
+
 	<div class="container-fluid">
 
 		<div class="page-header">
 		    <h2>Recibos firmados empresa y empleados</h2>
 		</div>
 		<div class="table-responsive">
-			<table class="table table-hover" border="1">
+			<table class="table table-hover table-sm" border="1">
 				<thead class="thead-dark">
 					<tr>
-						<th scope="col">Año</th>
-						<th scope="col">Mes</th>
-						<th scope="col">Estado Recibo</th>
-						<th scope="col">Cedula</th>
-						<th scope="col">Nombres</th>
-						<th scope="col">Apellidos</th>
-						<th scope="col">Ver Recibo</th>
+						<th>Año</th>
+						<th>Mes</th>
+						<th>Estado Recibo</th>
+						<th>Cedula</th>
+						<th>Nombres</th>
+						<th>Apellidos</th>
+						<th>Ver Recibo</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -41,7 +42,7 @@
 							<td>{{ $recibo->nombres }}</td>
 							<td>{{ $recibo->apellidos }}</td>
 							<td>
-								<a class="btn btn-primary" data-toggle="collapse" aria-expanded="false" aria-controls="collapseExample" href="{{ url('/rrhh/ver_todos_los_recibos/'.$recibo->id_recibo ) }}" role="button">VER</a>
+								<a class="btn btn-primary btn-block" href="{{ url('/empresa/ver_recibo_firmado_empresa_empleado/'.$recibo->id_recibo ) }}" role="button">VER</a></td>
 							</td>
 						</tr>
 					@endforeach
