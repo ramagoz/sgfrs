@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Http\Requests\ValidacionCargaUsuario;
+use App\Http\Requests\ValidacionActualizacionUsuario;
 use Illuminate\Http\Request;
 use App\Persona;
 use App\Auditoria;
@@ -14,7 +15,10 @@ use Auth;
 
 class OficialControlador extends Controller
 {
-    
+    public function getIndexOficial()
+    {
+      return view('oficial.indexoficial');
+    }
      //devuelve a la vista en formato json los datos de los usuarios con rol de rrhh
     //para ser procesado por el datatable
     public function datatable()
@@ -34,94 +38,27 @@ class OficialControlador extends Controller
 
     }
 
-        public function datatablerol()
+    public function datatablerol()
     {
-        // $persona_rol= DB::table('personas')->get();
-         //return Datatables::of(Persona::query())->make(true);
-        // return Datatables::of($persona_rol)->make(true);
-
-
-            $persona_rol = DB::table('personas')
+           $persona_rol = DB::table('personas')
                  ->join('roles', 'personas.id_rol','=','roles.id_rol')->get();
           return Datatables::of($persona_rol)->make(true);
     }
 
-
-
-    public function getRecuperarGrupo(request $request)
-    {
-
-        $persona =DB::table('personas')->where('cedula',$request->cedula)->get()->toArray();
-        $nombre_grupos = DB::table('grupos_recibos')->select('nombre_grupo','id_grupo')->get();
-
-
-      foreach ($persona as $person) 
-                    {
-                        $estado = $person->estado;
-
-                    }
-
-     if ($estado=='1')
-       {
-        return view('oficial.desactivar_rrhh', compact('persona'),compact('nombre_grupos'));
-        }
-    else
-    {
-        return view('oficial.activar_rrhh', compact('persona'),compact('nombre_grupos'));
-    }
-   }
-
-
-   public function getRecuperarGrupoEmpresa(request $request)
-    {
-
-        $persona =DB::table('personas')->where('cedula',$request->cedula)->get()->toArray();
-        $nombre_grupos = DB::table('grupos_recibos')->select('nombre_grupo','id_grupo')->get();
-
-
-      foreach ($persona as $person) 
-                    {
-                        $estado = $person->estado;
-
-                    }
-
-     if ($estado=='1')
-       {
-        return view('oficial.desactivar_empresa', compact('persona'),compact('nombre_grupos'));
-        }
-    else
-    {
-        return view('oficial.activar_empresa', compact('persona'),compact('nombre_grupos'));
-    }
-   }
-
-     public function getModificacionRhh(request $request)
-    {  
-
-        $persona =DB::table('personas')->where('cedula',$request->cedula)->get()->toArray();
-        $nombre_grupos = DB::table('grupos_recibos')->select('nombre_grupo','id_grupo')->get();
-       
-        return view('oficial.modificacion_rrhh', compact('persona'),compact('nombre_grupos'));
-    }
      public function getModificacionRol(request $request)
-    {  
+    {
 
         $persona =DB::table('personas')->where('cedula',$request->cedula)->get()->toArray();
         $nombre_rol = DB::table('roles')->select('rol','id_rol')->get();
-       
-        return view('oficial.modificacion_rol', compact('persona'),compact('nombre_rol'));
-    }
 
-    public function getIndexOficial()
-    {      
-    	return view('oficial.indexoficial');
+        return view('oficial.modificacion_rol', compact('persona'),compact('nombre_rol'));
     }
 
     public function postRrhhCargado(Request $request)
     {
        //validacion si el usuario a cargar ya no existe
         $validemail=DB::table('users')->where('email',$request->correo)->get();
-         if ($validemail=='[]') 
+         if ($validemail=='[]')
              { // usuario no existe
           $validcedula=DB::table('personas')->where('cedula',$request->cedula)->get();
           if($validcedula=='[]') //persona no existe, se puede proceder a crear usuario y persona
@@ -135,7 +72,7 @@ class OficialControlador extends Controller
                  $user->save();
           //creacion de persona relacionada al usuario que se creo previamente.
                  $usuario = DB::table('users')->where('email', $request->correo)->get()->toArray();
-                foreach ($usuario as $users) 
+                foreach ($usuario as $users)
                     {
                         $id = $users->id;
                     }
@@ -180,129 +117,104 @@ class OficialControlador extends Controller
 
           }
           else{
-                
+
                 return view('/oficial/busqueda_rrhh')->with('errorpersona','Ya existe un registro de usuario con CI Nro. '.$request->cedula);
                 }
 
-        }         
+        }
           else{
                  return view('/oficial/busqueda_rrhh')->with('erroruser','Ya existe un registro de usuario con el correo '.$request->correo);
                 }
 
     }
 
-     public function postEmpresaCargado(Request $request)
+     public function postEmpresaCargado(ValidacionCargaUsuario $request)
     {
-       //validacion si el usuario a cargar ya no existe
-        $validemail=DB::table('users')->where('email',$request->correo)->get();
-         if ($validemail=='[]') 
-             { // usuario no existe
-          $validcedula=DB::table('personas')->where('cedula',$request->cedula)->get();
-          if($validcedula=='[]') //persona no existe, se puede proceder a crear usuario y persona
-          {
-            //creacion de usuario
-                 $user = new User();
-                 $user->name = $request->nombre;
-                 $user->email = $request->correo;
-                 $user->status= '1';
-                 $user->password = Hash::make($request->cedula);
-                 $user->save();
-          //creacion de persona relacionada al usuario que se creo previamente.
-                 $usuario = DB::table('users')->where('email', $request->correo)->get()->toArray();
-                foreach ($usuario as $users) 
-                    {
-                        $id = $users->id;
-                    }
-                    $persona             = new Persona();
-                    $persona->id_usuario = $id;
-                    $persona->id_rol     = $request->rol;
-                    $id_grupo='1';
-                    $persona->id_grupo   = $id_grupo;
-                    $persona->nombres    = $request->nombre;
-                    $persona->apellidos  = $request->apellido;
-                    $persona->cedula     = $request->cedula;
-                    $persona->cel        = $request->celular;
-                    $persona->tel        = $request->telefono;
-                    $persona->dpto       = $request->dpto;
-                    $persona->cargo      = $request->cargo;
-                    $persona->correo     = $request->correo;
-                    $persona->estado     = $request->estado;
-                    $persona->obs        = $request->observacion;
-                    $persona->save();
+      //Validación de datos obtenidos del formulario se realiza con la clase ValidacionCargaUsuario
+      //creacion de usuario
+      $user = new User();
+      $user->name = $request->nombre;
+      $user->email = $request->correo;
+      $user->status= '1';
+      $user->password = Hash::make($request->cedula);
+      $user->save();
+      //creacion de persona relacionada al usuario que se creo previamente.
+      $usuario = DB::table('users')->where('email', $request->correo)->get()->toArray();
+      foreach ($usuario as $users)
+      {
+          $id = $users->id;
+      }
+      $persona             = new Persona();
+      $persona->id_usuario = $id;
+      $persona->id_rol     = 3;
+      $persona->nombres    = $request->nombre;
+      $persona->apellidos  = $request->apellido;
+      $persona->cedula     = $request->cedula;
+      $persona->cel        = $request->celular;
+      $persona->tel        = $request->telefono;
+      $persona->dpto       = $request->dpto;
+      $persona->cargo      = $request->cargo;
+      $persona->correo     = $request->correo;
+      $persona->estado     = $request->estado;
+      $persona->obs        = $request->observacion;
+      $persona->save();
 
-                //inicio codigo auditoria
-                    $auditoria = new Auditoria();
-                    $auditoria->fecha_hora = date('Y-m-d H:i:s');
-                    $auditoria->cedula = session()->get('cedula_usuario');
-                    $auditoria->rol = session()->get('rol_usuario');
-                    $auditoria->ip = session()->get('ip_usuario');
-                    $auditoria->operacion = "Alta de empresa";
-                    $auditoria->descripcion = "Se procedio a la alta en el sistema del usuario con rol de EMPRESA con los siguientes datos:"."\n"
-                    ."número de cédula: ".$request->cedula."\n"
-                    ."Nombre: ".$request->nombre."\n"
-                    ."Apellido: ".$request->apellido."\n"
-                    ."Cel.: ".$request->celular."\n"
-                    ."Tel.: ".$request->telefono."\n"
-                    ."Correo: ".$request->correo."\n"
-                    ."Dpto.: ".$request->dpto."\n"
-                    ."Cargo: ".$request->cargo."\n"
-                    ."Obs.: ".$request->observacion;
+      //inicio codigo auditoria
+        $auditoria = new Auditoria();
+        $auditoria->fecha_hora = date('Y-m-d H:i:s');
+        $auditoria->cedula = session()->get('cedula_usuario');
+        $auditoria->rol = session()->get('rol_usuario');
+        $auditoria->ip = session()->get('ip_usuario');
+        $auditoria->operacion = "Alta de empresa";
+        $auditoria->descripcion = "Se procedio a la alta en el sistema del usuario con rol de EMPRESA con los siguientes datos:"."\n"
+        ."número de cédula: ".$request->cedula."\n"
+        ."Nombre: ".$request->nombre."\n"
+        ."Apellido: ".$request->apellido."\n"
+        ."Cel.: ".$request->celular."\n"
+        ."Tel.: ".$request->telefono."\n"
+        ."Correo: ".$request->correo."\n"
+        ."Dpto.: ".$request->dpto."\n"
+        ."Cargo: ".$request->cargo."\n"
+        ."Obs.: ".$request->observacion;
 
-                    $auditoria->save();
-                //fin codigo auditoria
+        $auditoria->save();
+        //fin codigo auditoria
 
-                    return view('oficial.busqueda_empresa')->with('$msjcargado','Se un registro el usuario con CI Nro. '.$request->cedula);
-
-          }
-          else{
-                
-                return view('/oficial/busqueda_empresa')->with('errorpersona','Ya existe un registro de usuario con CI Nro. '.$request->cedula);
-                }
-
-        }         
-          else{
-                 return view('/oficial/busqueda_empresa')->with('erroruser','Ya existe un registro de usuario con el correo '.$request->correo);
-                }
-
+        return view('oficial.busqueda_empresa')->with('msj','Se registro al usuario '.$request->nombre.' '.$request->apellido.' con CI Nro.: '.$request->cedula);
     }
 
        public function getAltaRrhh()
     {
-        //Consulta DB para ver grupos disponibles los compacta en de array y los envia a la vista//
-        $nombre_grupos = DB::table('grupos_recibos')->select('nombre_grupo','id_grupo')->get();
-        return view('oficial.alta_rrhh', compact('nombre_grupos'));
+
+        return view('oficial.alta_rrhh');
     }
 
      public function getAltaEmpresa()
     {
-        //Consulta DB para ver grupos disponibles los compacta en de array y los envia a la vista//
-        $nombre_grupos = DB::table('grupos_recibos')->select('nombre_grupo','id_grupo')->get();
-        return view('oficial.alta_empresa', compact('nombre_grupos'));
-    }
-  
-    public function getModificacionRrhh(request $request)
-    {  
-
-        $persona =DB::table('personas')->where('cedula',$request->cedula)->get()->toArray();
-        $nombre_grupos = DB::table('grupos_recibos')->select('nombre_grupo','id_grupo')->get();
-       
-        return view('oficial.modificacion_rrhh', compact('persona'),compact('nombre_grupos'));
+        return view('oficial.alta_empresa');
     }
 
-       public function getModificacionEmpresa(request $request)
-    {  
+    public function getModificacionRrhh($cedula)
+    {
 
-        $persona =DB::table('personas')->where('cedula',$request->cedula)->get()->toArray();
-        $nombre_grupos = DB::table('grupos_recibos')->select('nombre_grupo','id_grupo')->get();
-       
-        return view('oficial.modificacion_empresa', compact('persona'),compact('nombre_grupos'));
+        $persona =DB::table('personas')->where('cedula',$cedula)->first();
+
+        return view('oficial.modificacion_rrhh', compact('persona'));
+    }
+
+    public function getModificacionEmpresa($cedula)
+    {
+
+        $persona =DB::table('personas')->where('cedula',$cedula)->first();
+
+        return view('oficial.modificacion_empresa')->with('persona',$persona);
     }
 
     public function getRrhhModificado(Request $request)
-    {   
-      
+    {
+
         $persona =Persona::find($request->cedula);
-    
+
         $persona->id_grupo   = $request->grupo;
         $persona->nombres    = $request->nombre;
         $persona->apellidos  = $request->apellido;
@@ -340,38 +252,49 @@ class OficialControlador extends Controller
 
        # return view('rrhh.empleado_cargado');
         return view('oficial.busqueda_rrhh')->with('msj','Los datos del usuario con CI Nro. '.$request->cedula.' se actualizaron correctamente!!!');
-        
+
     }
 
      public function getRolModificado(Request $request)
-    {   
-      
+    {
+
         $persona =Persona::find($request->cedula);
-    
+
         $persona->id_rol     = $request->rol;
 
         $persona->save();
        # return view('rrhh.empleado_cargado');
         return view('oficial.roles')->with('msjrol','Los datos del usuario con CI Nro. '.$request->cedula.' se actualizaron correctamente!!!');
-        
+
     }
 
-      public function getEmpresaModificado(Request $request)
-    {   
-      
+    public function postEmpresaModificado(ValidacionActualizacionUsuario $request)
+    {
         $persona =Persona::find($request->cedula);
-    
-        $persona->id_grupo   = $request->grupo;
-        $persona->nombres    = $request->nombre;
-        $persona->apellidos  = $request->apellido;
+
+        $consulta = DB::table('personas')->where('correo',$request->correo)->get();
+
+        if ($persona->correo <> $request->correo and $consulta <> '[]')
+        {
+            return view('oficial.modificacion_empresa')->with('error','Este correo ya esta asignado a otro usuario')->with('persona',$request);
+        }
+
         $persona->cedula     = $request->cedula;
-        $persona->cel        = $request->celular;
-        $persona->tel        = $request->telefono;
+        $persona->nombres    = $request->nombres;
+        $persona->apellidos  = $request->apellidos;
+        $persona->cel        = $request->cel;
+        $persona->tel        = $request->tel;
         $persona->dpto       = $request->dpto;
         $persona->cargo      = $request->cargo;
         $persona->correo     = $request->correo;
-        $persona->obs        = $request->observacion;
+        $persona->estado     = $request->estado;
+        $persona->obs        = $request->obs;
         $persona->save();
+
+        $user =User::find($request->id_usuario);
+        $user->email = $request->correo;
+        $user->status = $request->estado;
+        $user->save();
 
         //inicio codigo auditoria
             $auditoria = new Auditoria();
@@ -396,174 +319,33 @@ class OficialControlador extends Controller
 
        # return view('rrhh.empleado_cargado');
         return view('oficial.busqueda_empresa')->with('msj','Los datos del usuario con CI Nro. '.$request->cedula.' se actualizaron correctamente!!!');
-        
-    }
 
-
-     public function getRrhhDesactivado(Request $request)
-    {   
-      
-        $persona =Persona::find($request->cedula);
-        $persona->estado = $request->estado;
-        $persona->save();
-       
-        #user baja
-        $iduser = DB::table('users')->where('email', $request->correo)->get()->toArray();
-                foreach ($iduser as $users) 
-                    {
-                        $id = $users->id;
-                    }
-
-         $user=User::find($id);
-         $user->status=   $request->estado;
-         $user->save();
-
-         //inicio codigo auditoria
-            $auditoria = new Auditoria();
-            $auditoria->fecha_hora = date('Y-m-d H:i:s');
-            $auditoria->cedula = session()->get('cedula_usuario');
-            $auditoria->rol = session()->get('rol_usuario');
-            $auditoria->ip = session()->get('ip_usuario');
-            $auditoria->operacion = "Desactivación acceso usuario";
-            $auditoria->descripcion = "Se procedio a la Inactivación del acceso al sistema para el usuario con los siguientes datos:"."\n"
-            ."Número de cédula: ".$request->cedula."\n"
-            ."Nombre: ".$request->nombre."\n"
-            ."Apellido: ".$request->apellido;
-
-            $auditoria->save();
-        //fin codigo auditoria
-
-        return view('/oficial/busqueda_rrhh')->with('msjbaja','El usuario con CI Nro. '.$request->cedula.' se desactivo del Sistema !!!');
-        
-    }
-
-      public function getEmpresaDesactivado(Request $request)
-    {   
-      
-        $persona =Persona::find($request->cedula);
-        $persona->estado = $request->estado;
-        $persona->save();
-       
-        #user baja
-        $iduser = DB::table('users')->where('email', $request->correo)->get()->toArray();
-                foreach ($iduser as $users) 
-                    {
-                        $id = $users->id;
-                    }
-
-         $user=User::find($id);
-         $user->status=   $request->estado;
-         $user->save();
-
-         //inicio codigo auditoria
-            $auditoria = new Auditoria();
-            $auditoria->fecha_hora = date('Y-m-d H:i:s');
-            $auditoria->cedula = session()->get('cedula_usuario');
-            $auditoria->rol = session()->get('rol_usuario');
-            $auditoria->ip = session()->get('ip_usuario');
-            $auditoria->operacion = "Desactivación acceso usuario";
-            $auditoria->descripcion = "Se procedio a la Inactivación del acceso al sistema para el usuario con los siguientes datos:"."\n"
-            ."Número de cédula: ".$request->cedula."\n"
-            ."Nombre: ".$request->nombre."\n"
-            ."Apellido: ".$request->apellido;
-
-            $auditoria->save();
-        //fin codigo auditoria
-
-        return view('/oficial/busqueda_empresa')->with('msjbaja','El usuario con CI Nro. '.$request->cedula.' se desactivo del Sistema !!!');
-        
-    }
-
-     public function getRrhhActivado(Request $request)
-    {   
-      
-        $persona =Persona::find($request->cedula);
-        $persona->estado     = $request->estado;
-        $persona->save();
-       
-        #user baja
-        $iduser = DB::table('users')->where('email', $request->correo)->get()->toArray();
-                foreach ($iduser as $users) 
-                    {
-                        $id = $users->id;
-                    }
-
-         $user=User::find($id);
-         $user->status=   $request->estado;
-         $user->save();
-
-         //inicio codigo auditoria
-            $auditoria = new Auditoria();
-            $auditoria->fecha_hora = date('Y-m-d H:i:s');
-            $auditoria->cedula = session()->get('cedula_usuario');
-            $auditoria->rol = session()->get('rol_usuario');
-            $auditoria->ip = session()->get('ip_usuario');
-            $auditoria->operacion = "Activación acceso usuario";
-            $auditoria->descripcion = "Se procedio a la Activación del acceso al sistema para el usuario con los siguientes datos:"."\n"
-            ."Número de cédula: ".$request->cedula."\n"
-            ."Nombre: ".$request->nombre."\n"
-            ."Apellido: ".$request->apellido;
-
-            $auditoria->save();
-        //fin codigo auditoria
-
-        return view('/oficial/busqueda_rrhh')->with('msjactivado','El usuario con CI Nro. '.$request->cedula.' se activo correctamente!!');
-        
-    }
-
-     public function getEmpresaActivado(Request $request)
-    {   
-      
-        $persona =Persona::find($request->cedula);
-        $persona->estado     = $request->estado;
-        $persona->save();
-       
-        #user baja
-        $iduser = DB::table('users')->where('email', $request->correo)->get()->toArray();
-                foreach ($iduser as $users) 
-                    {
-                        $id = $users->id;
-                    }
-
-         $user=User::find($id);
-         $user->status=   $request->estado;
-         $user->save();
-
-        //inicio codigo auditoria
-            $auditoria = new Auditoria();
-            $auditoria->fecha_hora = date('Y-m-d H:i:s');
-            $auditoria->cedula = session()->get('cedula_usuario');
-            $auditoria->rol = session()->get('rol_usuario');
-            $auditoria->ip = session()->get('ip_usuario');
-            $auditoria->operacion = "Activación acceso usuario";
-            $auditoria->descripcion = "Se procedio a la Activación del acceso al sistema para el usuario con los siguientes datos:"."\n"
-            ."Número de cédula: ".$request->cedula."\n"
-            ."Nombre: ".$request->nombre."\n"
-            ."Apellido: ".$request->apellido;
-
-            $auditoria->save();
-        //fin codigo auditoria
-
-        return view('/oficial/busqueda_empresa')->with('msjactivado','El usuario con CI Nro. '.$request->cedula.' se activo correctamente!!');
-        
-    }
-
-    public function getBajaRrhh()
-    {
-    	return view('oficial.baja_rrhh');
     }
 
     public function getBusquedaRrhh()
     {
-    	return view('oficial.busqueda_rrhh');
+        $datos= DB::table('personas')->where('id_rol', '2')->count();
+        if ($datos > 0)
+        {
+            return view('oficial.busqueda_rrhh');
+        }
+        else
+        {
+            return view('oficial.busqueda_rrhh')->with('error', 'No existen usuarios con rol de Oficial de Seguridad');
+        }
     }
-      public function getBusquedaEmpresa()
+
+    public function getBusquedaEmpresa()
     {
-        return view('oficial.busqueda_empresa');
-    }
-    public function getBajaEmpresa()
-    {
-    	return view('oficial.baja_empresa');
+        $datos= DB::table('personas')->where('id_rol', '3')->orWhere('id_rol', '4')->count();
+        if ($datos > 0)
+        {
+            return view('oficial.busqueda_empresa');
+        }
+        else
+        {
+            return view('oficial.busqueda_empresa')->with('error', 'No existen usuarios con rol de Oficial de Seguridad');
+        }
     }
     public function getRoles()
     {
@@ -593,7 +375,7 @@ class OficialControlador extends Controller
             'mypassword' => 'required',
             'password' => 'required|confirmed|min:4|max:18',
         ];
-        
+
         $messages = [
             'mypassword.required' => 'El campo es requerido',
             'password.required' => 'El campo es requerido',
@@ -601,7 +383,7 @@ class OficialControlador extends Controller
             'password.min' => 'El mínimo permitido son 4 caracteres',
             'password.max' => 'El máximo permitido son 18 caracteres',
         ];
-        
+
         $validator = Validator::make($request->all(), $rules, $messages);
         if ($validator->fails()){
             return redirect('oficial/cambiar_contraseña')->withErrors($validator);
@@ -612,7 +394,7 @@ class OficialControlador extends Controller
                 $user = new User;
                 $user->where('email', '=', Auth::user()->email)
                      ->update(['password' => bcrypt($request->password)]);
-                
+
                 //inicio codigo auditoria
                 $auditoria = new Auditoria();
                 $auditoria->fecha_hora = date('Y-m-d H:i:s');
@@ -621,7 +403,7 @@ class OficialControlador extends Controller
                 $auditoria->ip = session()->get('ip_usuario');
                 $auditoria->operacion = "Cambio de Contraseña";
                 $personas =DB::table('personas')->where('correo',Auth::user()->email)->get()->toArray();
-                foreach ($personas as $persona) 
+                foreach ($personas as $persona)
                 {
                     $cedula = $persona->cedula;
                     $nombre = $persona->nombres;
@@ -633,7 +415,7 @@ class OficialControlador extends Controller
                 ."Apellido: ".$apellido;
 
                 $auditoria->save();
-                //fin codigo auditoria     
+                //fin codigo auditoria
 
 
                 return view('oficial/cambiar_contraseña')->with('status', 'Se ha actualizado la contraseña con éxito!!');

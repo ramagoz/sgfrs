@@ -14,6 +14,9 @@
         <div class="alert alert-success" role="alert" align="center">{{ $msj }}</div>
     @endisset
 
+    @isset($error)
+        <div class="alert alert-danger" role="alert" align="center">{{ $error }}</div>
+    @endisset
 
     <table class="table table-sm compact" border="1" id="table">
        <thead class="thead-dark">
@@ -28,7 +31,7 @@
         </thead>
     </table>
 
-    <a href="alta_oficial" button class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i>Alta Oficial de Seguridad</button></a>
+    <a href="alta_oficial" button class="btn btn-primary">Alta Oficial de Seguridad</button></a>
 
     <!--Javascript de Datatables-->
     <script type="text/javascript">

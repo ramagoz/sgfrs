@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ValidacionCargaUsuario extends FormRequest
+class ValidacionActualizacionUsuario extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,16 +24,16 @@ class ValidacionCargaUsuario extends FormRequest
     public function rules()
     {
         return [
-            'cedula' => 'required|min:5|max:7|unique:personas,cedula',
-            'nombre'=>'required|max:50',
-            'apellido'=>'required|max:50',
-            'telefono'=>'max:20',
-            'celular'=>'required|min:8|max:20',
+            'cedula' => 'required|min:5|max:7',
+            'nombres'=>'required|max:50',
+            'apellidos'=>'required|max:50',
+            'tel'=>'max:20',
+            'cel'=>'required|min:8|max:20',
             'dpto'=>'max:100',
             'cargo'=>'max:100',
-            'correo'=>'required|email|max:100|unique:personas,correo',
+            'correo'=>'required|email|max:100',
             'estado'=>'required|boolean',
-            'observacion'=>'max:500'
+            'obs'=>'max:500'
         ];
     }
 }

@@ -4,6 +4,7 @@ use App\Auditoria;
 use App\Grupo_recibo;
 use App\Http\Controllers\FuncionesControlador;
 use App\Http\Requests\ValidacionCargaUsuario;
+use App\Http\Requests\ValidacionActualizacionUsuario;
 use App\Http\Requests;
 use App\Periodo;
 use App\Persona;
@@ -34,7 +35,16 @@ class EmpresaControlador extends Controller
 
     public function getBusquedaOficial()
     {
-        return view('empresa.busqueda_oficial');
+        $datos= DB::table('personas')->where('id_rol', '5')->count();
+
+        if ($datos > 0)
+        {
+            return view('empresa.busqueda_oficial');
+        }
+        else
+        {
+            return view('empresa.busqueda_oficial')->with('error', 'No existen usuarios con rol de Oficial de Seguridad');
+        }
     }
 
     public function getAltaOficial()
@@ -95,34 +105,39 @@ class EmpresaControlador extends Controller
         return view('empresa.busqueda_oficial')->with('msj','Se registro al usuario '.$request->nombre.' '.$request->apellido.' con CI Nro.'.$request->cedula);
     }
 
-    public function getModificacionOficial(Request $request)
+    public function getModificacionOficial($cedula)
     {
-    	$persona =DB::table('personas')->where('cedula',$request->cedula)->first();
+    	$persona =DB::table('personas')->where('cedula',$cedula)->first();
 
-        return view('empresa.modificacion_oficial', compact('persona'));
+        return view('empresa.modificacion_oficial')->with('persona',$persona);
 
     }
 
-    public function getOficialModificado(Request $request)
+    public function postOficialModificado(ValidacionActualizacionUsuario $request)
     {
 
         $persona =Persona::find($request->cedula);
 
-        $persona->id_grupo   = $request->grupo;
-        $persona->nombres    = $request->nombre;
-        $persona->apellidos  = $request->apellido;
+        $consulta = DB::table('personas')->where('correo',$request->correo)->get();
+
+        if ($persona->correo <> $request->correo and $consulta <> '[]')
+        {
+            return view('empresa.modificacion_oficial')->with('error','Este correo ya esta asignado a otro usuario')->with('persona',$request);
+        }
+
         $persona->cedula     = $request->cedula;
-        $persona->cel        = $request->celular;
-        $persona->tel        = $request->telefono;
+        $persona->nombres    = $request->nombres;
+        $persona->apellidos  = $request->apellidos;
+        $persona->cel        = $request->cel;
+        $persona->tel        = $request->tel;
         $persona->dpto       = $request->dpto;
         $persona->cargo      = $request->cargo;
         $persona->correo     = $request->correo;
         $persona->estado     = $request->estado;
-        $persona->obs        = $request->observacion;
+        $persona->obs        = $request->obs;
         $persona->save();
 
         $user =User::find($request->id_usuario);
-
         $user->email = $request->correo;
         $user->status = $request->estado;
         $user->save();
@@ -148,7 +163,6 @@ class EmpresaControlador extends Controller
             $auditoria->save();
         //fin codigo auditoria
 
-       # return view('rrhh.empleado_cargado');
         return view('/empresa/busqueda_oficial')->with('msj','Los datos del usuario con CI Nro. '.$request->cedula.' se actualizaron correctamente!!!');
 
     }

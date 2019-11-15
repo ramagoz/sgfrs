@@ -11,65 +11,12 @@
         <h2>ABM usuario Empresa</h2>
     </div>
 
-    @isset($errorpersona)
-        <div class="alert alert-danger" role="alert">
-         <button type="button" class="close" data-dismiss="alert" aria-label="Close"  align="center"><span aria-hidden="true">&times;</span></button> {{ $errorpersona }}</div>
-       <script type="text/javascript">
-           window.setTimeout(function() {
-                    $(".alert").fadeTo(300, 0).slideUp(400, function(){
-                        $(this).remove();
-                    });
-                }, 20000);
-       </script>
-       @unset($errorpersona);
+    @isset($msj)
+       <div class="alert alert-success" role="alert" align="center">{{ $msj }}</div>
     @endisset
-    @isset($erroruser)
-        <div class="alert alert-danger" role="alert">
-         <button type="button" class="close" data-dismiss="alert" aria-label="Close"  align="center"><span aria-hidden="true">&times;</span></button> {{ $erroruser }}</div>
-       <script type="text/javascript">
-           window.setTimeout(function() {
-                    $(".alert").fadeTo(300, 0).slideUp(400, function(){
-                        $(this).remove();
-                    });
-                }, 20000);
-       </script>
-       @unset($erroruser);
-    @endisset
-    @isset($msjcargado)
-        <div class="alert alert-success" role="alert">
-         <button type="button" class="close" data-dismiss="alert" aria-label="Close"  align="center"><span aria-hidden="true">&times;</span></button> {{ $msjcargado }}</div>
-       <script type="text/javascript">
-           window.setTimeout(function() {
-                    $(".alert").fadeTo(300, 0).slideUp(400, function(){
-                        $(this).remove();
-                    });
-                }, 20000);
-       </script>
-       @unset($msjcargado);
-    @endisset
-    @isset($msjbaja)
-        <div class="alert alert-danger" role="alert">
-         <button type="button" class="close" data-dismiss="alert" aria-label="Close"  align="center"><span aria-hidden="true">&times;</span></button> {{ $msjbaja }}</div>
-       <script type="text/javascript">
-           window.setTimeout(function() {
-                    $(".alert").fadeTo(300, 0).slideUp(400, function(){
-                        $(this).remove();
-                    });
-                }, 20000);
-       </script>
-       @unset($msjbaja);
-    @endisset
-    @isset($msjactivado)
-        <div class="alert alert-success" role="alert">
-         <button type="button" class="close" data-dismiss="alert" aria-label="Close"  align="center"><span aria-hidden="true">&times;</span></button> {{ $msjactivado }}</div>
-       <script type="text/javascript">
-           window.setTimeout(function() {
-                    $(".alert").fadeTo(300, 0).slideUp(400, function(){
-                        $(this).remove();
-                    });
-                }, 20000);
-       </script>
-       @unset($msjactivado);
+
+    @isset($error)
+       <div class="alert alert-warning" role="alert" align="center">{{ $error }}</div>
     @endisset
 
     <table class="table table-sm compact" border="1" id="table">
@@ -86,7 +33,7 @@
     </table>
 
 
-    <a href="alta_empresa" button class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i>Alta de Empresa</button></a>
+  <a href="alta_empresa" button class="btn btn-primary">Alta de Empresa</a>
 
   <!--Javascript de Datatables-->
   <script type="text/javascript">
@@ -128,7 +75,7 @@
 
                                 } else {
                                   $('td', row).eq(4).addClass('text-success').text('Activo');
-                                  $('td', row).eq(5).html("<button type='button' class='modif btn btn-success'>Editar</button>");
+                                  $('td', row).eq(5).html("<button type='button' class='modif btn btn-info btn-block'>Actualizar</button>");
                                 }
                               },
           columns: [
@@ -137,7 +84,7 @@
                           { data: 'apellidos', name: 'apellidos'},
                           { data: 'correo', name: 'correo'},
                           { data: 'estado', name: 'estado'},
-                          {"defaultContent": "<button type='button' class='modif btn btn-success'>Editar</button>"},
+                          {"defaultContent": "<button type='button' class='modif btn btn-info btn-block'>Actualizar</button>"},
                    ]
     });
 

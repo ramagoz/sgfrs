@@ -208,7 +208,7 @@
               <div class="form-group row">
                 <label for="observacion" class="col-lg-2 col-form-label">Obs:</label>
                 <div class="col-lg-10">
-                     <textarea class="form-control" id="observacion" name="observacion" rows="1" value="{{old('observacion')}}" maxlength="500"></textarea>
+                     <textarea class="form-control" id="observacion" name="observacion" rows="1" maxlength="500">{{old('observacion')}}</textarea>
                      {!! $errors->first('observacion','<small class=error>:message</small><br>') !!}
                 </div>
               </div>

@@ -29,8 +29,7 @@ Route::group(['middleware' => 'auth'], function()
 	Route::post('empresa/oficial_cargado', 'EmpresaControlador@postOficialCargado');
 
 	Route::get('empresa/modificacion_oficial/{cedula}', 'EmpresaControlador@getModificacionOficial');
-	Route::get('empresa/oficial_modificado', 'EmpresaControlador@getOficialModificado');
-
+	Route::post('empresa/oficial_modificado', 'EmpresaControlador@postOficialModificado');
 
 	Route::get('empresa/recibos_pendientes_empresa', 'EmpresaControlador@getRecibosPendientesEmpresa')->name('empresa/recibos_pendientes_empresa');
 	Route::get('empresa/ver_recibo_pendiente_firma_empresa/{id}', 'EmpresaControlador@getVerRecibo');
@@ -128,7 +127,7 @@ Route::group(['middleware' => 'auth'], function()
 	Route::post('oficial/empresa_cargado', 'OficialControlador@postEmpresaCargado');
 	Route::get('oficial/rol_modificado', 'OficialControlador@getRolModificado');
 	Route::get('oficial/rrhh_modificado', 'OficialControlador@getRrhhModificado');
-	Route::get('oficial/empresa_modificado', 'OficialControlador@getEmpresaModificado');
+	Route::post('oficial/empresa_modificado', 'OficialControlador@postEmpresaModificado');
 	Route::get('oficial/desactivar_rrhh/{cedula}', 'OficialControlador@getRecuperarGrupo');
 	Route::get('oficial/desactivar_empresa/{cedula}', 'OficialControlador@getRecuperarGrupoEmpresa');
 	Route::get('oficial/rrhh_desactivar', 'OficialControlador@getRrhhDesactivado');
@@ -142,8 +141,6 @@ Route::group(['middleware' => 'auth'], function()
 
 	Route::get('oficial/alta_empresa', 'OficialControlador@getAltaEmpresa');
 	Route::get('oficial/baja_empresa', 'OficialControlador@getBajaEmpresa');
-	Route::get('oficial/modificacion_empresa', 'OficialControlador@getModificacionEmpresa');
-
 	Route::get('oficial/busqueda_empresa', 'OficialControlador@getBusquedaEmpresa')->name('oficial/busqueda_empresa');
 
 	Route::get('oficial/roles', 'OficialControlador@getRoles')->name('oficial/roles');

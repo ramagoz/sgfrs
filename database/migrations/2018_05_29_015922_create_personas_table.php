@@ -24,7 +24,7 @@ class CreatePersonasTable extends Migration
             $table->string('cel',20);
             $table->string('dpto',100)->nullable();
             $table->string('cargo',100)->nullable();
-            $table->string('correo',100);
+            $table->string('correo',100)->unique();
             $table->boolean('estado');
             $table->string('obs',500->nullable();
         });
