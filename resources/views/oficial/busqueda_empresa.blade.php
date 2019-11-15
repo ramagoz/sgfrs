@@ -71,7 +71,7 @@
                     createdRow: function ( row, data, index ) {
                                 if ( data.estado == 0 ) {
                                   $('td', row).eq(4).addClass('text-danger').text('Inactivo');
-                                  $('td', row).eq(5).html("<button type='button' class='modif btn btn-success'>Editar</button>");
+                                  $('td', row).eq(5).html("<button type='button' class='modif btn btn-info btn-block'>Actualizar</button>");
 
                                 } else {
                                   $('td', row).eq(4).addClass('text-success').text('Activo');
