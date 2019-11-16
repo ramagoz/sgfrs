@@ -113,44 +113,46 @@ Route::group(['middleware' => 'auth'], function()
 //Sección rutas oficial----------------------------------------------
 
 	Route::get('oficial', 'OficialControlador@getIndexOficial');
-	Route::get('oficial/busqueda_rrhh', 'OficialControlador@getBusquedaRRHH');
+
+	//Funciones para obtencion de datos para los datatables
 	Route::get('oficial/datatable', 'OficialControlador@datatable');
 	Route::get('oficial/datatableempresa', 'OficialControlador@datatableempresa');
 	Route::get('oficial/datatablerol', 'OficialControlador@datatablerol');
-	Route::get('oficial/activar_rrhh/{cedula}', 'OficialControlador@getRecuperarGrupo');
-	Route::get('oficial/activar_empresa/{cedula}', 'OficialControlador@getRecuperarGrupoEmpresa');
-	Route::get('oficial/modificacion_rrhh/{cedula}', 'OficialControlador@getModificacionRrhh');
-	Route::get('oficial/modificacion_empresa/{cedula}', 'OficialControlador@getModificacionEmpresa');
-	Route::get('oficial/modificacion_rol/{cedula}', 'OficialControlador@getModificacionRol');
-	Route::post('/oficial/usuario_creado', 'OficialControlador@postUsuariocreado');
-	Route::post('oficial/rrhh_cargado', 'OficialControlador@postRrhhCargado');
-	Route::post('oficial/empresa_cargado', 'OficialControlador@postEmpresaCargado');
-	Route::get('oficial/rol_modificado', 'OficialControlador@getRolModificado');
-	Route::get('oficial/rrhh_modificado', 'OficialControlador@getRrhhModificado');
-	Route::post('oficial/empresa_modificado', 'OficialControlador@postEmpresaModificado');
-	Route::get('oficial/desactivar_rrhh/{cedula}', 'OficialControlador@getRecuperarGrupo');
-	Route::get('oficial/desactivar_empresa/{cedula}', 'OficialControlador@getRecuperarGrupoEmpresa');
-	Route::get('oficial/rrhh_desactivar', 'OficialControlador@getRrhhDesactivado');
-	Route::get('oficial/empresa_desactivar', 'OficialControlador@getEmpresaDesactivado');
-	Route::get('oficial/rrhh_activar', 'OficialControlador@getRrhhActivado');
-	Route::get('oficial/empresa_activar', 'OficialControlador@getEmpresaActivado');
-	Route::get('oficial/alta_rrhh', 'OficialControlador@getAltaRrhh');
-	Route::get('oficial/baja_rrhh', 'OficialControlador@getBajaRrhh');
 
+	//Modulo de listado de usuario de RRHH
 	Route::get('oficial/busqueda_rrhh', 'OficialControlador@getBusquedaRrhh')->name('oficial/busqueda_rrhh');
-
-	Route::get('oficial/alta_empresa', 'OficialControlador@getAltaEmpresa');
-	Route::get('oficial/baja_empresa', 'OficialControlador@getBajaEmpresa');
 	Route::get('oficial/busqueda_empresa', 'OficialControlador@getBusquedaEmpresa')->name('oficial/busqueda_empresa');
 
-	Route::get('oficial/roles', 'OficialControlador@getRoles')->name('oficial/roles');
+	//Alta de nuevos usuarios
+	Route::get('oficial/alta_empresa', 'OficialControlador@getAltaEmpresa');
+	Route::get('oficial/alta_rrhh', 'OficialControlador@getAltaRrhh');
 
+	Route::post('oficial/rrhh_cargado', 'OficialControlador@postRrhhCargado');
+	Route::post('oficial/empresa_cargado', 'OficialControlador@postEmpresaCargado');
+
+	//Actualizacion de datos de usuarios existentes
+	Route::get('oficial/modificacion_rrhh/{cedula}', 'OficialControlador@getModificacionRrhh');
+	Route::get('oficial/modificacion_empresa/{cedula}', 'OficialControlador@getModificacionEmpresa');
+
+	Route::post('oficial/rrhh_modificado', 'OficialControlador@postRrhhModificado');
+	Route::post('oficial/empresa_modificado', 'OficialControlador@postEmpresaModificado');
+
+	//Modificacion de roles de usuarios
+	Route::get('oficial/roles', 'OficialControlador@getRoles')->name('oficial/roles');
+	Route::get('oficial/modificacion_rol/{cedula}', 'OficialControlador@getModificacionRol');
+	Route::get('oficial/rol_modificado', 'OficialControlador@getRolModificado');
+
+	//Modulo de listado de registros de auditoria
 	Route::get('oficial/auditoria', 'OficialControlador@getAuditoria')->name('oficial/auditoria');
 	Route::get('oficial/datatableauditoria', 'OficialControlador@getDatatableAuditoria');
-	Route::get('oficial/restablecer_contraseña', 'OficialControlador@getRestablecerContraseña');
 
+	//Modulo de cambio de contraseña del usuario
 	Route::get('oficial/cambiar_contraseña', 'OficialControlador@getCambiarContraseña')->name('oficial/cambiar_contraseña');
 	Route::post('oficial/update_password', 'OficialControlador@postUpdatePassword');
+
+	//Modulo para restablecer acceso de usuarios
+	Route::get('oficial/restablecer_contraseña', 'OficialControlador@getRestablecerContraseña');
+
 
 //Sección rutas empleado----------------------------------------------
 

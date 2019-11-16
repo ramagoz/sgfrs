@@ -79,7 +79,7 @@
                                 { data: 'apellidos', name: 'apellidos'},
                                 { data: 'correo', name: 'correo'},
                                 { data: 'rol', name: 'rol'},
-                                {"defaultContent": "<button type='button' class='modif btn btn-warning'>Editar</button>"},
+                                {"defaultContent": "<button type='button' class='modif btn btn-warning btn-block'>Cambiar rol</button>"},
                          ]
 
             });

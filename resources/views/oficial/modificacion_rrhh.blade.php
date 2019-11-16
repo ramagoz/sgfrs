@@ -1,115 +1,123 @@
 @extends('layouts.app')
 @include('layouts.menu_oficial')
 @section('content')
-{{-- Dentro de section va el contenido de la vista--}}
+  <div class="container-fluid">
+    <br>
+    <div class="page-header">
+        <h2>Actualizar datos usuario RRHH</h2>
+    </div>
+    <br>
 
-	<h3 align="center">MODIFICACION DE DATOS DE RRHH</h1>
+    @isset($error)
+      <div class="alert alert-danger" role="alert" align="center">{{ $error }}</div>
+    @endisset
 
-<div class="container" align="center">
+    <form action="/oficial/rrhh_modificado" method="post">
+      {{ csrf_field() }}
 
- <form action="{{url('/oficial/rrhh_modificado')}}" id="formulario-form" method="get"  role="form"> {{ csrf_field() }}
-    <div class="row justify-content-md-center">
-    	@foreach($persona as $persona)
+      <div class="row justify-content-md-center">
           <!--Primera columna de Carga de Datos-->
-		  <div class="col-5">
+          <div class="col-md-5 col-md-offset-5">
 
-				<div class="form-group row">
-                		<label for="cedula" class="col-lg-2 col-form-label">Cédula:</label>
-                			<div class="col-lg-10">
-                  				<input class="form-control" id="cedula" name="cedula" type="text" value="{{$persona->cedula}}" readonly>
-                			</div>
-              	</div>
-              	<div class="form-group row">
-                		<label for="nombre" class="col-lg-2 col-form-label">Nombres:</label>
-                			<div class="col-lg-10">
-                  				<input class="form-control" id="nombre" name="nombre" type="text" value="{{$persona->nombres}}">
-                			</div>
-              	</div>
-              	<div class="form-group row">
-                		<label for="apellido" class="col-lg-2 col-form-label">Apellidos:</label>
-                			<div class="col-lg-10">
-                  				<input class="form-control" id="apellido" name="apellido" type="text" value="{{$persona->apellidos}}">
-                			</div>
-              	</div>
-              	<div class="form-group row">
-                		<label for="telefono" class="col-lg-2 col-form-label">Teléfono:</label>
-                			<div class="col-lg-10">
-                  				<input class="form-control" id="telefono" name="telefono" type="text" value="{{$persona->tel}}">
-                			</div>
-              	</div>
-             	<div class="form-group row">
-                		<label for="celular" class="col-lg-2 col-form-label">Celular:</label>
-                			<div class="col-lg-10">
-                  				<input class="form-control" id="celular" name="celular" type="text" value="{{$persona->cel}}">
-                			</div>
-              	</div>
-              	<div class="form-group row">
-                		<label for="dpto" class="col-lg-2 col-form-label">Dpto:</label>
-                			<div class="col-lg-10">
-                  				<input class="form-control" id="dpto" name="dpto" type="text" value="{{$persona->dpto}}">
-                			</div>
-              	</div>
+            <div class="form-group row">
+              <label for="cedula" class="col-lg-2 col-form-label">Cédula:</label>
+              <div class="col-lg-10">
+                    <input class="form-control" id="cedula" name="cedula" type="text" value="{{$persona->cedula}}" maxlength="7" required focus readonly>
+                  {!! $errors->first('cedula','<small class=error>:message</small><br>') !!}
+              </div>
+            </div>
 
-		  </div>
-		<!--Segunda columna de Carga de Datos -->
-    	  <div class="col-md-5 col-md-offset-5">
-			   <div class="form-group row">
-                		<label for="cargo" class="col-lg-2 col-form-label">Cargo:</label>
-                			<div class="col-lg-10">
-                  				<input class="form-control" id="cargo" name="cargo" type="text" value="{{$persona->cargo}}">
-                			</div>
-              	</div>
-              	<div class="form-group row">
-                		<label for="correo" class="col-lg-2 col-form-label">Correo:</label>
-                			<div class="col-lg-10">
-                  				<input class="form-control" id="correo" name="correo" type="email" value="{{$persona->correo}}">
-                			</div>
-              	</div>
-              	<!--<div class="form-group row">
-                		<label for="estado" class="col-lg-2 col-form-label">Estado:</label>
-                			<div class="col-lg-10">
-                  				<select class="form-control" id="estado" name="estado" value="{{$persona->estado}}">
-						            @if ($persona->estado==1)
-                        <option value="1" selected="true">Activo</option>
-                        <option value="0" >Inactivo</option>
-                        @else
-                        <option value="1" >Activo</option>
-                        <option value="0" selected="true">Inactivo</option>
-                        @endif
+            <div class="form-group row">
+              <label for="nombres" class="col-lg-2 col-form-label">Nombres:</label>
+              <div class="col-lg-10">
+                   <input class="form-control" id="nombres" name="nombres" type="text" value="{{old('nombres', $persona->nombres)}}" maxlength="50" required focus>
 
+                  {!! $errors->first('nombres','<small class=error>:message</small><br>') !!}
+              </div>
+            </div>
 
-			        			</select>
-                			</div>
-              	</div>-->
+            <div class="form-group row">
+              <label for="apellidos" class="col-lg-2 col-form-label">Apellidos:</label>
+              <div class="col-lg-10">
+                  <input class="form-control" id="apellidos" name="apellidos" type="text" value="{{old('apellidos', $persona->apellidos)}}" maxlength="50" required focus>
+                  {!! $errors->first('apellidos','<small class=error>:message</small><br>') !!}
+              </div>
+            </div>
 
-              	 <div class="form-group row">
-                		<label for="grupo" class="col-lg-2 col-form-label">Grupo:</label>
-                			<div class="col-lg-10">
-                  				<select class="form-control" id="grupo" name="grupo">
-						                   	 @foreach($nombre_grupos as $grupo)
-						                	 	@if("{{$persona->id_grupo}}"=="{{$grupo->id_grupo}}")
-						            				<option value="{{$grupo->id_grupo}}" selected="true">{{$grupo->nombre_grupo}}</option>
-						            			@else
-						            				 <option value="{{$grupo->id_grupo}}">{{$grupo->nombre_grupo}}</option>
-						            			@endif
-						            		@endforeach
+            <div class="form-group row">
+              <label for="tel" class="col-lg-2 col-form-label">Teléfono:</label>
+              <div class="col-lg-10">
+                  <input class="form-control" id="tel" name="tel" type="text" value="{{old('tel', $persona->tel)}}" maxlength="20">
+                  {!! $errors->first('tel','<small class=error>:message</small><br>') !!}
+              </div>
+            </div>
 
-						        </select>
-                			</div>
-              	 </div>
+            <div class="form-group row">
+              <label for="cel" class="col-lg-2 col-form-label">Celular:</label>
+              <div class="col-lg-10">
+                  <input class="form-control" id="cel" name="cel" type="text" value="{{old('cel', $persona->cel)}}" maxlength="20" required focus>
+                  {!! $errors->first('cel','<small class=error>:message</small><br>') !!}
+              </div>
+            </div>
 
-              	 <div class="form-group row">
-                		<label for="observacion" class="col-lg-2 col-form-label">Obs:</label>
-                			<div class="col-lg-10">
-                  				 <textarea class="form-control" id="observacion" name="observacion" rows="4">{{$persona->obs}} </textarea>
-                			</div>
-              	 </div>
+          </div>
+          <!--Segunda columna de Carga de Datos -->
+          <div class="col-md-5 col-md-offset-5">
 
-		  </div>
-		@endforeach
-	</div>
-	  <button class="btn btn-success" type="submit">Actualizar Datos</button>
- </form>
-</div>
+            <div class="form-group row">
+                <label for="dpto" class="col-lg-2 col-form-label">Dpto:</label>
+                  <div class="col-lg-10">
+                      <input class="form-control" id="dpto" name="dpto" type="text" value="{{old('dpto', $persona->dpto)}}" maxlength="100">
+                      {!! $errors->first('dpto','<small class=error>:message</small><br>') !!}
+                  </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="cargo" class="col-lg-2 col-form-label">Cargo:</label>
+              <div class="col-lg-10">
+                  <input class="form-control" id="cargo" name="cargo" type="text" value="{{old('cargo', $persona->cargo)}}" maxlength="100">
+                  {!! $errors->first('cargo','<small class=error>:message</small><br>') !!}
+              </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="correo" class="col-lg-2 col-form-label">Correo:</label>
+                  <div class="col-lg-10">
+                      <input class="form-control" id="correo" name="correo" type="email" value="{{old('correo', $persona->correo)}}" maxlength="100" required focus>
+                      {!! $errors->first('correo','<small class=error>:message</small><br>') !!}
+                  </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="estado" class="col-lg-2 col-form-label">Estado:</label>
+              <div class="col-lg-10">
+                <select class="form-control" id="estado" name="estado" required focus max="1">
+                  @if ($persona->estado ==1)
+                    <option selected value="1">Activo</option>
+                    <option value="0">Inactivo</option>
+                  @else
+                    <option value="1">Activo</option>
+                    <option selected value="0">Inactivo</option>
+                  @endif
+                </select>
+                {!! $errors->first('estado','<small class=error>:message</small><br>') !!}
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="obs" class="col-lg-2 col-form-label">Obs:</label>
+              <div class="col-lg-10">
+                   <textarea class="form-control" id="obs" name="obs" rows="1" maxlength="500">{{old('observacion', $persona->obs)}}</textarea>
+                   {!! $errors->first('obs','<small class=error>:message</small><br>') !!}
+              </div>
+            </div>
+          </div>
+      </div>
+
+      <input type="hidden" name="id_usuario" id="id_usuario" value={{ $persona->id_usuario }} >
+      <button class="btn btn-success" type="submit">Actualizar Datos</button>
+       <a class="btn btn-danger" href="/oficial/busqueda_rrhh">Cancelar</a>
+    </form>
+  </div>
 
 @endsection
