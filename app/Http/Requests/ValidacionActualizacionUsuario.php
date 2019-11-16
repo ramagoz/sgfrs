@@ -24,7 +24,7 @@ class ValidacionActualizacionUsuario extends FormRequest
     public function rules()
     {
         return [
-            'cedula' => 'required|min:5|max:7',
+            'cedula' => 'required|min:6|max:7',
             'nombres'=>'required|max:50',
             'apellidos'=>'required|max:50',
             'tel'=>'max:20',

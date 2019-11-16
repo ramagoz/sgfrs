@@ -13,7 +13,7 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="nav nav-pills">
         <li class="nav-item">
-        <a class="nav-link" href="/rrhh/busqueda_empleado">ABM Empleados</a>
+        <a class="nav-link {{ setActive('rrhh/busqueda_empleado')}}" href="/rrhh/busqueda_empleado">ABM Empleados</a>
         </li>
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Trabajar con Recibos</a>
@@ -36,13 +36,13 @@
             </div>
         </li>
         <li class="nav-item">
-        <a class="nav-link" href="/rrhh/informes_rrhh">Informes</a>
+        <a class="nav-link {{ setActive('rrhh/informes_rrhh')}}" href="/rrhh/informes_rrhh">Informes</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="/home">Cambiar de rol</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/rrhh/cambiar_contraseña">Cambiar contraseña</a>
+            <a class="nav-link {{ setActive('rrhh/cambiar_contraseña')}}" href="/rrhh/cambiar_contraseña">Cambiar contraseña</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="/salir">Salir</a>

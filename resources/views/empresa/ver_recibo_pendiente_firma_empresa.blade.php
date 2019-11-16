@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @include('layouts.menu_empresa')
 @section('content')
-<div class="container">
+<div class="container-fluid">
 
 		<div class="page-header">
 		    <h2>Ver recibo pendiente de firma empresa</h2>

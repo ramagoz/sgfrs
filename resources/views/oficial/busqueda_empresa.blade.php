@@ -7,30 +7,30 @@
 
 <div class="container-fluid">
 
-    <div class="page-header">
-        <h2>ABM usuario Empresa</h2>
-    </div>
+  <div class="page-header">
+      <h2>ABM usuario Empresa</h2>
+  </div>
 
-    @isset($msj)
-       <div class="alert alert-success" role="alert" align="center">{{ $msj }}</div>
-    @endisset
+  @isset($msj)
+     <div class="alert alert-success" role="alert" align="center">{{ $msj }}</div>
+  @endisset
 
-    @isset($error)
-       <div class="alert alert-warning" role="alert" align="center">{{ $error }}</div>
-    @endisset
+  @isset($error)
+     <div class="alert alert-warning" role="alert" align="center">{{ $error }}</div>
+  @endisset
 
-    <table class="table table-sm compact" border="1" id="table">
-       <thead class="thead-dark">
-          <tr>
-             <th>Cédula</th>
-             <th>Nombres</th>
-             <th>Apellidos</th>
-             <th>Correo</th>
-             <th>Estado</th>
-             <th>Actualizar datos</th>
-         </tr>
-        </thead>
-    </table>
+  <table class="table table-sm compact" border="1" id="table">
+     <thead class="thead-dark">
+        <tr>
+           <th>Cédula</th>
+           <th>Nombres</th>
+           <th>Apellidos</th>
+           <th>Correo</th>
+           <th>Estado</th>
+           <th>Actualizar datos</th>
+       </tr>
+      </thead>
+  </table>
 
 
   <a href="alta_empresa" button class="btn btn-primary">Alta de Empresa</a>

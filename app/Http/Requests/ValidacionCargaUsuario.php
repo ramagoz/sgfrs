@@ -24,7 +24,7 @@ class ValidacionCargaUsuario extends FormRequest
     public function rules()
     {
         return [
-            'cedula' => 'required|min:5|max:7|unique:personas,cedula',
+            'cedula' => 'required|min:6|max:7|unique:personas,cedula',
             'nombre'=>'required|max:50',
             'apellido'=>'required|max:50',
             'telefono'=>'max:20',

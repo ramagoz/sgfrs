@@ -222,14 +222,14 @@ class OficialControlador extends Controller
           $auditoria->operacion = "Actualización datos de RRHH";
           $auditoria->descripcion = "Se procedio a la actualización de datos en el sistema del usuario con rol de RRHH con los siguientes datos:"."\n"
           ."número de cédula: ".$request->cedula."\n"
-          ."Nombre: ".$request->nombre."\n"
-          ."Apellido: ".$request->apellido."\n"
-          ."Cel.: ".$request->celular."\n"
-          ."Tel.: ".$request->telefono."\n"
+          ."Nombre: ".$request->nombres."\n"
+          ."Apellido: ".$request->apellidos."\n"
+          ."Cel.: ".$request->cel."\n"
+          ."Tel.: ".$request->tel."\n"
           ."Correo: ".$request->correo."\n"
           ."Dpto.: ".$request->dpto."\n"
           ."Cargo: ".$request->cargo."\n"
-          ."Obs.: ".$request->observacion;
+          ."Obs.: ".$request->obs;
 
           $auditoria->save();
       //fin codigo auditoria
@@ -271,14 +271,14 @@ class OficialControlador extends Controller
           $auditoria->operacion = "Actualización datos de EMPRESA";
           $auditoria->descripcion = "Se procedio a la actualización de datos en el sistema del usuario con rol de EMPRESA con los siguientes datos:"."\n"
           ."número de cédula: ".$request->cedula."\n"
-          ."Nombre: ".$request->nombre."\n"
-          ."Apellido: ".$request->apellido."\n"
-          ."Cel.: ".$request->celular."\n"
-          ."Tel.: ".$request->telefono."\n"
+          ."Nombre: ".$request->nombres."\n"
+          ."Apellido: ".$request->apellidos."\n"
+          ."Cel.: ".$request->cel."\n"
+          ."Tel.: ".$request->tel."\n"
           ."Correo: ".$request->correo."\n"
           ."Dpto.: ".$request->dpto."\n"
           ."Cargo: ".$request->cargo."\n"
-          ."Obs.: ".$request->observacion;
+          ."Obs.: ".$request->obs;
 
           $auditoria->save();
         //fin codigo auditoria
@@ -305,6 +305,7 @@ class OficialControlador extends Controller
     }
     public function getRoles()
     {
+
       return view('oficial.roles');
     }
     public function getAuditoria()

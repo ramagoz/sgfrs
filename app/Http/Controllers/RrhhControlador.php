@@ -1,11 +1,10 @@
 <?php
-
 namespace App\Http\Controllers;
-
-
 use App\Auditoria;
 use App\Empleado_sin_recibo;
 use App\Exports\EmpleadosSinRecibosExport;
+use App\Http\Requests\ValidacionCargaUsuario;
+use App\Http\Requests\ValidacionActualizacionUsuario;
 use App\Grupo_recibo;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FuncionesControlador;
@@ -28,27 +27,141 @@ use Validator;
 
 class RrhhControlador extends Controller
 {
-
-    //redirige a la vista de busqueda de empleados
-    public function getBusquedaEmpleado()
-    {
-        return view('rrhh.busqueda_empleado');
-    }
-    //devuelve a la vista en formato json los datos de los empleados
-    //para ser procesado por el datatable
-    public function datatable()
-    {
-         $persona_rol= DB::table('personas')->where('id_rol', '1')->get();
-         //return Datatables::of(Persona::query())->make(true);
-         return Datatables::of($persona_rol)->make(true);
-    }
-
     public function getIndexRrhh()
     {
         //esta funcion controla si se cierran los periodos
         $resultado = (new FuncionesControlador)->getControlPeriodos();
 
         return view('rrhh.indexrrhh');
+    }
+    public function datatable()//Devuelve los datos de los empleados para el datatable
+    {
+         $persona_rol= DB::table('personas')->where('id_rol', '1')->get();
+         //return Datatables::of(Persona::query())->make(true);
+         return Datatables::of($persona_rol)->make(true);
+    }
+    public function getBusquedaEmpleado()//ok
+    {
+        $datos= DB::table('personas')->where('id_rol', '2')->count();
+        if ($datos > 0)
+        {
+            return view('rrhh.busqueda_empleado');
+        }
+        else
+        {
+            return view('rrhh.busqueda_empleadoh')->with('error', 'No existen usuarios con rol de RRHH');
+        }
+    }
+    public function getAltaEmpleado()//ok
+    {
+
+        return view('rrhh.alta_empleado');
+    }
+    public function postEmpleadoCargado(ValidacionCargaUsuario $request)//ok
+    {
+        //Validación de datos obtenidos del formulario se realiza con la clase ValidacionCargaUsuario
+        //creacion de usuario
+        $user = new User();
+        $user->name = $request->nombre;
+        $user->email = $request->correo;
+        $user->status= '1';
+        $user->password = Hash::make($request->cedula);
+        $user->save();
+        //creacion de persona relacionada al usuario que se creo previamente.
+        $usuario = DB::table('users')->where('email', $request->correo)->get()->toArray();
+        foreach ($usuario as $users)
+        {
+          $id = $users->id;
+        }
+        $persona             = new Persona();
+        $persona->id_usuario = $id;
+        $persona->id_rol     = 1;
+        $persona->nombres    = $request->nombre;
+        $persona->apellidos  = $request->apellido;
+        $persona->cedula     = $request->cedula;
+        $persona->cel        = $request->celular;
+        $persona->tel        = $request->telefono;
+        $persona->dpto       = $request->dpto;
+        $persona->cargo      = $request->cargo;
+        $persona->correo     = $request->correo;
+        $persona->estado     = $request->estado;
+        $persona->obs        = $request->observacion;
+        $persona->save();
+
+        //inicio codigo auditoria
+            $auditoria = new Auditoria();
+            $auditoria->fecha_hora = date('Y-m-d H:i:s');
+            $auditoria->cedula = session()->get('cedula_usuario');
+            $auditoria->rol = session()->get('rol_usuario');
+            $auditoria->ip = session()->get('ip_usuario');
+            $auditoria->operacion = "Alta de empleado";
+            $auditoria->descripcion = "Se procedio a la alta en el sistema del usuario con rol de empleado con los siguientes datos:"."\n"
+            ."número de cédula: ".$request->cedula."\n"
+            ."Nombre: ".$request->nombre."\n"
+            ."Apellido: ".$request->apellido."\n"
+            ."Cel.: ".$request->celular."\n"
+            ."Tel.: ".$request->telefono."\n"
+            ."Correo: ".$request->correo."\n"
+            ."Dpto.: ".$request->dpto."\n"
+            ."Cargo: ".$request->cargo."\n"
+            ."Obs.: ".$request->observacion;
+            $auditoria->save();
+        //fin codigo auditoria
+
+        return view('rrhh.busqueda_empleado')->with('msj','Se un registro el usuario con CI Nro. '.$request->cedula);
+    }
+    public function getModificacionEmpleado($cedula)//ok
+    {
+
+        $persona =DB::table('personas')->where('cedula',$cedula)->first();
+        return view('rrhh.modificacion_empleado', compact('persona'));
+    }
+    public function postEmpleadoModificado(ValidacionActualizacionUsuario $request)//ok
+    {
+      $persona =Persona::find($request->cedula);
+      $consulta = DB::table('personas')->where('correo',$request->correo)->get();
+      if ($persona->correo <> $request->correo and $consulta <> '[]')
+      {
+          return view('rrhh.modificacion_empleado')->with('error','Este correo ya esta asignado a otro usuario')->with('persona',$request);
+      }
+      $persona->cedula     = $request->cedula;
+      $persona->nombres    = $request->nombres;
+      $persona->apellidos  = $request->apellidos;
+      $persona->cel        = $request->cel;
+      $persona->tel        = $request->tel;
+      $persona->dpto       = $request->dpto;
+      $persona->cargo      = $request->cargo;
+      $persona->correo     = $request->correo;
+      $persona->estado     = $request->estado;
+      $persona->obs        = $request->obs;
+      $persona->save();
+
+      $user =User::find($request->id_usuario);
+      $user->email = $request->correo;
+      $user->status = $request->estado;
+      $user->save();
+
+        //inicio codigo auditoria
+        $auditoria = new Auditoria();
+        $auditoria->fecha_hora = date('Y-m-d H:i:s');
+        $auditoria->cedula = session()->get('cedula_usuario');
+        $auditoria->rol = session()->get('rol_usuario');
+        $auditoria->ip = session()->get('ip_usuario');
+        $auditoria->operacion = "Modificación datos empleado";
+        $auditoria->descripcion = "Se procedio a la modificación de datos del usuario con rol de empleado, datos actualizados:"."\n"
+        ."número de cédula: ".$request->cedula."\n"
+        ."Nombre: ".$request->nombre."\n"
+        ."Apellido: ".$request->apellido."\n"
+        ."Cel.: ".$request->celular."\n"
+        ."Tel.: ".$request->telefono."\n"
+        ."Correo: ".$request->correo."\n"
+        ."Dpto.: ".$request->dpto."\n"
+        ."Cargo: ".$request->cargo."\n"
+        ."Obs.: ".$request->observacion;
+        $auditoria->save();
+        //fin codigo auditoria
+
+        return view('/rrhh/busqueda_empleado')->with('msj','Los datos del usuario con CI Nro. '.$request->cedula.' se actualizaron correctamente!!!');
     }
     public function getPdf($id)
     {
@@ -324,233 +437,6 @@ class RrhhControlador extends Controller
 
         return $pdf->download();
     }
-
-    public function getAltaEmpleado()
-    {
-        //Consulta DB para ver grupos disponibles los compacta en de array y los envia a la vista//
-        $nombre_grupos = DB::table('grupos_recibos')->select('nombre_grupo','id_grupo')->get();
-        return view('rrhh.alta_empleado', compact('nombre_grupos'));
-    }
-
-
-    public function postEmpleadoCargado(Request $request)
-    {
-       //validacion si el usuario a cargar ya no existe
-        $validemail=DB::table('users')->where('email',$request->correo)->get();
-         if ($validemail=='[]')
-             { // usuario no existe
-          $validcedula=DB::table('personas')->where('cedula',$request->cedula)->get();
-          if($validcedula=='[]') //persona no existe, se puede proceder a crear usuario y persona
-          {
-            //creacion de usuario
-                 $user = new User();
-                 $user->name = $request->nombre;
-                 $user->email = $request->correo;
-                 $user->status= '1';
-                 $user->password = Hash::make($request->cedula);
-                 $user->save();
-          //creacion de persona relacionada al usuario que se creo previamente.
-                 $usuario = DB::table('users')->where('email', $request->correo)->get()->toArray();
-                foreach ($usuario as $users)
-                    {
-                        $id = $users->id;
-                    }
-                    $persona             = new Persona();
-                    $persona->id_usuario = $id;
-                    $id_rol='1';
-                    $persona->id_rol   = $id_rol;
-                    $persona->id_grupo   = $request->grupo;
-                    $persona->nombres    = $request->nombre;
-                    $persona->apellidos  = $request->apellido;
-                    $persona->cedula     = $request->cedula;
-                    $persona->cel        = $request->celular;
-                    $persona->tel        = $request->telefono;
-                    $persona->dpto       = $request->dpto;
-                    $persona->cargo      = $request->cargo;
-                    $persona->correo     = $request->correo;
-                    $persona->estado     = $request->estado;
-                    $persona->obs        = $request->observacion;
-                    $persona->save();
-                    //inicio codigo auditoria
-                    $auditoria = new Auditoria();
-                    $auditoria->fecha_hora = date('Y-m-d H:i:s');
-                    $auditoria->cedula = session()->get('cedula_usuario');
-                    $auditoria->rol = session()->get('rol_usuario');
-                    $auditoria->ip = session()->get('ip_usuario');
-                    $auditoria->operacion = "Alta de empleado";
-                    $auditoria->descripcion = "Se procedio a la alta en el sistema del usuario con rol de empleado con los siguientes datos:"."\n"
-                    ."número de cédula: ".$request->cedula."\n"
-                    ."Nombre: ".$request->nombre."\n"
-                    ."Apellido: ".$request->apellido."\n"
-                    ."Cel.: ".$request->celular."\n"
-                    ."Tel.: ".$request->telefono."\n"
-                    ."Correo: ".$request->correo."\n"
-                    ."Dpto.: ".$request->dpto."\n"
-                    ."Cargo: ".$request->cargo."\n"
-                    ."Obs.: ".$request->observacion;
-
-                    $auditoria->save();
-                    //fin codigo auditoria
-                    return view('rrhh.busqueda_empleado')->with('$msjcargado','Se un registro el usuario con CI Nro. '.$request->cedula);
-
-          }
-          else{
-
-                return view('/rrhh/busqueda_empleado')->with('errorpersona','Ya existe un registro de usuario con CI Nro. '.$request->cedula);
-                }
-
-        }
-          else{
-                 return view('/rrhh/busqueda_empleado')->with('erroruser','Ya existe un registro de usuario con el correo '.$request->correo);
-                }
-
-    }
-
-    public function getRecuperarGrupo(request $request)
-    {
-
-        $persona =DB::table('personas')->where('cedula',$request->cedula)->get()->toArray();
-        $nombre_grupos = DB::table('grupos_recibos')->select('nombre_grupo','id_grupo')->get();
-
-
-      foreach ($persona as $person)
-                    {
-                        $estado = $person->estado;
-
-                    }
-
-     if ($estado=='1')
-       {
-        return view('rrhh.desactivar_empleado', compact('persona'),compact('nombre_grupos'));
-        }
-    else
-    {
-        return view('rrhh.activar_empleado', compact('persona'),compact('nombre_grupos'));
-    }
-
-    }
-    public function getModificacionEmpleado(request $request)
-    {
-
-        $persona =DB::table('personas')->where('cedula',$request->cedula)->get()->toArray();
-        $nombre_grupos = DB::table('grupos_recibos')->select('nombre_grupo','id_grupo')->get();
-
-        return view('rrhh.modificacion_empleado', compact('persona'),compact('nombre_grupos'));
-    }
-    public function getEmpleadoModificado(Request $request)
-    {
-
-        $persona =Persona::find($request->cedula);
-
-        $persona->id_grupo   = $request->grupo;
-        $persona->nombres    = $request->nombre;
-        $persona->apellidos  = $request->apellido;
-        $persona->cedula     = $request->cedula;
-        $persona->cel        = $request->celular;
-        $persona->tel        = $request->telefono;
-        $persona->dpto       = $request->dpto;
-        $persona->cargo      = $request->cargo;
-        $persona->correo     = $request->correo;
-       # $persona->estado     = $request->estado;
-        $persona->obs        = $request->observacion;
-        $persona->save();
-       //inicio codigo auditoria
-        $auditoria = new Auditoria();
-        $auditoria->fecha_hora = date('Y-m-d H:i:s');
-        $auditoria->cedula = session()->get('cedula_usuario');
-        $auditoria->rol = session()->get('rol_usuario');
-        $auditoria->ip = session()->get('ip_usuario');
-        $auditoria->operacion = "Modificación datos empleado";
-        $auditoria->descripcion = "Se procedio a la modificación de datos del usuario con rol de empleado, datos actualizados:"."\n"
-        ."número de cédula: ".$request->cedula."\n"
-        ."Nombre: ".$request->nombre."\n"
-        ."Apellido: ".$request->apellido."\n"
-        ."Cel.: ".$request->celular."\n"
-        ."Tel.: ".$request->telefono."\n"
-        ."Correo: ".$request->correo."\n"
-        ."Dpto.: ".$request->dpto."\n"
-        ."Cargo: ".$request->cargo."\n"
-        ."Obs.: ".$request->observacion;
-        $auditoria->save();
-        //fin codigo auditoria
-
-        return view('/rrhh/busqueda_empleado')->with('msj','Los datos del usuario con CI Nro. '.$request->cedula.' se actualizaron correctamente!!!');
-
-    }
-     public function getEmpleadoDesactivado(Request $request)
-    {
-
-        $persona =Persona::find($request->cedula);
-        $persona->estado = $request->estado;
-        $persona->save();
-
-        #user baja
-        $iduser = DB::table('users')->where('email', $request->correo)->get()->toArray();
-                foreach ($iduser as $users)
-                    {
-                        $id = $users->id;
-                    }
-
-         $user=User::find($id);
-         $user->status= $request->estado;
-         $user->save();
-
-        //inicio codigo auditoria
-        $auditoria = new Auditoria();
-        $auditoria->fecha_hora = date('Y-m-d H:i:s');
-        $auditoria->cedula = session()->get('cedula_usuario');
-        $auditoria->rol = session()->get('rol_usuario');
-        $auditoria->ip = session()->get('ip_usuario');
-        $auditoria->operacion = "Desactivación acceso usuario";
-        $auditoria->descripcion = "Se procedio a la Inactivación del acceso al sistema para el usuario con los siguientes datos:"."\n"
-            ."Número de cédula: ".$request->cedula."\n"
-            ."Nombre: ".$request->nombre."\n"
-            ."Apellido: ".$request->apellido;
-        $auditoria->save();
-        //fin codigo auditoria
-
-        return view('/rrhh/busqueda_empleado')->with('msjbaja','El usuario con CI Nro. '.$request->cedula.' se desactivo del Sistema !!!');
-
-    }
-
-     public function getEmpleadoActivado(Request $request)
-    {
-
-        $persona =Persona::find($request->cedula);
-        $persona->estado = $request->estado;
-        $persona->save();
-
-        #user baja
-        $iduser = DB::table('users')->where('email', $request->correo)->get()->toArray();
-                foreach ($iduser as $users)
-                    {
-                        $id = $users->id;
-                    }
-
-         $user=User::find($id);
-         $user->status=   $request->estado;
-         $user->save();
-
-       //inicio codigo auditoria
-        $auditoria = new Auditoria();
-        $auditoria->fecha_hora = date('Y-m-d H:i:s');
-        $auditoria->cedula = session()->get('cedula_usuario');
-        $auditoria->rol = session()->get('rol_usuario');
-        $auditoria->ip = session()->get('ip_usuario');
-        $auditoria->operacion = "Activación acceso usuario";
-        $auditoria->descripcion = "Se procedio a la Activación del acceso al sistema para el usuario con los siguientes datos:"."\n"
-            ."Número de cédula: ".$request->cedula."\n"
-            ."Nombre: ".$request->nombre."\n"
-            ."Apellido: ".$request->apellido;
-        $auditoria->save();
-        //fin codigo auditoria
-
-       # return view('rrhh.empleado_cargado');
-        return view('/rrhh/busqueda_empleado')->with('msjactivado','El usuario con CI Nro. '.$request->cedula.' se activo correctamente!!');
-
-    }
-
-
     public function getCrearNuevoPeriodo()
     {
         $periodos = DB::table('periodos')->select('mes','año','estado_periodo')->paginate(6);
@@ -647,6 +533,7 @@ class RrhhControlador extends Controller
     }
     public function getValidarRecibos()
     {
+
         return view('rrhh.validar_recibos');
     }
     public function postValidarRecibos(Request $request)
@@ -743,6 +630,7 @@ class RrhhControlador extends Controller
     }
     public function getImportarRecibos()
     {
+
         return view('rrhh.importar_recibos');
     }
     public function getRecibosImportados(Request $request)
@@ -791,71 +679,71 @@ class RrhhControlador extends Controller
                                 $Recibo->save();
                                 rename($dir . $f, "C:/xampp/htdocs/sgfrs/public/recibos/pendientes/" . $año . "/" . $mes . "/" . $f);
                             } else {
-    //aqui se guardan los recibos que el numero de cedula no corresponde
-                                $recibo_error_cedula[$d] = $f;
-                                $d++;
+                        //aqui se guardan los recibos que el numero de cedula no corresponde
+                                    $recibo_error_cedula[$d] = $f;
+                                    $d++;
+                                }
+                            } else {
+                        //aqui se guardan los recibos que estan mal su periodo
+                                $recibo_error_periodo[$b] = $f;
+                                $b++;
                             }
                         } else {
-    //aqui se guardan los recibos que estan mal su periodo
-                            $recibo_error_periodo[$b] = $f;
-                            $b++;
+                        //aqui se guardan los recibos que estan mal su extension
+                            $recibo_error_extension[$c] = $f;
+                            $c++;
                         }
-                    } else {
-    //aqui se guardan los recibos que estan mal su extension
-                        $recibo_error_extension[$c] = $f;
-                        $c++;
                     }
                 }
-            }
-            //inicio codigo auditoria
-            $auditoria = new Auditoria();
-            $auditoria->fecha_hora = date('Y-m-d H:i:s');
-            $auditoria->cedula = session()->get('cedula_usuario');
-            $auditoria->rol = session()->get('rol_usuario');
-            $auditoria->ip = session()->get('ip_usuario');
-            $auditoria->operacion = "Importación de recibos";
-            $auditoria->descripcion = "Se procedio a la importación de recibos del periodo ". $mes . '/' . $año;
-            $auditoria->save();
-            //fin codigo auditoria
+                //inicio codigo auditoria
+                $auditoria = new Auditoria();
+                $auditoria->fecha_hora = date('Y-m-d H:i:s');
+                $auditoria->cedula = session()->get('cedula_usuario');
+                $auditoria->rol = session()->get('rol_usuario');
+                $auditoria->ip = session()->get('ip_usuario');
+                $auditoria->operacion = "Importación de recibos";
+                $auditoria->descripcion = "Se procedio a la importación de recibos del periodo ". $mes . '/' . $año;
+                $auditoria->save();
+                //fin codigo auditoria
 
-            if ($a > 0) //aqui se guardan la cantidad de recibos correctos que fueron procesados
-            {
-                $resultado[0] = count($recibos);
-            } else {
-                $resultado[0] = 0;
-            }
-            if ($b > 0) //aqui se guardan la cantidad de recibos con error de periodo
-            {
-                $resultado[1] = count($recibo_error_periodo);
-            } else {
-                $resultado[1] = 0;
-            }
-            if ($c > 0) //aqui se guardan la cantidad de recibos con error de extension
-            {
-                $resultado[2] = count($recibo_error_extension);
-            } else {
-                $resultado[2] = 0;
-            }
-            if ($d > 0) //aqui se guardan la cantidad de recibos con número de cedula no encontrado en el sistema
-            {
-                $resultado[3] = count($recibo_error_cedula);
-            } else {
-                $resultado[3] = 0;
-            }
-            if ($a > 0) //aqui se guardan la cantidad de recibos con número de cedula no encontrado en el sistema
-            {
-                $recibos_correctos = count($recibos);
-                $resultado[4]      = $cantidad_empleados - $recibos_correctos;
-            } else {
-                $resultado[4] = 0;
-            }
-            $resultado[5] = $e; //aqui se guardan la cantidad de archivos que fueron procesados
+                if ($a > 0) //aqui se guardan la cantidad de recibos correctos que fueron procesados
+                {
+                    $resultado[0] = count($recibos);
+                } else {
+                    $resultado[0] = 0;
+                }
+                if ($b > 0) //aqui se guardan la cantidad de recibos con error de periodo
+                {
+                    $resultado[1] = count($recibo_error_periodo);
+                } else {
+                    $resultado[1] = 0;
+                }
+                if ($c > 0) //aqui se guardan la cantidad de recibos con error de extension
+                {
+                    $resultado[2] = count($recibo_error_extension);
+                } else {
+                    $resultado[2] = 0;
+                }
+                if ($d > 0) //aqui se guardan la cantidad de recibos con número de cedula no encontrado en el sistema
+                {
+                    $resultado[3] = count($recibo_error_cedula);
+                } else {
+                    $resultado[3] = 0;
+                }
+                if ($a > 0) //aqui se guardan la cantidad de recibos con número de cedula no encontrado en el sistema
+                {
+                    $recibos_correctos = count($recibos);
+                    $resultado[4]      = $cantidad_empleados - $recibos_correctos;
+                } else {
+                    $resultado[4] = 0;
+                }
+                $resultado[5] = $e; //aqui se guardan la cantidad de archivos que fueron procesados
 
-            //esta funcion controla si existen empleados sin recibos para actualizarlos en la BD
-            $funcion = (new FuncionesControlador)->ControlEmpleadosSinRecibos();
+                //esta funcion controla si existen empleados sin recibos para actualizarlos en la BD
+                $funcion = (new FuncionesControlador)->ControlEmpleadosSinRecibos();
 
-            return view('rrhh.importar_recibos')->with('msj','Se procedio correctamente con la importación del periodo seleccionado. Mes: '.$request->mes.'  -  Año: '.$request->año)->with('resultados', $resultado)->with('mes',$request->mes)->with('año',$request->año); //se envia los resultados de la validacion a la vista
-        }
+                return view('rrhh.importar_recibos')->with('msj','Se procedio correctamente con la importación del periodo seleccionado. Mes: '.$request->mes.'  -  Año: '.$request->año)->with('resultados', $resultado)->with('mes',$request->mes)->with('año',$request->año); //se envia los resultados de la validacion a la vista
+            }
     }
     public function getEmpleadosSinRecibos()
     {
@@ -876,6 +764,7 @@ class RrhhControlador extends Controller
     }
     public function getExcel()
     {
+
         return (new EmpleadosSinRecibosExport)->download('InformeExcel-'.date('dmY-Hi').'.xlsx');
     }
     public function getVerEmpleadosSinRecibos($id)
@@ -903,7 +792,6 @@ class RrhhControlador extends Controller
             return view('rrhh.ver_empleados_sin_recibos')->with('datos',$datos)->with('boton','boton')->with('año',$año)->with('mes',$mes);
         }
     }
-
     public function getListaRecibos()
     {
         $recibos = DB::table('recibos')
@@ -1047,28 +935,22 @@ class RrhhControlador extends Controller
         {
             return view("rrhh.historial_recibos_corregidos")->with('recibos',$recibos);
         }
-
     }
-
     public function getVerReciboCorregido($id)
     {
-     $recibo = DB::table('recibos_con_errores')
-    ->where('id',$id)
-    ->first();
 
-    $url = "/recibos/recibos_corregidos/20".substr($recibo->id_recibo,-2,2)."/".substr($recibo->id_recibo,-4,2)."/".$id.".pdf";
-
-    return view('rrhh.ver_recibo_corregido',compact('url'));
-
+        $recibo = DB::table('recibos_con_errores')
+        ->where('id',$id)
+        ->first();
+        $url = "/recibos/recibos_corregidos/20".substr($recibo->id_recibo,-2,2)."/".substr($recibo->id_recibo,-4,2)."/".$id.".pdf";
+        return view('rrhh.ver_recibo_corregido',compact('url'));
     }
-
     public function getGruposRecibos()
     {
         $grupos = DB::table('grupos_recibos')->get();
 
         return view('rrhh.grupos_recibos')->with('grupos', $grupos);
     }
-
     public function postCrearGrupoRecibo(Request $request)
     {
         $consulta = DB::table('grupos_recibos')->where('nombre_grupo',$request->nombre_grupo)->get();
@@ -1105,7 +987,6 @@ class RrhhControlador extends Controller
             $grupos = DB::table('grupos_recibos')->get();
             return view('rrhh.grupos_recibos')->with('errormsj','Ya existe un grupo con este nombre: '.$request->nombre_grupo.', intente con otro nombre.')->with('grupos',$grupos);
         }
-
     }
     public function getPendientesFirmaEmpresa()
     {
@@ -1128,16 +1009,16 @@ class RrhhControlador extends Controller
     }
     public function getPendientesFirmaEmpleados()
     {
-         $recibos = DB::table('recibos')
+        $recibos = DB::table('recibos')
         ->join('personas', 'recibos.cedula','=','personas.cedula')
         ->where('recibos.id_estado_recibo', '2')
         ->paginate(8);
         if ($recibos->count()==0)
         {
-            return view('rrhh.pendientes_firma_empleados')->with('recibos',$recibos)->with('msj','No existen recibos pendientes de firma por la empresa!');
+        return view('rrhh.pendientes_firma_empleados')->with('recibos',$recibos)->with('msj','No existen recibos pendientes de firma por la empresa!');
         }else
         {
-             return view('rrhh.pendientes_firma_empleados')->with('recibos',$recibos)->with('boton','boton');
+         return view('rrhh.pendientes_firma_empleados')->with('recibos',$recibos)->with('boton','boton');
         }
     }
     public function getVerReciboPendientesFirmaEmpleados($id)
@@ -1221,282 +1102,282 @@ class RrhhControlador extends Controller
     }
     public function postVerInformesRrhh(Request $request)
     {
-       $recibos = DB::table('recibos')
-           ->join('periodos', 'recibos.id_periodo','=','periodos.id_periodo')
-           ->where('periodos.año',$request->año)
-           ->get();
-        $cantidad_empleados = DB::table('personas')->where('id_rol', '1')->orWhere('id_rol', '2')->orWhere('id_rol', '4')->orWhere('id_rol', '5')->count();
+           $recibos = DB::table('recibos')
+               ->join('periodos', 'recibos.id_periodo','=','periodos.id_periodo')
+               ->where('periodos.año',$request->año)
+               ->get();
+            $cantidad_empleados = DB::table('personas')->where('id_rol', '1')->orWhere('id_rol', '2')->orWhere('id_rol', '4')->orWhere('id_rol', '5')->count();
 
-        $ene=0; $feb=0; $mar=0; $abr=0; $may=0; $jun=0;
-        $jul=0; $ago=0; $set=0; $oct=0; $nov=0; $dic=0;
-        $ene_firmado_empresa=0;$feb_firmado_empresa=0;
-        $mar_firmado_empresa=0;$abr_firmado_empresa=0;
-        $may_firmado_empresa=0;$jun_firmado_empresa=0;
-        $jul_firmado_empresa=0;$ago_firmado_empresa=0;
-        $set_firmado_empresa=0;$oct_firmado_empresa=0;
-        $nov_firmado_empresa=0;$dic_firmado_empresa=0;
-        $ene_firmado_empleado=0;$feb_firmado_empleado=0;
-        $mar_firmado_empleado=0;$abr_firmado_empleado=0;
-        $may_firmado_empleado=0;$jun_firmado_empleado=0;
-        $jul_firmado_empleado=0;$ago_firmado_empleado=0;
-        $set_firmado_empleado=0;$oct_firmado_empleado=0;
-        $nov_firmado_empleado=0;$dic_firmado_empleado=0;
-        foreach ($recibos as $recibo)
-        {
-            switch ($recibo->mes)
+            $ene=0; $feb=0; $mar=0; $abr=0; $may=0; $jun=0;
+            $jul=0; $ago=0; $set=0; $oct=0; $nov=0; $dic=0;
+            $ene_firmado_empresa=0;$feb_firmado_empresa=0;
+            $mar_firmado_empresa=0;$abr_firmado_empresa=0;
+            $may_firmado_empresa=0;$jun_firmado_empresa=0;
+            $jul_firmado_empresa=0;$ago_firmado_empresa=0;
+            $set_firmado_empresa=0;$oct_firmado_empresa=0;
+            $nov_firmado_empresa=0;$dic_firmado_empresa=0;
+            $ene_firmado_empleado=0;$feb_firmado_empleado=0;
+            $mar_firmado_empleado=0;$abr_firmado_empleado=0;
+            $may_firmado_empleado=0;$jun_firmado_empleado=0;
+            $jul_firmado_empleado=0;$ago_firmado_empleado=0;
+            $set_firmado_empleado=0;$oct_firmado_empleado=0;
+            $nov_firmado_empleado=0;$dic_firmado_empleado=0;
+            foreach ($recibos as $recibo)
             {
-                case 1:
-                    $ene++;
-                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
-                    {
-                        $ene_firmado_empresa++;
-                    }
-                    if ($recibo->id_estado_recibo==3)
-                    {
-                        $ene_firmado_empleado++;
-                    }
-                break;
-                case 2:
-                    $feb++;
-                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
-                    {
-                        $feb_firmado_empresa++;
-                    }
-                    if ($recibo->id_estado_recibo==3)
-                    {
-                        $feb_firmado_empleado++;
-                    }
-                break;
-                case 3:
-                    $mar++;
-                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
-                    {
-                        $mar_firmado_empresa++;
-                    }
-                    if ($recibo->id_estado_recibo==3)
-                    {
-                        $mar_firmado_empleado++;
-                    }
-                break;
-                case 4:
-                    $abr++;
-                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
-                    {
-                        $abr_firmado_empresa++;
-                    }
-                    if ($recibo->id_estado_recibo==3)
-                    {
-                        $abr_firmado_empleado++;
-                    }
-                break;
-                case 5:
-                    $may++;
-                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
-                    {
-                        $may_firmado_empresa++;
-                    }
-                    if ($recibo->id_estado_recibo==3)
-                    {
-                        $may_firmado_empleado++;
-                    }
-                break;
-                case 6:
-                    $jun++;
-                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
-                    {
-                        $jun_firmado_empresa++;
-                    }
-                    if ($recibo->id_estado_recibo==3)
-                    {
-                        $jun_firmado_empleado++;
-                    }
-                break;
-                case 7:
-                    $jul++;
-                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
-                    {
-                        $jul_firmado_empresa++;
-                    }
-                    if ($recibo->id_estado_recibo==3)
-                    {
-                        $jul_firmado_empleado++;
-                    }
-                break;
-                case 8:
-                    $ago++;
-                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
-                    {
-                        $ago_firmado_empresa++;
-                    }
-                    if ($recibo->id_estado_recibo==3)
-                    {
-                        $ago_firmado_empleado++;
-                    }
-                break;
-                case 9:
-                    $set++;
-                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
-                    {
-                        $set_firmado_empresa++;
-                    }
-                    if ($recibo->id_estado_recibo==3)
-                    {
-                        $set_firmado_empleado++;
-                    }
-                break;
-                case 10:
-                    $oct++;
-                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
-                    {
-                        $oct_firmado_empresa++;
-                    }
-                    if ($recibo->id_estado_recibo==3)
-                    {
-                        $oct_firmado_empleado++;
-                    }
+                switch ($recibo->mes)
+                {
+                    case 1:
+                        $ene++;
+                        if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
+                        {
+                            $ene_firmado_empresa++;
+                        }
+                        if ($recibo->id_estado_recibo==3)
+                        {
+                            $ene_firmado_empleado++;
+                        }
+                    break;
+                    case 2:
+                        $feb++;
+                        if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
+                        {
+                            $feb_firmado_empresa++;
+                        }
+                        if ($recibo->id_estado_recibo==3)
+                        {
+                            $feb_firmado_empleado++;
+                        }
+                    break;
+                    case 3:
+                        $mar++;
+                        if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
+                        {
+                            $mar_firmado_empresa++;
+                        }
+                        if ($recibo->id_estado_recibo==3)
+                        {
+                            $mar_firmado_empleado++;
+                        }
+                    break;
+                    case 4:
+                        $abr++;
+                        if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
+                        {
+                            $abr_firmado_empresa++;
+                        }
+                        if ($recibo->id_estado_recibo==3)
+                        {
+                            $abr_firmado_empleado++;
+                        }
+                    break;
+                    case 5:
+                        $may++;
+                        if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
+                        {
+                            $may_firmado_empresa++;
+                        }
+                        if ($recibo->id_estado_recibo==3)
+                        {
+                            $may_firmado_empleado++;
+                        }
+                    break;
+                    case 6:
+                        $jun++;
+                        if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
+                        {
+                            $jun_firmado_empresa++;
+                        }
+                        if ($recibo->id_estado_recibo==3)
+                        {
+                            $jun_firmado_empleado++;
+                        }
+                    break;
+                    case 7:
+                        $jul++;
+                        if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
+                        {
+                            $jul_firmado_empresa++;
+                        }
+                        if ($recibo->id_estado_recibo==3)
+                        {
+                            $jul_firmado_empleado++;
+                        }
+                    break;
+                    case 8:
+                        $ago++;
+                        if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
+                        {
+                            $ago_firmado_empresa++;
+                        }
+                        if ($recibo->id_estado_recibo==3)
+                        {
+                            $ago_firmado_empleado++;
+                        }
+                    break;
+                    case 9:
+                        $set++;
+                        if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
+                        {
+                            $set_firmado_empresa++;
+                        }
+                        if ($recibo->id_estado_recibo==3)
+                        {
+                            $set_firmado_empleado++;
+                        }
+                    break;
+                    case 10:
+                        $oct++;
+                        if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
+                        {
+                            $oct_firmado_empresa++;
+                        }
+                        if ($recibo->id_estado_recibo==3)
+                        {
+                            $oct_firmado_empleado++;
+                        }
 
-                break;
-                case 11:
-                    $nov++;
-                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
-                    {
-                        $nov_firmado_empresa++;
-                    }
-                    if ($recibo->id_estado_recibo==3)
-                    {
-                        $nov_firmado_empleado++;
-                    }
-                break;
-                case 12:
-                    $dic++;
-                    if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
-                    {
-                        $dic_firmado_empresa++;
-                    }
-                    if ($recibo->id_estado_recibo==3)
-                    {
-                        $dic_firmado_empleado++;
-                    }
-                break;
+                    break;
+                    case 11:
+                        $nov++;
+                        if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
+                        {
+                            $nov_firmado_empresa++;
+                        }
+                        if ($recibo->id_estado_recibo==3)
+                        {
+                            $nov_firmado_empleado++;
+                        }
+                    break;
+                    case 12:
+                        $dic++;
+                        if ($recibo->id_estado_recibo==2 or $recibo->id_estado_recibo==3)
+                        {
+                            $dic_firmado_empresa++;
+                        }
+                        if ($recibo->id_estado_recibo==3)
+                        {
+                            $dic_firmado_empleado++;
+                        }
+                    break;
+                }
             }
-        }
-        //control de periodos creados
-        $periodos = DB::table('periodos')->where('año',$request->año)->get();
-        $existencia_ene=0;$existencia_feb=0;$existencia_mar=0;
-        $existencia_abr=0;$existencia_may=0;$existencia_jun=0;
-        $existencia_jul=0;$existencia_ago=0;$existencia_set=0;
-        $existencia_oct=0;$existencia_nov=0;$existencia_dic=0;
-        foreach ($periodos as $periodo)
-        {
-            switch ($periodo->mes)
+            //control de periodos creados
+            $periodos = DB::table('periodos')->where('año',$request->año)->get();
+            $existencia_ene=0;$existencia_feb=0;$existencia_mar=0;
+            $existencia_abr=0;$existencia_may=0;$existencia_jun=0;
+            $existencia_jul=0;$existencia_ago=0;$existencia_set=0;
+            $existencia_oct=0;$existencia_nov=0;$existencia_dic=0;
+            foreach ($periodos as $periodo)
             {
-                case 1:
-                $existencia_ene=1;
-                    break;
-                case 2:
-                $existencia_feb=1;
-                    break;
-                case 3:
-                $existencia_mar=1;
-                    break;
-                case 4:
-                $existencia_abr=1;
-                    break;
-                case 5:
-                $existencia_may=1;
-                    break;
-                case 6:
-                $existencia_jun=1;
-                    break;
-                case 7:
-                $existencia_jul=1;
-                    break;
-                case 8:
-                $existencia_ago=1;
-                    break;
-                case 9:
-                $existencia_set=1;
-                    break;
-                case 10:
-                $existencia_oct=1;
-                    break;
-                case 11:
-                $existencia_nov=1;
-                    break;
-                case 12:
-                $existencia_dic=1;
-                    break;
+                switch ($periodo->mes)
+                {
+                    case 1:
+                    $existencia_ene=1;
+                        break;
+                    case 2:
+                    $existencia_feb=1;
+                        break;
+                    case 3:
+                    $existencia_mar=1;
+                        break;
+                    case 4:
+                    $existencia_abr=1;
+                        break;
+                    case 5:
+                    $existencia_may=1;
+                        break;
+                    case 6:
+                    $existencia_jun=1;
+                        break;
+                    case 7:
+                    $existencia_jul=1;
+                        break;
+                    case 8:
+                    $existencia_ago=1;
+                        break;
+                    case 9:
+                    $existencia_set=1;
+                        break;
+                    case 10:
+                    $existencia_oct=1;
+                        break;
+                    case 11:
+                    $existencia_nov=1;
+                        break;
+                    case 12:
+                    $existencia_dic=1;
+                        break;
+                }
             }
-        }
-        return view('rrhh.resultado_informes_rrhh')
-        ->with('año',$request->año)->with('cantidad_empleados',$cantidad_empleados)
+            return view('rrhh.resultado_informes_rrhh')
+            ->with('año',$request->año)->with('cantidad_empleados',$cantidad_empleados)
 
-        ->with('ene',$ene)
-        ->with('ene_firmado_empresa',$ene_firmado_empresa)
-        ->with('ene_firmado_empleado',$ene_firmado_empleado)
-        ->with('existencia_ene',$existencia_ene)
+            ->with('ene',$ene)
+            ->with('ene_firmado_empresa',$ene_firmado_empresa)
+            ->with('ene_firmado_empleado',$ene_firmado_empleado)
+            ->with('existencia_ene',$existencia_ene)
 
-        ->with('feb',$feb)
-        ->with('feb_firmado_empresa',$feb_firmado_empresa)
-        ->with('feb_firmado_empleado',$feb_firmado_empleado)
-        ->with('existencia_feb',$existencia_feb)
+            ->with('feb',$feb)
+            ->with('feb_firmado_empresa',$feb_firmado_empresa)
+            ->with('feb_firmado_empleado',$feb_firmado_empleado)
+            ->with('existencia_feb',$existencia_feb)
 
-        ->with('mar',$mar)
-        ->with('mar_firmado_empresa',$mar_firmado_empresa)
-        ->with('mar_firmado_empleado',$mar_firmado_empleado)
-        ->with('existencia_mar',$existencia_mar)
+            ->with('mar',$mar)
+            ->with('mar_firmado_empresa',$mar_firmado_empresa)
+            ->with('mar_firmado_empleado',$mar_firmado_empleado)
+            ->with('existencia_mar',$existencia_mar)
 
-        ->with('abr',$abr)
-        ->with('abr_firmado_empresa',$abr_firmado_empresa)
-        ->with('abr_firmado_empleado',$abr_firmado_empleado)
-        ->with('existencia_abr',$existencia_abr)
+            ->with('abr',$abr)
+            ->with('abr_firmado_empresa',$abr_firmado_empresa)
+            ->with('abr_firmado_empleado',$abr_firmado_empleado)
+            ->with('existencia_abr',$existencia_abr)
 
-        ->with('may',$may)
-        ->with('may_firmado_empresa',$may_firmado_empresa)
-        ->with('may_firmado_empleado',$may_firmado_empleado)
-        ->with('existencia_may',$existencia_may)
+            ->with('may',$may)
+            ->with('may_firmado_empresa',$may_firmado_empresa)
+            ->with('may_firmado_empleado',$may_firmado_empleado)
+            ->with('existencia_may',$existencia_may)
 
-        ->with('jun',$jun)
-        ->with('jun_firmado_empresa',$jun_firmado_empresa)
-        ->with('jun_firmado_empleado',$jun_firmado_empleado)
-        ->with('existencia_jun',$existencia_jun)
+            ->with('jun',$jun)
+            ->with('jun_firmado_empresa',$jun_firmado_empresa)
+            ->with('jun_firmado_empleado',$jun_firmado_empleado)
+            ->with('existencia_jun',$existencia_jun)
 
-        ->with('jul',$jul)
-        ->with('jul_firmado_empresa',$jul_firmado_empresa)
-        ->with('jul_firmado_empleado',$jul_firmado_empleado)
-        ->with('existencia_jul',$existencia_jul)
+            ->with('jul',$jul)
+            ->with('jul_firmado_empresa',$jul_firmado_empresa)
+            ->with('jul_firmado_empleado',$jul_firmado_empleado)
+            ->with('existencia_jul',$existencia_jul)
 
-        ->with('ago',$ago)
-        ->with('ago_firmado_empresa',$ago_firmado_empresa)
-        ->with('ago_firmado_empleado',$ago_firmado_empleado)
-        ->with('existencia_ago',$existencia_ago)
+            ->with('ago',$ago)
+            ->with('ago_firmado_empresa',$ago_firmado_empresa)
+            ->with('ago_firmado_empleado',$ago_firmado_empleado)
+            ->with('existencia_ago',$existencia_ago)
 
-        ->with('set',$set)
-        ->with('set_firmado_empresa',$set_firmado_empresa)
-        ->with('set_firmado_empleado',$set_firmado_empleado)
-        ->with('existencia_set',$existencia_set)
+            ->with('set',$set)
+            ->with('set_firmado_empresa',$set_firmado_empresa)
+            ->with('set_firmado_empleado',$set_firmado_empleado)
+            ->with('existencia_set',$existencia_set)
 
-        ->with('oct',$oct)
-        ->with('oct_firmado_empresa',$oct_firmado_empresa)
-        ->with('oct_firmado_empleado',$oct_firmado_empleado)
-        ->with('existencia_oct',$existencia_oct)
+            ->with('oct',$oct)
+            ->with('oct_firmado_empresa',$oct_firmado_empresa)
+            ->with('oct_firmado_empleado',$oct_firmado_empleado)
+            ->with('existencia_oct',$existencia_oct)
 
-        ->with('nov',$nov)
-        ->with('nov_firmado_empresa',$nov_firmado_empresa)
-        ->with('nov_firmado_empleado',$nov_firmado_empleado)
-        ->with('existencia_nov',$existencia_nov)
+            ->with('nov',$nov)
+            ->with('nov_firmado_empresa',$nov_firmado_empresa)
+            ->with('nov_firmado_empleado',$nov_firmado_empleado)
+            ->with('existencia_nov',$existencia_nov)
 
-        ->with('dic',$dic)
-        ->with('dic_firmado_empresa',$dic_firmado_empresa)
-        ->with('dic_firmado_empleado',$dic_firmado_empleado)
-        ->with('existencia_dic',$existencia_dic)
-        ;
+            ->with('dic',$dic)
+            ->with('dic_firmado_empresa',$dic_firmado_empresa)
+            ->with('dic_firmado_empleado',$dic_firmado_empleado)
+            ->with('existencia_dic',$existencia_dic)
+            ;
     }
-         public function getCambiarContraseña()
+    public function getCambiarContraseña()
     {
+
         return view('rrhh.cambiar_contraseña');
     }
-
     public function postUpdatePassword(Request $request)
     {
         $rules = [

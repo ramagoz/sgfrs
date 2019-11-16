@@ -2,7 +2,7 @@
 @include('layouts.menu_empresa')
 @section('content')
 
-	<div class="container">
+	<div class="container-fluid">
 
 		<div class="page-header">
 		    <h2>Ver recibo firmado por la empresa y el empleado</h2>

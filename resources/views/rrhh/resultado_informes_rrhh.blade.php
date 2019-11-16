@@ -1,13 +1,24 @@
 @extends('layouts.app')
 @include('layouts.menu_rrhh')
 @section('content')
-{{-- Dentro de section va el contenido de la vista--}}
+<div class="container-fluid">
 
-	<h3 align="center">Informe de Gestión de Recibos Electrónicos - Año 2019</h1>
-	<div align="center">
-	<table id="example" class="display" style="width:80%" align="center" border="1">
-		<thead>
-		<tr><th>Año</th><th>Mes</th><th>Total Recibos</th><th>Firmados Empresa</th><th>Pendientes Firma Empresa</th><th>Firmados Empleados</th><th>Pendientes Firma Empleados</th><th>Estado Periodo</th></tr>
+	<div class="page-header">
+	    <h2>Recibos firmados empresa y empleados</h2>
+	</div>
+
+	<table class="table table-sm" border="1">
+		<thead class="thead-dark">
+			<tr>
+				<th>Año</th>
+				<th>Mes</th>
+				<th>Total Recibos</th>
+				<th>Firmados Empresa</th>
+				<th>Pendientes Firma Empresa</th>
+				<th>Firmados Empleados</th>
+				<th>Pendientes Firma Empleados</th>
+				<th>Estado Periodo</th>
+			</tr>
 		</thead>
 		<tbody>
 				<tr>
@@ -20,11 +31,11 @@
 					<td>{{ $ene-$ene_firmado_empleado }}</td>
 					<td>
 						@if ( $existencia_ene==0)
-							Periodo no creado
+							No creado
 						@elseif ( $ene > 0 and $cantidad_empleados ==$ene_firmado_empleado)
-							Periodo Cerrado
+							Cerrado
 						@else
-							Periodo Abierto
+							Abierto
 					 	@endif
 					</td>
 				</tr>
@@ -40,11 +51,11 @@
 					<td>{{ $feb-$feb_firmado_empleado }}</td>
 					<td>
 						@if ( $existencia_feb==0)
-							Periodo no creado
+							No creado
 						@elseif ( $feb > 0 and $cantidad_empleados ==$feb_firmado_empleado)
-							Periodo Cerrado
+							Cerrado
 						@else
-							Periodo Abierto
+							Abierto
 					 	@endif
 					</td>
 				</tr>
@@ -58,11 +69,11 @@
 					<td>{{ $mar-$mar_firmado_empleado }}</td>
 					<td>
 						@if ( $existencia_mar==0)
-							Periodo no creado
+							No creado
 						@elseif ( $mar > 0 and $cantidad_empleados ==$mar_firmado_empleado)
-							Periodo Cerrado
+							Cerrado
 						@else
-							Periodo Abierto
+							Abierto
 					 	@endif
 					</td>
 				</tr>
@@ -76,11 +87,11 @@
 					<td>{{ $abr-$abr_firmado_empleado }}</td>
 					<td>
 						@if ($existencia_abr==0)
-							Periodo no creado
+							No creado
 						@elseif ( $abr > 0 and $cantidad_empleados ==$abr_firmado_empleado)
-							Periodo Cerrado
+							Cerrado
 						@else
-							Periodo Abierto
+							Abierto
 					 	@endif
 					</td>
 				</tr>
@@ -94,11 +105,11 @@
 					<td>{{ $may-$may_firmado_empleado }}</td>
 					<td>
 						@if ( $existencia_may==0)
-							Periodo no creado
+							No creado
 						@elseif ( $may > 0 and $cantidad_empleados ==$may_firmado_empleado)
-							Periodo Cerrado
+							Cerrado
 						@else
-							Periodo Abierto
+							Abierto
 					 	@endif
 					</td>
 				</tr>
@@ -112,11 +123,11 @@
 					<td>{{ $jun-$jun_firmado_empleado }}</td>
 					<td>
 						@if ( $existencia_jun==0)
-							Periodo no creado
+							No creado
 						@elseif ( $jun > 0 and $cantidad_empleados ==$jun_firmado_empleado)
-							Periodo Cerrado
+							Cerrado
 						@else
-							Periodo Abierto
+							Abierto
 					 	@endif
 					</td>
 				</tr>
@@ -130,11 +141,11 @@
 					<td>{{ $jul-$jul_firmado_empleado }}</td>
 					<td>
 						@if ( $existencia_jul==0)
-							Periodo no creado
+							No creado
 						@elseif ( $jul > 0 and $cantidad_empleados ==$jul_firmado_empleado)
-							Periodo Cerrado
+							Cerrado
 						@else
-							Periodo Abierto
+							Abierto
 					 	@endif
 					</td>
 				</tr>
@@ -148,11 +159,11 @@
 					<td>{{ $ago-$ago_firmado_empleado }}</td>
 					<td>
 						@if ( $existencia_ago==0)
-							Periodo no creado
+							No creado
 						@elseif ( $ago > 0 and $cantidad_empleados ==$ago_firmado_empleado)
-							Periodo Cerrado
+							Cerrado
 						@else
-							Periodo Abierto
+							Abierto
 					 	@endif
 					</td>
 				</tr>
@@ -166,11 +177,11 @@
 					<td>{{ $set-$set_firmado_empleado }}</td>
 					<td>
 						@if ( $existencia_set==0)
-							Periodo no creado
+							No creado
 						@elseif ( $set > 0 and $cantidad_empleados ==$set_firmado_empleado)
-							Periodo Cerrado
+							Cerrado
 						@else
-							Periodo Abierto
+							Abierto
 					 	@endif
 					</td>
 				</tr>
@@ -184,11 +195,11 @@
 					<td>{{ $oct-$oct_firmado_empleado }}</td>
 					<td>
 						@if ( $existencia_oct==0)
-							Periodo no creado
+							No creado
 						@elseif ( $oct > 0 and $cantidad_empleados ==$oct_firmado_empleado)
-							Periodo Cerrado
+							Cerrado
 						@else
-							Periodo Abierto
+							Abierto
 					 	@endif
 					</td>
 				</tr>
@@ -202,11 +213,11 @@
 					<td>{{ $nov-$nov_firmado_empleado }}</td>
 					<td>
 						@if ( $existencia_nov==0)
-							Periodo no creado
+							No creado
 						@elseif ( $nov > 0 and $cantidad_empleados ==$nov_firmado_empleado)
-							Periodo Cerrado
+							Cerrado
 						@else
-							Periodo Abierto
+							Abierto
 					 	@endif
 					</td>
 				</tr>
@@ -220,18 +231,19 @@
 					<td>{{ $dic-$dic_firmado_empleado }}</td>
 					<td>
 						@if ( $existencia_dic==0)
-							Periodo no creado
+							No creado
 						@elseif ( $dic > 0 and $cantidad_empleados ==$dic_firmado_empleado)
-							Periodo Cerrado
+							Cerrado
 						@else
-							Periodo Abierto
+							Abierto
 					 	@endif
 					</td>
 				</tr>
 		</tbody>
 	</table>
-	<br>
+
 	<a class="btn btn-primary"  href="{{ url('/rrhh/informes_rrhh' ) }}" role="button">Volver</a>
-	<a class="btn btn-success"  href="{{ url('rrhh/pdf/'.$año) }}" role="button">Generar Informe en PDF</a>
-	</div>
+	<a class="btn btn-success"  href="{{ url('rrhh/pdf/'.$año) }}" role="button">Exportar en PDF</a>
+
+</div>
 @endsection

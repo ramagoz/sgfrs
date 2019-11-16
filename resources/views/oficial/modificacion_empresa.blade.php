@@ -119,5 +119,4 @@
        <a class="btn btn-danger" href="/oficial/busqueda_empresa">Cancelar</a>
     </form>
   </div>
-
 @endsection
