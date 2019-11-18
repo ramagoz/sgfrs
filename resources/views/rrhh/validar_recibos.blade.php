@@ -34,46 +34,12 @@
 				</select>
 				<label for="año" class="col-sm-2 col-form-label">Año: </label>
 				<input class="col-sm-2 form-control" type="text" value="{{ date("Y") }}" name="año" id="año" size="4" maxlength="4" required>
-				<label class="col-sm-2 col-form-label">Periodo: </label>
+				<label class="col-sm-2 col-form-label">Recibos: </label>
 				<button class="btn btn-primary col-sm-2" type="submit">Validar</button>
 		</div>
 	</form>
 
-{{-- 	<form action="/rrhh/validar_recibos" method="POST">
-	{{csrf_field()}}
-
-	<div align="center" id="prueba">
-		<table style="width:20%" >
-			<tr>
-				<th>Mes: </th>
-				<td><select name="mes" id="mes">
-				   <option value="01">1- Enero</option>
-				   <option value="02">2- Febrero</option>
-				   <option value="03">3- Marzo</option>
-				   <option value="04">4- Abril</option>
-				   <option value="05">5- Mayo</option>
-				   <option value="06">6- Junio</option>
-				   <option value="07">7- Julio</option>
-				   <option value="08">8- Agosto</option>
-				   <option value="09">9- Setiembre</option>
-				   <option value="10">10- Octubre</option>
-				   <option value="11">11- Noviembre</option>
-				   <option value="12">12- Diciembre</option>
-				</select></td>
-			</tr>
-
-			<tr>
-				<th>Año:</th>
-				<td><input type="text" value="{{ date("Y") }}" name="año" id="año" size="4" maxlength="4" required=""></td>
-			</tr>
-		</table>
-		<br>
-			<button class="btn btn-primary" type="submit">Validar Periodo</button>
-
-	</div>
-	</form> --}}
-
-		@isset($msj)
+		@isset($resultados)
 		<table class="table" border="1">
 			<thead class="thead-dark" style="text-align: center;">
 				<th colspan="2">

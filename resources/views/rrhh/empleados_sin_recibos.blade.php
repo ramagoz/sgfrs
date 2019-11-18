@@ -1,36 +1,45 @@
 @extends('layouts.app')
 @include('layouts.menu_rrhh')
 @section('content')
-{{-- Dentro de section va el contenido de la vista--}}
+<div class="container" >
 
-	<h3 align="center">EMPLEADOS SIN RECIBOS</h1>
-<div align="center">
+	<div class="page-header">
+	    <h2>Empleados sin recibos</h2>
+	</div>
 
-<table id="example"  align="center" border="2">
-<thead>
-<tr><th WIDTH="50">Año</th><th WIDTH="50">Mes</th><th WIDTH="150">Seleccionar Periodo</th></tr>
-</thead>
-@foreach ($periodos as $periodo)
-	<tbody>
-	<tr>
-		<td>{{ $periodo->año }}</td>
-		<td>{{ $periodo->mes }}</td>
-		<td><a href="{{ url('/rrhh/ver_empleados_sin_recibos/'.$periodo->id_periodo) }}">Ver Periodo</a></td>
-	</tr>
-	</tbody>
-@endforeach
-</table>
+	<table class="table table-sm compact" border="1" style="text-align: center;">
+		<thead class="thead-dark" >
+			<tr>
+				<th>Año del periodo</th>
+				<th>Mes del periodo</th>
+				<th>Periodo</th>
+			</tr>
+		</thead>
+		<tbody>
+		@foreach ($periodos as $periodo)
+			<tr>
+				<td>{{ $periodo->año }}</td>
+				<td>{{ $periodo->mes }}</td>
+				<td>
+					<a class="btn btn-primary btn-block" href="{{ url('/rrhh/ver_empleados_sin_recibos/'.$periodo->id_periodo ) }}" role="button">VER</a>
+				</td>
+			</tr>
+		@endforeach
+		</tbody>
+	</table>
 
-	@if(isset($boton))
-	<br>
-	<a class="btn btn-outline-info" href="{{ $periodos->previousPageUrl() }}" role="button">Anterior</a>
-	<a class="btn btn-outline-info" href="{{ $periodos->nextPageUrl() }}" role="button">Siguiente</a>
-	@endif
-	<br>
-	<a class="btn btn-success"  href="{{ url('rrhh/excel/') }}" role="button">Exportar Informe en Excel</a>
+	<div class="row justify-content-center">
+		<div class="col-1">
+				@isset($periodos)
+						{{ $periodos->links() }}
+				@endisset
+		</div>
+	</div>
+	<a class="btn btn-success"  href="{{ url('rrhh/excel/') }}" role="button">Exportar en Excel</a>
+
+	@isset($msj)
+		<div class="alert alert-warning" role="alert" align="center">{{ $msj }}</div>
+	@endisset
 
 </div>
-	@if(isset($msj))
-		<div class="alert alert-warning" role="alert" align="center">{{ $msj }}</div>
-	@endif
 @endsection

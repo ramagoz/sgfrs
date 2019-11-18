@@ -643,7 +643,7 @@ class RrhhControlador extends Controller
 
         if ($consulta=='[]')
         {
-            return view('rrhh.importar_recibos')->with('errormsj','No existe este periodo o ya se encuentra cerrado. Periodo Mes: '.$request->mes.'  -  Año: '.$request->año);
+            return view('rrhh.importar_recibos')->with('error','No existe este periodo o ya se encuentra cerrado. Periodo Mes: '.$request->mes.'  -  Año: '.$request->año);
         } else {
             $mes= $request->mes; //se obtiene el mes del periodo a validar
             $año= $request->año; //se obtiene el año del periodo a validar
@@ -653,7 +653,7 @@ class RrhhControlador extends Controller
 
             if (count(scandir($dir))==2)//busca si hay archivos en el directorio, no se cuenta . ni .. que viene por defecto
             {
-                return view('rrhh.importar_recibos')->with('errormsj','No se encontraron recibos para importar, verifique que fueron cargados en la carpeta de nuevos recibos correspondientes al periodo seleccionado, periodo mes: '.$mes.' año: '.$año);
+                return view('rrhh.importar_recibos')->with('error','No se encontraron recibos para importar, verifique que fueron cargados en la carpeta de nuevos recibos correspondientes al periodo seleccionado, periodo -> mes: '.$mes.', año: '.$año);
             }
             foreach (scandir($dir) as $f) //esta funcion permite leer el nombre de los archivos contenidos segun directorio especificado y los guarda en la variable $f por cada pasada de la iteraccion hasta leer todos los archivos del directorio
             {
@@ -752,7 +752,7 @@ class RrhhControlador extends Controller
 
         $periodos = DB::table('periodos')
         ->where('periodos.estado_periodo', 0)
-        ->paginate(12);
+        ->paginate(8);
 
         if ($periodos->count()==0)
         {

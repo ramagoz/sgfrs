@@ -1,41 +1,53 @@
 @extends('layouts.app')
 @include('layouts.menu_rrhh')
 @section('content')
-{{-- Dentro de section va el contenido de la vista--}}
+<div class="container-fluid">
 
-<h3 align="center">Historial de Recibos Corregidos</h1>
-
-	<table id="example" style="width:70%" align="center" border="2">
-		<thead>
-		<tr><th>Fecha Corrección</th><th>Motivo Correción</th><th>Año</th><th>Mes</th><th>Cedula</th><th>Nombres</th><th>Apellidos</th><th>Ver Recibo</th></tr>
-		</thead>
-@isset($recibos)
-		@foreach ($recibos as $recibo)
-		<tbody>
-		<tr>
-		<td>{{ $recibo->fecha_hora}}</td>
-		<td>{{ $recibo->motivo_error }}</td>
-		<td>20{{  substr($recibo->id_recibo,-2,2) }}</td>
-		<td>{{  substr($recibo->id_recibo,-4,2) }}</td>
-		<td>{{ $recibo->cedula }}</td>
-		<td>{{ $recibo->nombres }}</td>
-		<td>{{ $recibo->apellidos }}</td>
-		<td><a class="btn btn-primary" href="{{ url('/rrhh/ver_recibo_corregido/'.$recibo->id ) }}" role="button">Ver Recibo</a></td>
-		</tbody>
-		@endforeach
-@endisset
-	</table>
-
-@isset($error)
-	<div class="alert alert-danger" role="alert" align="center">{{ $error }}</div>
-@endisset
-
-	<div align="center">
-		<br>
-		@if(isset($recibos))
-		<a class="btn btn-outline-info" href="{{ $recibos->previousPageUrl() }}" role="button">Anterior</a>
-		<a class="btn btn-outline-info" href="{{ $recibos->nextPageUrl() }}" role="button">Siguiente</a>
-		@endif
+	<div class="page-header">
+	    <h2>Historial de Recibos Corregidos</h2>
 	</div>
 
+	<table class="table table-sm compact" border="1" style="text-align: center;">
+		@isset($recibos)
+			<thead class="thead-dark" >
+				<tr>
+					<th>Fecha Corrección</th>
+					<th>Motivo Correción</th>
+					<th>Año</th>
+					<th>Mes</th>
+					<th>Cedula</th>
+					<th>Nombres</th>
+					<th>Apellidos</th>
+					<th>Ver Recibo</th>
+				</tr>
+			</thead>
+				@foreach ($recibos as $recibo)
+				<tbody>
+				<tr>
+				<td>{{ $recibo->fecha_hora}}</td>
+				<td>{{ $recibo->motivo_error }}</td>
+				<td>20{{  substr($recibo->id_recibo,-2,2) }}</td>
+				<td>{{  substr($recibo->id_recibo,-4,2) }}</td>
+				<td>{{ $recibo->cedula }}</td>
+				<td>{{ $recibo->nombres }}</td>
+				<td>{{ $recibo->apellidos }}</td>
+				<td><a class="btn btn-primary btn-block" href="{{ url('/rrhh/ver_recibo_corregido/'.$recibo->id ) }}" role="button">VER</a></td>
+				</tbody>
+				@endforeach
+		@endisset
+	</table>
+
+	@isset($error)
+		<div class="alert alert-danger" role="alert" align="center">{{ $error }}</div>
+	@endisset
+
+	<div class="row justify-content-center">
+		<div class="col-1">
+				@isset($periodos)
+						{{ $periodos->links() }}
+				@endisset
+		</div>
+	</div>
+
+</div>
 @endsection
