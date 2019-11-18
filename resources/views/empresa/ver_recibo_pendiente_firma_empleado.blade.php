@@ -20,7 +20,7 @@
 	<iframe src='{{$id}}' width="100%" height="75%" frameborder="0" allowfullscreen>
 	</iframe><br><br>
 
-	<a class="btn btn-primary" href="{{ url('/empresa/recibos_pendientes_empleados' ) }}" role="button">Volver</a>
+	<a class="btn btn-primary btn-lg" href="{{ url('/empresa/recibos_pendientes_empleados' ) }}" role="button">Volver</a>
 
 </div>
 

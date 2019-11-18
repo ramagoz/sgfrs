@@ -2,7 +2,7 @@
 @include('layouts.menu_empleado')
 @section('content')
 
-<div class="container">
+<div class="container-fluid">
 
 		<div class="page-header">
 		    <h2>Ver recibo pendiente de firma empleado</h2>
