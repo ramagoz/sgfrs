@@ -1394,10 +1394,12 @@ class RrhhControlador extends Controller
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
-        if ($validator->fails()){
-            return redirect('rrhh/cambiar_contraseña')->withErrors($validator);
+        if ($validator->fails())
+        {
+            return redirect('empleado/cambiar_contraseña')->withErrors($validator);
         }
-        else{
+        else
+        {
             if (Hash::check($request->mypassword, Auth::user()->password)){
                 $user = new User;
                 $user->where('email', '=', Auth::user()->email)
@@ -1425,12 +1427,11 @@ class RrhhControlador extends Controller
                 $auditoria->save();
                 //fin codigo auditoria
 
-                return view('rrhh/cambiar_contraseña')->with('status', 'Se ha actualizado la contraseña con éxito!!');
+                return view('empleado/cambiar_contraseña')->with('msj', 'Se ha actualizado la contraseña con éxito!!');
             }
             else
             {
-               # return redirect('empresa/cambiar_contraseña')->with('message', 'Credenciales incorrectas');
-                return view('rrhh/cambiar_contraseña')->with('message', 'Credenciales incorrectas');
+                return view('empleado/cambiar_contraseña')->with('error', 'La contraseña actual ingresada es incorrecta');
             }
         }
     }

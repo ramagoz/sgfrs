@@ -8,7 +8,12 @@
 	</div>
 
 	@isset($error)
-		<div class="alert alert-warning" role="alert" align="center">{{ $error }}</div>
+		<div class="alert alert-warning alert-dismissible fade show" role="alert">
+			<strong>{{ $error }}</strong>
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		    	<span aria-hidden="true">&times;</span>
+		  	</button>
+		</div>
 	@endisset
 
 	<form action="/empleado/firma_recibos/" method="POST">
@@ -65,11 +70,15 @@
 		@endif
 	</form>
 
-	@if(isset($msj))
-		<div class="alert alert-warning" role="alert" align="center">
-			{{ $msj }}
+
+	@isset($msj)
+		<div class="alert alert-warning alert-dismissible fade show" role="alert">
+			<strong>{{ $msj }}</strong>
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		    	<span aria-hidden="true">&times;</span>
+		  	</button>
 		</div>
-	@endif
+	@endisset
 
 </div>
 

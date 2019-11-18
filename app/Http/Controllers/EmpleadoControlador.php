@@ -233,16 +233,18 @@ class EmpleadoControlador extends Controller
         $messages = [
             'mypassword.required' => 'El campo es requerido',
             'password.required' => 'El campo es requerido',
-            'password.confirmed' => 'Los passwords no coinciden',
+            'password.confirmed' => 'Las contraseñas ingresadas no coinciden',
             'password.min' => 'El mínimo permitido son 6 caracteres',
             'password.max' => 'El máximo permitido son 18 caracteres',
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
-        if ($validator->fails()){
+        if ($validator->fails())
+        {
             return redirect('empleado/cambiar_contraseña')->withErrors($validator);
         }
-        else{
+        else
+        {
             if (Hash::check($request->mypassword, Auth::user()->password)){
                 $user = new User;
                 $user->where('email', '=', Auth::user()->email)
@@ -270,11 +272,11 @@ class EmpleadoControlador extends Controller
                 $auditoria->save();
                 //fin codigo auditoria
 
-                return view('empleado/cambiar_contraseña')->with('status', 'Se ha actualizado la contraseña con éxito!!');
+                return view('empleado/cambiar_contraseña')->with('msj', 'Se ha actualizado la contraseña con éxito!!');
             }
             else
             {
-                return view('empleado/cambiar_contraseña')->with('message', 'Credenciales incorrectas');
+                return view('empleado/cambiar_contraseña')->with('error', 'La contraseña actual ingresada es incorrecta');
             }
         }
     }

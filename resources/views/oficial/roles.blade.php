@@ -12,16 +12,12 @@
     </div>
 
     @isset($msjrol)
-        <div class="alert alert-success" role="alert">
-         <button type="button" class="close" data-dismiss="alert" aria-label="Close"  align="center"><span aria-hidden="true">&times;</span></button> {{ $msjrol }}</div>
-       <script type="text/javascript">
-           window.setTimeout(function() {
-                    $(".alert").fadeTo(300, 0).slideUp(400, function(){
-                        $(this).remove();
-                    });
-                }, 20000);
-       </script>
-       @unset($msjrol)
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>{{ $msjrol }}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
     @endisset
 
     <table class="table table-sm compact" border="1" id="table">

@@ -8,8 +8,14 @@
     </div>
     <br>
 
+
     @isset($error)
-      <div class="alert alert-danger" role="alert" align="center">{{ $error }}</div>
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>{{ $error }}</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
     @endisset
 
     <form action="/oficial/empresa_modificado" method="post">

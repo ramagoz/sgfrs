@@ -8,31 +8,22 @@
       <h2>Cambiar contraseña</h2>
   </div>
 
-  @isset($status)
-      <div class="alert alert-success" role="alert">
-       <button type="button" class="close" data-dismiss="alert" aria-label="Close"  align="center"><span aria-hidden="true">&times;</span></button> {{ $status }}</div>
-     <script type="text/javascript">
-         window.setTimeout(function()
-         {
-          $(".alert").fadeTo(300, 0).slideUp(400, function(){
-              $(this).remove();
-          });
-         }, 20000);
-     </script>
-     @unset($status)
+  @isset($msj)
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <strong>{{ $msj }}</strong>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
   @endisset
 
-  @isset($message)
-      <div class="alert alert-danger" role="alert">
-       <button type="button" class="close" data-dismiss="alert" aria-label="Close"  align="center"><span aria-hidden="true">&times;</span></button> {{ $message }}</div>
-     <script type="text/javascript">
-         window.setTimeout(function() {
-                  $(".alert").fadeTo(300, 0).slideUp(400, function(){
-                      $(this).remove();
-                  });
-              }, 20000);
-     </script>
-     @unset($message)
+  @isset($error)
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <strong>{{ $error }}</strong>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
   @endisset
 
   <form method="post" class="form-horizontal" role="form" action="{{url('empleado/update_password')}}">
@@ -46,7 +37,7 @@
             Introduce tu actual contraseña:
           </label>
           <div class="col-sm-6">
-              <input type="password" name="mypassword" class="form-control" value="{{old('mypassword')}}" required focus>
+              <input type="password" name="mypassword" class="form-control" value="{{old('mypassword')}}" required focus maxlength="18" minlength="4">
               <div class="text-danger">
                 {{$errors->first('mypassword')}}
               </div>
@@ -58,7 +49,7 @@
             Introduce tu nueva contraseña:
           </label>
           <div class="col-sm-6">
-              <input type="password" name="password" class="form-control" value="{{old('password')}}" required focus>
+              <input type="password" name="password" class="form-control" value="{{old('password')}}" required focus maxlength="18" minlength="4">
               <div class="text-danger">
                 {{$errors->first('password')}}
               </div>
@@ -70,7 +61,7 @@
             Confirma tu nueva contraseña:
           </label>
           <div class="col-sm-6">
-              <input type="password" name="password_confirmation" class="form-control" value="{{old('password_confirmation')}}" required focus>
+              <input type="password" name="password_confirmation" class="form-control" value="{{old('password_confirmation')}}" required focus maxlength="18" minlength="4">
               <div class="text-danger">
                 {{$errors->first('password')}}
               </div>
@@ -79,6 +70,7 @@
             <button type="submit" class="btn btn-primary">Cambiar contraseña</button>
       </div>
     </div>
+
   </form>
 </div>
 

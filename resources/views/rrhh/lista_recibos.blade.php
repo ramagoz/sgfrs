@@ -8,7 +8,12 @@
 	</div>
 
 	@isset($msj)
-		<div class="alert alert-success" role="alert" align="center">{{ $msj }}</div>
+		<div class="alert alert-success alert-dismissible fade show" role="alert">
+			<strong>{{ $msj }}</strong>
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		    	<span aria-hidden="true">&times;</span>
+		  	</button>
+		</div>
 	@endisset
 
 	<table class="table table-sm compact" border="1" style="text-align: center;">
@@ -52,7 +57,12 @@
 	</table>
 
 	@isset($error)
-		<div class="alert alert-danger" role="alert" align="center">{{ $error }}</div>
+		<div class="alert alert-danger alert-dismissible fade show" role="alert">
+			<strong>{{ $error }}</strong>
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		    	<span aria-hidden="true">&times;</span>
+		  	</button>
+		</div>
 	@endisset
 
 	<div class="row justify-content-center">

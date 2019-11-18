@@ -34,26 +34,33 @@
 			</tbody>
 		@endforeach
 	</table>
-</div>
+
 
 	<div class="row" align="center">
-		@if(isset($recibos))
+		@isset($recibos)
 			<div class="col-md-4">
 					{{ $recibos->links() }}
 			</div>
-		@endif
+		@endisset
 	</div>
 
 	@isset($msj)
-		<div class="alert alert-success" role="alert" align="center">
-			{{ $msj }}
-	</div>
+		<div class="alert alert-success alert-dismissible fade show" role="alert">
+			<strong>{{ $msj }}</strong>
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		    	<span aria-hidden="true">&times;</span>
+		  	</button>
+		</div>
 	@endisset
 
 	@isset($msj_error)
-		<div class="alert alert-warning" role="alert" align="center">
-			{{ $msj_error }}
-	</div>
+		<div class="alert alert-warning alert-dismissible fade show" role="alert">
+			<strong>{{ $msj_error }}</strong>
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		    	<span aria-hidden="true">&times;</span>
+		  	</button>
+		</div>
 	@endisset
 
+</div>
 @endsection

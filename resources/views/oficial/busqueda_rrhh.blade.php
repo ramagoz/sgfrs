@@ -12,11 +12,21 @@
     </div>
 
     @isset($msj)
-       <div class="alert alert-success" role="alert" align="center">{{ $msj }}</div>
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>{{ $msj }}</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
     @endisset
 
     @isset($error)
-       <div class="alert alert-warning" role="alert" align="center">{{ $error }}</div>
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>{{ $error }}</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
     @endisset
 
     <table class="table table-sm compact" border="1" id="table">

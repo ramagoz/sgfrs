@@ -32,9 +32,14 @@
 		</table>
 	@endisset
 
-	@if(isset($msj))
-		<div class="alert alert-warning" role="alert" align="center">{{ $msj }}</div>
-	@endif
+	@isset($msj)
+		<div class="alert alert-warning alert-dismissible fade show" role="alert">
+			<strong>{{ $msj }}</strong>
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		    	<span aria-hidden="true">&times;</span>
+		  	</button>
+		</div>
+	@endisset
 
 	<div class="row justify-content-center">
 		<div class="col-1">
