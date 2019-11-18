@@ -38,30 +38,31 @@
 				<button class="btn btn-primary col-sm-2" type="submit">Crear</button>
 		</div>
 	</form>
-		@isset($periodos)
-			<table class="table table-sm" border="1" style="text-align: center;">
-				<thead class="thead-dark">
-					<tr>
-						<th>Mes</th>
-						<th>Año</th>
-						<th>Estado Periodo</th>
-					</tr>
-				</thead>
-				@foreach($periodos as $periodo)
-					<tr>
-						<td>{{ $periodo->mes }}</td>
-						<td>{{ $periodo->año }}</td>
-						<td>
-							@if ($periodo->estado_periodo==0)
-							Abierto
-							@else
-							Cerrado
-							@endif
-						</td>
-					</tr>
-				@endforeach
-			</table>
-		@endisset
+
+	@isset($periodos)
+		<table class="table table-sm" border="1" style="text-align: center;">
+			<thead class="thead-dark">
+				<tr>
+					<th>Mes</th>
+					<th>Año</th>
+					<th>Estado Periodo</th>
+				</tr>
+			</thead>
+			@foreach($periodos as $periodo)
+				<tr>
+					<td>{{ $periodo->mes }}</td>
+					<td>{{ $periodo->año }}</td>
+					<td>
+						@if ($periodo->estado_periodo==0)
+						Abierto
+						@else
+						Cerrado
+						@endif
+					</td>
+				</tr>
+			@endforeach
+		</table>
+	@endisset
 	<div class="row justify-content-center">
 		<div class="col-1">
 				{{ $periodos->links() }}

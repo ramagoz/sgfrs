@@ -542,7 +542,7 @@ class RrhhControlador extends Controller
 
         if ($consulta=='[]')
         {
-            return view('rrhh.validar_recibos')->with('errormsj','No existe este periodo o ya se encuentra cerrado. Periodo Mes: '.$request->mes.'  -  Año: '.$request->año);
+            return view('rrhh.validar_recibos')->with('error','No existe este periodo o ya se encuentra cerrado. Periodo Mes: '.$request->mes.'  -  Año: '.$request->año);
         } else {
             $mes= $request->mes; //se obtiene el mes del periodo a validar
             $año= $request->año; //se obtiene el año del periodo a validar
@@ -554,7 +554,7 @@ class RrhhControlador extends Controller
 
             if (count(scandir($dir))==2)//busca si hay archivos en el directorio, no se cuenta . ni .. que viene por defecto
             {
-                return view('rrhh.validar_recibos')->with('errormsj','No se encontraron recibos para validar, verifique que fueron cargados en la carpeta de nuevos recibos correspondientes al periodo seleccionado
+                return view('rrhh.validar_recibos')->with('error','No se encontraron recibos para validar, verifique que fueron cargados en la carpeta de nuevos recibos correspondientes al periodo seleccionado
                     ');
             }
 
