@@ -439,14 +439,14 @@ class RrhhControlador extends Controller
     }
     public function getCrearNuevoPeriodo()
     {
-        $periodos = DB::table('periodos')->select('mes','año','estado_periodo')->paginate(6);
+        $periodos = DB::table('periodos')->select('mes','año','estado_periodo')->paginate(11);
 
         if ($periodos->count()==0)
         {
-            return view('rrhh.crear_nuevo_periodo')->with('periodos',$periodos);
+            return view('rrhh.crear_nuevo_periodo')->with('periodos',$periodos)->with('error','No existen periodos creados');
         }else
         {
-            return view('rrhh.crear_nuevo_periodo')->with('periodos',$periodos)->with('boton','boton');
+            return view('rrhh.crear_nuevo_periodo')->with('periodos',$periodos);
         }
     }
     public function getCrear(Request $request)
@@ -454,7 +454,7 @@ class RrhhControlador extends Controller
         //controla si el periodo que se intenta crear existe, si existe devolver un mensajes de error y sino crea el mismo
 
         $periodos=DB::table('periodos') ->where('año',$request->año)
-        ->where('mes',$request->mes)->paginate(6);
+        ->where('mes',$request->mes)->paginate(11);
 
         if ($periodos->count()==0)
         {
@@ -514,7 +514,7 @@ class RrhhControlador extends Controller
                                 $auditoria->descripcion = "Se procedio a la creación del periodo ". $request->mes . '/' . $request->año;
                                 $auditoria->save();
                                 //fin codigo auditoria
-                                $periodos = DB::table('periodos')->select('mes','año','estado_periodo')->paginate(6);
+                                $periodos = DB::table('periodos')->select('mes','año','estado_periodo')->paginate(11);
 
                                 //esta funcion controla si existen empleados sin recibos para actualizarlos en la BD
                                 $funcion = (new FuncionesControlador)->ControlEmpleadosSinRecibos();
@@ -528,7 +528,7 @@ class RrhhControlador extends Controller
         }else
         {
             $periodos = DB::table('periodos')->paginate(6);
-            return view('rrhh.crear_nuevo_periodo')->with('errormsj','Este mes y año de periodo ya existen. Mes: '.$request->mes.'  -   Año: '.$request->año)->with('periodos',$periodos)->with('boton','boton');
+            return view('rrhh.crear_nuevo_periodo')->with('error','Este mes y año de periodo ya existen. Mes: '.$request->mes.'  -   Año: '.$request->año)->with('periodos',$periodos)->with('boton','boton');
         }
     }
     public function getValidarRecibos()

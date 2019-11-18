@@ -4,15 +4,15 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use App\Rol;
 use App\User;
-use App\Grupo_recibo;
+// use App\Grupo_recibo;
 use App\Estado_recibo;
 use App\Periodo;
-use App\Importacion;
+// use App\Importacion;
 use App\Persona;
 use App\Empleado_sin_recibo;
 use App\Recibo;
 use App\Auditoria;
-use App\Firma_empresa;
+// use App\Firma_empresa;
 use App\Recibo_con_error;
 
 class DatabaseSeeder extends Seeder
@@ -30,8 +30,8 @@ class DatabaseSeeder extends Seeder
         self::seedUser();
         $this->command->info('Tabla de Usuarios inicializada con datos!');
 
-        self::seedGrupo_recibo();
-        $this->command->info('Tabla de Grupo de Recibos inicializada con datos!');
+        // self::seedGrupo_recibo();
+        // $this->command->info('Tabla de Grupo de Recibos inicializada con datos!');
 
         self::seedEstado_recibo();
         $this->command->info('Tabla de Estado de Recibos inicializada con datos!');
