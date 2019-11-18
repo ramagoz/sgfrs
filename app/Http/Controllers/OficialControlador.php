@@ -292,7 +292,7 @@ class OficialControlador extends Controller
         $persona->id_rol     = $request->rol;
 
         $persona->save();
-       # return view('rrhh.empleado_cargado');
+
         return view('oficial.roles')->with('msjrol','Los datos del usuario con CI Nro. '.$request->cedula.' se actualizaron correctamente!!!');
     }
     public function getModificacionRol(request $request)

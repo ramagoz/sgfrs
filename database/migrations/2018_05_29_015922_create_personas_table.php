@@ -17,7 +17,7 @@ class CreatePersonasTable extends Migration
             $table->string('cedula',7)->primary();
             $table->integer('id_usuario')->references('id')->on('users')->unique();
             $table->integer('id_grupo')->references('id_grupo')->on('grupos_recibos');
-            $table->integer('id_rol')->foreign('id_rol')->references('id_rol')->on('roles')->unique();
+            $table->integer('id_rol')->foreign('id_rol')->references('id_rol')->on('roles');
             $table->string('nombres',50);
             $table->string('apellidos',50);
             $table->string('tel',20)->nullable();
