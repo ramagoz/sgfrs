@@ -3,9 +3,9 @@
 <head>
     <title>Página de ingreso al sistema</title>
     <link rel="stylesheet" type="text/css" href="{{asset('otros/bootstrap.min.css')}}" >
+    <script src="{{ asset('otros/datatable/jquery.min.js') }}" defer></script>
     <script src="{{ asset('otros/js/all.js') }}" defer></script>
     <script src="{{ asset('otros/datatable/bootstrap.min.js') }}" defer></script>
-    <script src="{{ asset('otros/datatable/jquery.min.js') }}" defer></script>
     <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
 </head>
 <body>
@@ -13,11 +13,12 @@
     <div class="d-flex justify-content-center h-100">
         <div class="card">
             <div class="card-header">
+
                 <h3>Sistema de Recibos Electrónicos</h3>
             </div>
             <div class="card-body">
                 <form method="POST" action="{{ route('login') }}">
-                @csrf
+                    @csrf
                     <div class="input-group form-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-user"></i></span>

@@ -160,7 +160,6 @@ class DatabaseSeeder extends Seeder
         $p = new Persona;
         $p->cedula = $personas['cedula'];
         $p->id_usuario = $personas['id_usuario'];
-        $p->id_grupo = $personas['id_grupo'];
         $p->id_rol = $personas['id_rol'];
         $p->nombres = $personas['nombres'];
         $p->apellidos = $personas['apellidos'];
@@ -403,7 +402,6 @@ class DatabaseSeeder extends Seeder
         array(
             'cedula' => '1000000',
             'id_usuario' => '1',
-            'id_grupo' => '1',
             'id_rol'=>'3',
             'nombres' => 'AAAA',
             'apellidos' => 'AAAA',
@@ -418,7 +416,6 @@ class DatabaseSeeder extends Seeder
         array(
             'cedula' => '1111111',
             'id_usuario' => '2',
-            'id_grupo' => '1',
             'id_rol'=>'2',
             'nombres' => 'BBBB',
             'apellidos' => 'BBBB',
@@ -433,7 +430,6 @@ class DatabaseSeeder extends Seeder
         array(
             'cedula' => '2222222',
             'id_usuario' => '3',
-            'id_grupo' => '1',
             'id_rol'=>'5',
             'nombres' => 'CCCC',
             'apellidos' => 'CCCC',
@@ -448,7 +444,6 @@ class DatabaseSeeder extends Seeder
         array(
             'cedula' => '3333333',
             'id_usuario' => '4',
-            'id_grupo' => '1',
             'id_rol'=>'1',
             'nombres' => 'DDDD',
             'apellidos' => 'DDDD',

@@ -5,6 +5,7 @@ use App\Empleado_sin_recibo;
 use App\Exports\EmpleadosSinRecibosExport;
 use App\Http\Requests\ValidacionCargaUsuario;
 use App\Http\Requests\ValidacionActualizacionUsuario;
+use App\Http\Requests\ValidacionPeriodo;
 use App\Grupo_recibo;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FuncionesControlador;
@@ -148,6 +149,7 @@ class RrhhControlador extends Controller
         $auditoria->rol = session()->get('rol_usuario');
         $auditoria->ip = session()->get('ip_usuario');
         $auditoria->operacion = "Modificación datos empleado";
+        if($request->estado ==1) {$estado="Activo";}else{$estado="Inactivo";}
         $auditoria->descripcion = "Se procedio a la modificación de datos del usuario con rol de empleado, datos actualizados:"."\n"
         ."número de cédula: ".$request->cedula."\n"
         ."Nombre: ".$request->nombre."\n"
@@ -157,6 +159,7 @@ class RrhhControlador extends Controller
         ."Correo: ".$request->correo."\n"
         ."Dpto.: ".$request->dpto."\n"
         ."Cargo: ".$request->cargo."\n"
+        ."Estado: ".$estado."\n"
         ."Obs.: ".$request->observacion;
         $auditoria->save();
         //fin codigo auditoria
@@ -449,8 +452,9 @@ class RrhhControlador extends Controller
             return view('rrhh.crear_nuevo_periodo')->with('periodos',$periodos);
         }
     }
-    public function getCrear(Request $request)
+    public function getCrear(ValidacionPeriodo $request)
     {
+
         //controla si el periodo que se intenta crear existe, si existe devolver un mensajes de error y sino crea el mismo
 
         $periodos=DB::table('periodos') ->where('año',$request->año)
@@ -466,31 +470,31 @@ class RrhhControlador extends Controller
             if (file_exists( $estructura_carpetas_nuevos))
             {
                 $periodos = DB::table('periodos')->paginate(6);
-                return view('rrhh.crear_nuevo_periodo')->with('errormsj','Ya existen carpetas de recibos en el sistema, favor verifique el directorio')->with('periodos',$periodos);
+                return view('rrhh.crear_nuevo_periodo')->with('error','Ya existen carpetas de recibos en el sistema, favor verifique el directorio')->with('periodos',$periodos);
             }else
             {
                 if (file_exists($estructura_carpetas_pendientes))
                 {
                     $periodos = DB::table('periodos')->paginate(6);
-                    return view('rrhh.crear_nuevo_periodo')->with('errormsj','Ya existen carpetas de recibos en el sistema, favor verifique el directorio')->with('periodos',$periodos);
+                    return view('rrhh.crear_nuevo_periodo')->with('error','Ya existen carpetas de recibos en el sistema, favor verifique el directorio')->with('periodos',$periodos);
                 }else
                 {
                     if (file_exists($estructura_carpetas_firmados_empresa))
                     {
                         $periodos = DB::table('periodos')->paginate(6);
-                        return view('rrhh.crear_nuevo_periodo')->with('errormsj','Ya existen carpetas de recibos en el sistema, favor verifique el directorio')->with('periodos',$periodos);
+                        return view('rrhh.crear_nuevo_periodo')->with('error','Ya existen carpetas de recibos en el sistema, favor verifique el directorio')->with('periodos',$periodos);
                     }else
                     {
                         if (file_exists($estructura_carpetas_firmados_empresa_empleados))
                         {
                             $periodos = DB::table('periodos')->paginate(6);
-                            return view('rrhh.crear_nuevo_periodo')->with('errormsj','Ya existen carpetas de recibos en el sistema, favor verifique el directorio')->with('periodos',$periodos);
+                            return view('rrhh.crear_nuevo_periodo')->with('error','Ya existen carpetas de recibos en el sistema, favor verifique el directorio')->with('periodos',$periodos);
                         }else
                         {
                             if (file_exists($estructura_carpetas_recibos_corregidos))
                             {
                                 $periodos = DB::table('periodos')->paginate(6);
-                                return view('rrhh.crear_nuevo_periodo')->with('errormsj','Ya existen carpetas de recibos en el sistema, favor verifique el directorio')->with('periodos',$periodos);
+                                return view('rrhh.crear_nuevo_periodo')->with('error','Ya existen carpetas de recibos en el sistema, favor verifique el directorio')->with('periodos',$periodos);
                             }else
                             {
                                 mkdir($estructura_carpetas_nuevos, 0777, true);
@@ -536,7 +540,7 @@ class RrhhControlador extends Controller
 
         return view('rrhh.validar_recibos');
     }
-    public function postValidarRecibos(Request $request)
+    public function postValidarRecibos(ValidacionPeriodo $request)
     {
         $consulta = DB::table('periodos')->where('mes',$request->mes)->where('año',$request->año)->where('estado_periodo','0')->get();
 
@@ -633,7 +637,7 @@ class RrhhControlador extends Controller
 
         return view('rrhh.importar_recibos');
     }
-    public function getRecibosImportados(Request $request)
+    public function getRecibosImportados(ValidacionPeriodo $request)
     {
         $consulta = DB::table('periodos')->where('mes',$request->mes)->where('año',$request->año)->where('estado_periodo','0')->get();
         foreach ($consulta as $result)
@@ -944,49 +948,6 @@ class RrhhControlador extends Controller
         ->first();
         $url = "/recibos/recibos_corregidos/20".substr($recibo->id_recibo,-2,2)."/".substr($recibo->id_recibo,-4,2)."/".$id.".pdf";
         return view('rrhh.ver_recibo_corregido',compact('url'));
-    }
-    public function getGruposRecibos()
-    {
-        $grupos = DB::table('grupos_recibos')->get();
-
-        return view('rrhh.grupos_recibos')->with('grupos', $grupos);
-    }
-    public function postCrearGrupoRecibo(Request $request)
-    {
-        $consulta = DB::table('grupos_recibos')->where('nombre_grupo',$request->nombre_grupo)->get();
-        if ($consulta=='[]')
-        {
-            $grupo               = new Grupo_recibo;
-            $grupo->nombre_grupo = $request->nombre_grupo;
-            $grupo->ene          = $request->ene;
-            $grupo->feb          = $request->feb;
-            $grupo->mar          = $request->mar;
-            $grupo->abr          = $request->abr;
-            $grupo->may          = $request->may;
-            $grupo->jun          = $request->jun;
-            $grupo->jul          = $request->jul;
-            $grupo->ago          = $request->ago;
-            $grupo->set          = $request->set;
-            $grupo->oct          = $request->oct;
-            $grupo->nov          = $request->nov;
-            $grupo->dic          = $request->dic;
-            $grupo->save();
-            //inicio codigo auditoria
-            $auditoria = new Auditoria();
-            $auditoria->fecha_hora = date('Y-m-d H:i:s');
-            $auditoria->cedula = session()->get('cedula_usuario');
-            $auditoria->rol = session()->get('rol_usuario');
-            $auditoria->ip = session()->get('ip_usuario');
-            $auditoria->operacion = "Creación de grupo de recibos";
-            $auditoria->descripcion = "Se procedio a la creación del grupo de recibos con el nombre de: ".$request->nombre_grupo;
-            $auditoria->save();
-            //fin codigo auditoria
-            $grupos = DB::table('grupos_recibos')->paginate(3);
-            return view('rrhh.grupos_recibos')->with('msj','Grupo creado correctamente!')->with('grupos',$grupos);
-        } else {
-            $grupos = DB::table('grupos_recibos')->get();
-            return view('rrhh.grupos_recibos')->with('errormsj','Ya existe un grupo con este nombre: '.$request->nombre_grupo.', intente con otro nombre.')->with('grupos',$grupos);
-        }
     }
     public function getPendientesFirmaEmpresa()
     {
@@ -1406,25 +1367,14 @@ class RrhhControlador extends Controller
                      ->update(['password' => bcrypt($request->password)]);
 
                 //inicio codigo auditoria
-                $auditoria = new Auditoria();
-                $auditoria->fecha_hora = date('Y-m-d H:i:s');
-                $auditoria->cedula = session()->get('cedula_usuario');
-                $auditoria->rol = session()->get('rol_usuario');
-                $auditoria->ip = session()->get('ip_usuario');
-                $auditoria->operacion = "Cambio de Contraseña";
-                $personas =DB::table('personas')->where('correo',Auth::user()->email)->get()->toArray();
-                foreach ($personas as $persona)
-                {
-                    $cedula = $persona->cedula;
-                    $nombre = $persona->nombres;
-                    $apellido = $persona->apellidos;
-                }
-                $auditoria->descripcion = "Se procedio al cambio de contraseña del usuario: "."\n"
-                ."Número de cédula: ".$cedula."\n"
-                ."Nombre: ".$nombre."\n"
-                ."Apellido: ".$apellido;
-
-                $auditoria->save();
+                    $auditoria = new Auditoria();
+                    $auditoria->fecha_hora = date('Y-m-d H:i:s');
+                    $auditoria->cedula = session()->get('cedula_usuario');
+                    $auditoria->rol = session()->get('rol_usuario');
+                    $auditoria->ip = session()->get('ip_usuario');
+                    $auditoria->operacion = "Cambio de contraseña";
+                    $auditoria->descripcion = "El usuario procedio al cambio de su contraseña de acceso al sistema";
+                    $auditoria->save();
                 //fin codigo auditoria
 
                 return view('empleado/cambiar_contraseña')->with('msj', 'Se ha actualizado la contraseña con éxito!!');

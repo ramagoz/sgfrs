@@ -51,7 +51,7 @@
 			@endforeach
 		</table>
 
-		@if($recibos->count()>0))
+		@if($recibos->count()>0)
 			<div class="row" align="center">
 				<div class="col-md-4">
 					<input class="big-checkbox" type="checkbox" onclick="marcar(this);" /> Marcar/Desmarcar todos

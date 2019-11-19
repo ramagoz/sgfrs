@@ -27,12 +27,11 @@ class EmpresaControlador extends Controller
          $persona_rol= DB::table('personas')->where('id_rol', '5')->get();
          return Datatables::of($persona_rol)->make(true);
     }
-
     public function getIndexEmpresa()
     {
+
     	return view('empresa.inicio');
     }
-
     public function getBusquedaOficial()
     {
         $datos= DB::table('personas')->where('id_rol', '5')->count();
@@ -46,12 +45,11 @@ class EmpresaControlador extends Controller
             return view('empresa.busqueda_oficial')->with('error', 'No existen usuarios con rol de Oficial de Seguridad');
         }
     }
-
     public function getAltaOficial()
     {
+
         return view('empresa.alta_oficial');
     }
-
     public function postOficialCargado(ValidacionCargaUsuario $request)
     {
         //Validación de datos obtenidos del formulario se realiza con la clase ValidacionCargaUsuario
@@ -104,15 +102,12 @@ class EmpresaControlador extends Controller
         //fin codigo auditoria
         return view('empresa.busqueda_oficial')->with('msj','Se registro al usuario '.$request->nombre.' '.$request->apellido.' con CI Nro.'.$request->cedula);
     }
-
     public function getModificacionOficial($cedula)
     {
     	$persona =DB::table('personas')->where('cedula',$cedula)->first();
 
         return view('empresa.modificacion_oficial')->with('persona',$persona);
-
     }
-
     public function postOficialModificado(ValidacionActualizacionUsuario $request)
     {
 
@@ -149,6 +144,7 @@ class EmpresaControlador extends Controller
             $auditoria->rol = session()->get('rol_usuario');
             $auditoria->ip = session()->get('ip_usuario');
             $auditoria->operacion = "Actualización datos de Oficial de Seguridad";
+            if($request->estado ==1) {$estado="Activo";}else{$estado="Inactivo";}
             $auditoria->descripcion = "Se procedio a la actualización de datos en el sistema del usuario con rol de Oficial de Seguridad con los siguientes datos:"."\n"
             ."número de cédula: ".$request->cedula."\n"
             ."Nombre: ".$request->nombres."\n"
@@ -158,15 +154,14 @@ class EmpresaControlador extends Controller
             ."Correo: ".$request->correo."\n"
             ."Dpto.: ".$request->dpto."\n"
             ."Cargo: ".$request->cargo."\n"
+            ."Estado: ".$estado."\n"
             ."Obs.: ".$request->obs;
 
             $auditoria->save();
         //fin codigo auditoria
 
         return view('/empresa/busqueda_oficial')->with('msj','Los datos del usuario con CI Nro. '.$request->cedula.' se actualizaron correctamente!!!');
-
     }
-
     public function getRecibosPendientesEmpresa()
     {
         //esta funcion controla si se cierran los periodos
@@ -184,14 +179,12 @@ class EmpresaControlador extends Controller
             return view('empresa.recibos_pendientes_empresa')->with('recibos',$recibos);
         }
     }
-
     public function getVerRecibo($id)
     {
         $id_recibo=$id;
         $id="/recibos/pendientes/"."20".substr($id, -2, 2)."/".substr($id, -4, 2)."/".$id.".pdf";
         return view('empresa.ver_recibo_pendiente_firma_empresa')->with('id',$id)->with('id_recibo',$id_recibo);
     }
-
     public function postFirmarReciboPendienteEmpresa(Request $request)
     {
         //Servicio de firma
@@ -248,7 +241,6 @@ class EmpresaControlador extends Controller
         $id="/recibos/firmados_empresa/20". $año . "/" . $mes."/".$id.".pdf";
         return view('empresa.ver_recibo_pendiente_firma_empleado')->with('id',$id)->with('msj','Recibo firmado correctamente!');
     }
-
     public function postFirmaMasivaRecibosPendientesEmpresa(Request $request)
     {
         //aqui se recuperan los identificadores de recibos que fueron selecionados para ser firmados, todos separados por ","
@@ -304,7 +296,7 @@ class EmpresaControlador extends Controller
             ->join('personas', 'recibos.cedula','=','personas.cedula')
             ->where('recibos.id_estado_recibo', '1')
             ->paginate(8);
-            return view('empresa.recibos_pendientes_empresa')->with('recibos',$recibos)->with('error',$resultado->funcReturn)->with('boton','boton');
+            return view('empresa.recibos_pendientes_empresa')->with('recibos',$recibos)->with('error',$resultado->funcReturn);
             }
             //fin servicio firma
             //inicio codigo de autitoria
@@ -333,7 +325,6 @@ class EmpresaControlador extends Controller
 
         return view('empresa.recibos_pendientes_empleados')->with('recibos',$recibos)->with('msj','Recibos firmados correctamente!')->with('boton','boton');
     }
-
     public function getRecibosPendientesEmpleados()
     {
         $recibos = DB::table('recibos')
@@ -348,13 +339,11 @@ class EmpresaControlador extends Controller
             return view('empresa.recibos_pendientes_empleados')->with('recibos',$recibos)->with('boton','boton');
         }
     }
-
     public function getVerReciboPendienteFirmaEmpleado($id)
     {
         $id="/recibos/firmados_empresa/"."20".substr($id, -2, 2)."/".substr($id, -4, 2)."/".$id.".pdf";
         return view('empresa.ver_recibo_pendiente_firma_empleado')->with('id',$id);
     }
-
     public function getRecibosFirmadosEmpresaEmpleados()
     {
         $recibos = DB::table('recibos')
@@ -369,13 +358,11 @@ class EmpresaControlador extends Controller
             return view('empresa.recibos_firmados_empresa_empleados')->with('recibos',$recibos)->with('boton','boton');
         }
     }
-
     public function getVerReciboFirmadoEmpresaEmpleado($id)
     {
         $id="/recibos/firmados_empresa_empleados/"."20".substr($id, -2, 2)."/".substr($id, -4, 2)."/".$id.".pdf";
         return view('empresa.ver_recibo_firmado_empresa_empleado')->with('id',$id);
     }
-
     public function getInformesEmpresa()
     {
         //esta funcion controla si se cierran los periodos
@@ -394,7 +381,6 @@ class EmpresaControlador extends Controller
             return view('empresa.informes_empresa')->with('años',$años)->with('boton','boton');
         }
     }
-
     public function postVerInformesEmpresa(Request $request)
     {
        $recibos = DB::table('recibos')
@@ -668,12 +654,11 @@ class EmpresaControlador extends Controller
         ->with('existencia_dic',$existencia_dic)
         ;//los informes no son correctos
     }
-
     public function getCambiarContraseña()
     {
+
     	return view('empresa.cambiar_contraseña');
     }
-
     public function postUpdatePassword(Request $request)
     {
         $rules = [
@@ -702,25 +687,14 @@ class EmpresaControlador extends Controller
                      ->update(['password' => bcrypt($request->password)]);
 
                 //inicio codigo auditoria
-                $auditoria = new Auditoria();
-                $auditoria->fecha_hora = date('Y-m-d H:i:s');
-                $auditoria->cedula = session()->get('cedula_usuario');
-                $auditoria->rol = session()->get('rol_usuario');
-                $auditoria->ip = session()->get('ip_usuario');
-                $auditoria->operacion = "Cambio de Contraseña";
-                $personas =DB::table('personas')->where('correo',Auth::user()->email)->get()->toArray();
-                foreach ($personas as $persona)
-                {
-                    $cedula = $persona->cedula;
-                    $nombre = $persona->nombres;
-                    $apellido = $persona->apellidos;
-                }
-                $auditoria->descripcion = "Se procedio al cambio de contraseña del usuario: "."\n"
-                ."Número de cédula: ".$cedula."\n"
-                ."Nombre: ".$nombre."\n"
-                ."Apellido: ".$apellido;
-
-                $auditoria->save();
+                    $auditoria = new Auditoria();
+                    $auditoria->fecha_hora = date('Y-m-d H:i:s');
+                    $auditoria->cedula = session()->get('cedula_usuario');
+                    $auditoria->rol = session()->get('rol_usuario');
+                    $auditoria->ip = session()->get('ip_usuario');
+                    $auditoria->operacion = "Cambio de contraseña";
+                    $auditoria->descripcion = "El usuario procedio al cambio de su contraseña de acceso al sistema";
+                    $auditoria->save();
                 //fin codigo auditoria
 
                 return view('empleado/cambiar_contraseña')->with('msj', 'Se ha actualizado la contraseña con éxito!!');
@@ -731,5 +705,4 @@ class EmpresaControlador extends Controller
             }
         }
     }
-
 }

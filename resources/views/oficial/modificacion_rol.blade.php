@@ -57,7 +57,9 @@
                         @if("{{$persona->id_rol}}"=="{{$rol->id_rol}}")
                           <option value="{{$rol->id_rol}}" selected="true">{{$rol->rol}} </option>
                         @else
-                          <option value="{{$rol->id_rol}}">{{$rol->rol}}</option>
+                          <option value="{{$rol->id_rol}}">
+                            {{$rol->rol}}
+                          </option>
                         @endif
                       @endforeach
                   </select>

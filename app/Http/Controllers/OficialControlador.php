@@ -17,6 +17,7 @@ class OficialControlador extends Controller
 {
     public function getIndexOficial()
     {
+
       return view('oficial.indexoficial');
     }
     public function datatable()//Devuelve datos de usuarios rol rrhh para el datatables
@@ -220,6 +221,7 @@ class OficialControlador extends Controller
           $auditoria->rol = session()->get('rol_usuario');
           $auditoria->ip = session()->get('ip_usuario');
           $auditoria->operacion = "Actualización datos de RRHH";
+          if($request->estado ==1) {$estado="Activo";}else{$estado="Inactivo";}
           $auditoria->descripcion = "Se procedio a la actualización de datos en el sistema del usuario con rol de RRHH con los siguientes datos:"."\n"
           ."número de cédula: ".$request->cedula."\n"
           ."Nombre: ".$request->nombres."\n"
@@ -229,6 +231,7 @@ class OficialControlador extends Controller
           ."Correo: ".$request->correo."\n"
           ."Dpto.: ".$request->dpto."\n"
           ."Cargo: ".$request->cargo."\n"
+          ."Estado: ".$estado."\n"
           ."Obs.: ".$request->obs;
 
           $auditoria->save();
@@ -269,6 +272,7 @@ class OficialControlador extends Controller
           $auditoria->rol = session()->get('rol_usuario');
           $auditoria->ip = session()->get('ip_usuario');
           $auditoria->operacion = "Actualización datos de EMPRESA";
+          if($request->estado ==1) {$estado="Activo";}else{$estado="Inactivo";}
           $auditoria->descripcion = "Se procedio a la actualización de datos en el sistema del usuario con rol de EMPRESA con los siguientes datos:"."\n"
           ."número de cédula: ".$request->cedula."\n"
           ."Nombre: ".$request->nombres."\n"
@@ -278,22 +282,12 @@ class OficialControlador extends Controller
           ."Correo: ".$request->correo."\n"
           ."Dpto.: ".$request->dpto."\n"
           ."Cargo: ".$request->cargo."\n"
+          ."Estado: ".$estado."\n"
           ."Obs.: ".$request->obs;
 
           $auditoria->save();
         //fin codigo auditoria
         return view('oficial.busqueda_empresa')->with('msj','Los datos del usuario con CI Nro. '.$request->cedula.' se actualizaron correctamente!!!');
-    }
-    public function getRolModificado(Request $request)
-    {
-
-        $persona =Persona::find($request->cedula);
-
-        $persona->id_rol     = $request->rol;
-
-        $persona->save();
-
-        return view('oficial.roles')->with('msjrol','Los datos del usuario con CI Nro. '.$request->cedula.' se actualizaron correctamente!!!');
     }
     public function getModificacionRol(request $request)
     {
@@ -302,6 +296,34 @@ class OficialControlador extends Controller
         $nombre_rol = DB::table('roles')->select('rol','id_rol')->get();
 
         return view('oficial.modificacion_rol', compact('persona'),compact('nombre_rol'));
+    }
+    public function getRolModificado(Request $request)
+    {
+
+        $persona =Persona::find($request->cedula);
+        $rol_anterior= DB::table('roles')->select('rol')->where('id_rol','=',$persona->id_rol)->first();
+        $rol_nuevo= DB::table('roles')->select('rol')->where('id_rol','=',$request->rol)->first();
+        $persona->id_rol= $request->rol;
+        $persona->save();
+
+        //inicio codigo auditoria
+          $auditoria = new Auditoria();
+          $auditoria->fecha_hora = date('Y-m-d H:i:s');
+          $auditoria->cedula = session()->get('cedula_usuario');
+          $auditoria->rol = session()->get('rol_usuario');
+          $auditoria->ip = session()->get('ip_usuario');
+          $auditoria->operacion = "Cambio de rol";
+          $auditoria->descripcion = "Se procedio al cambio de rol del usuario con los siguientes datos:"."\n"
+          ."número de cédula: ".$request->cedula."\n"
+          ."Nombre: ".$request->nombre."\n"
+          ."Apellido: ".$request->apellido."\n"
+          ."Rol anterior: ".$rol_anterior->rol."\n"
+          ."Rol nuevo: ".$rol_nuevo->rol;
+
+          $auditoria->save();
+        //fin codigo auditoria
+
+        return view('oficial.roles')->with('msjrol','Los datos del usuario con CI Nro. '.$request->cedula.' se actualizaron correctamente!!!');
     }
     public function getRoles()
     {
@@ -356,25 +378,14 @@ class OficialControlador extends Controller
                      ->update(['password' => bcrypt($request->password)]);
 
                 //inicio codigo auditoria
-                $auditoria = new Auditoria();
-                $auditoria->fecha_hora = date('Y-m-d H:i:s');
-                $auditoria->cedula = session()->get('cedula_usuario');
-                $auditoria->rol = session()->get('rol_usuario');
-                $auditoria->ip = session()->get('ip_usuario');
-                $auditoria->operacion = "Cambio de Contraseña";
-                $personas =DB::table('personas')->where('correo',Auth::user()->email)->get()->toArray();
-                foreach ($personas as $persona)
-                {
-                    $cedula = $persona->cedula;
-                    $nombre = $persona->nombres;
-                    $apellido = $persona->apellidos;
-                }
-                $auditoria->descripcion = "Se procedio al cambio de contraseña del usuario: "."\n"
-                ."Número de cédula: ".$cedula."\n"
-                ."Nombre: ".$nombre."\n"
-                ."Apellido: ".$apellido;
-
-                $auditoria->save();
+                    $auditoria = new Auditoria();
+                    $auditoria->fecha_hora = date('Y-m-d H:i:s');
+                    $auditoria->cedula = session()->get('cedula_usuario');
+                    $auditoria->rol = session()->get('rol_usuario');
+                    $auditoria->ip = session()->get('ip_usuario');
+                    $auditoria->operacion = "Cambio de contraseña";
+                    $auditoria->descripcion = "El usuario procedio al cambio de su contraseña de acceso al sistema";
+                    $auditoria->save();
                 //fin codigo auditoria
 
                 return view('empleado/cambiar_contraseña')->with('msj', 'Se ha actualizado la contraseña con éxito!!');

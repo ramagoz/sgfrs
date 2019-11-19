@@ -43,8 +43,12 @@
 					<option value="11">11- Noviembre</option>
 					<option value="12">12- Diciembre</option>
 				</select>
+				{!! $errors->first('mes','<small class=error>:message</small><br>') !!}
+
 				<label for="año" class="col-sm-2 col-form-label">Año: </label>
-				<input class="col-sm-2 form-control" type="text" value="{{ date("Y") }}" name="año" id="año" size="4" maxlength="4" required>
+				<input class="col-sm-2 form-control" type="text" value="{{ date("Y") }}" name="año" id="año" size="4" maxlength="4" required readonly>
+				{!! $errors->first('año','<small class=error>:message</small><br>') !!}
+
 				<label class="col-sm-2 col-form-label">Recibos: </label>
 				<button class="btn btn-primary col-sm-2" type="submit">Validar</button>
 		</div>

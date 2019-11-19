@@ -42,74 +42,74 @@ class HomeController extends Controller
         {
                switch (session()->get('rol_usuario'))
                 {
-                case 0:
-                    return redirect('sin_rol');
-                    break;
-                case 1:
-                    //registro de auditoria
-                    $auditoria = new Auditoria();
-                    $auditoria->fecha_hora = date('Y-m-d H:i:s');
-                    $auditoria->cedula = session()->get('cedula_usuario');
-                    $auditoria->rol = session()->get('rol_usuario');
-                    $auditoria->ip = session()->get('ip_usuario');
-                    $auditoria->operacion = "Inicio de sesión";
-                    $auditoria->descripcion = "El usuario ingreso al sistema con el rol de empleado";
-                    $auditoria->save();
+                    case 0:
+                        return redirect('sin_rol');
+                        break;
+                    case 1:
+                        //registro de auditoria
+                        $auditoria = new Auditoria();
+                        $auditoria->fecha_hora = date('Y-m-d H:i:s');
+                        $auditoria->cedula = session()->get('cedula_usuario');
+                        $auditoria->rol = session()->get('rol_usuario');
+                        $auditoria->ip = session()->get('ip_usuario');
+                        $auditoria->operacion = "Inicio de sesión";
+                        $auditoria->descripcion = "El usuario ingreso al sistema con el rol de empleado";
+                        $auditoria->save();
 
-                    return redirect('empleado');
-                    break;
-                case 2:
-                    //registro de auditoria
-                    $auditoria = new Auditoria();
-                    $auditoria->fecha_hora = date('Y-m-d H:i:s');
-                    $auditoria->cedula = session()->get('cedula_usuario');
-                    $auditoria->rol = session()->get('rol_usuario');
-                    $auditoria->ip = session()->get('ip_usuario');
-                    $auditoria->operacion = "Inicio de sesión";
-                    $auditoria->descripcion = "El usuario puede ingresar con el rol de RRHH o Empleado";
-                    $auditoria->save();
+                        return redirect('empleado');
+                        break;
+                    case 2:
+                        //registro de auditoria
+                        $auditoria = new Auditoria();
+                        $auditoria->fecha_hora = date('Y-m-d H:i:s');
+                        $auditoria->cedula = session()->get('cedula_usuario');
+                        $auditoria->rol = session()->get('rol_usuario');
+                        $auditoria->ip = session()->get('ip_usuario');
+                        $auditoria->operacion = "Inicio de sesión";
+                        $auditoria->descripcion = "El usuario puede ingresar con el rol de RRHH o Empleado";
+                        $auditoria->save();
 
-                    return view('auth/seleccionar_rol')->with('rol',session()->get('rol_usuario'));
-                    break;
-                case 3:
-                    //registro de auditoria
-                    $auditoria = new Auditoria();
-                    $auditoria->fecha_hora = date('Y-m-d H:i:s');
-                    $auditoria->cedula = session()->get('cedula_usuario');
-                    $auditoria->rol = session()->get('rol_usuario');
-                    $auditoria->ip = session()->get('ip_usuario');
-                    $auditoria->operacion = "Inicio de sesión";
-                    $auditoria->descripcion = "El usuario ingreso al sistema con el rol de empresa";
-                    $auditoria->save();
+                        return view('auth/seleccionar_rol')->with('rol',session()->get('rol_usuario'));
+                        break;
+                    case 3:
+                        //registro de auditoria
+                        $auditoria = new Auditoria();
+                        $auditoria->fecha_hora = date('Y-m-d H:i:s');
+                        $auditoria->cedula = session()->get('cedula_usuario');
+                        $auditoria->rol = session()->get('rol_usuario');
+                        $auditoria->ip = session()->get('ip_usuario');
+                        $auditoria->operacion = "Inicio de sesión";
+                        $auditoria->descripcion = "El usuario ingreso al sistema con el rol de empresa";
+                        $auditoria->save();
 
-                    return redirect('empresa');
-                    break;
-                case 4:
-                    //registro de auditoria
-                    $auditoria = new Auditoria();
-                    $auditoria->fecha_hora = date('Y-m-d H:i:s');
-                    $auditoria->cedula = session()->get('cedula_usuario');
-                    $auditoria->rol = session()->get('rol_usuario');
-                    $auditoria->ip = session()->get('ip_usuario');
-                    $auditoria->operacion = "Inicio de sesión";
-                    $auditoria->descripcion = "El usuario puede ingresar con el rol de Empresa o Empleado";
-                    $auditoria->save();
+                        return redirect('empresa');
+                        break;
+                    case 4:
+                        //registro de auditoria
+                        $auditoria = new Auditoria();
+                        $auditoria->fecha_hora = date('Y-m-d H:i:s');
+                        $auditoria->cedula = session()->get('cedula_usuario');
+                        $auditoria->rol = session()->get('rol_usuario');
+                        $auditoria->ip = session()->get('ip_usuario');
+                        $auditoria->operacion = "Inicio de sesión";
+                        $auditoria->descripcion = "El usuario puede ingresar con el rol de Empresa o Empleado";
+                        $auditoria->save();
 
-                    return view('auth/seleccionar_rol')->with('rol',session()->get('rol_usuario'));
-                    break;
-                case 5:
-                    //registro de auditoria
-                    $auditoria = new Auditoria();
-                    $auditoria->fecha_hora = date('Y-m-d H:i:s');
-                    $auditoria->cedula = session()->get('cedula_usuario');
-                    $auditoria->rol = session()->get('rol_usuario');
-                    $auditoria->ip = session()->get('ip_usuario');
-                    $auditoria->operacion = "Inicio de sesión";
-                    $auditoria->descripcion = "El usuario puede ingresar con el rol de Oficial de Seguridad o Empleado";
-                    $auditoria->save();
+                        return view('auth/seleccionar_rol')->with('rol',session()->get('rol_usuario'));
+                        break;
+                    case 5:
+                        //registro de auditoria
+                        $auditoria = new Auditoria();
+                        $auditoria->fecha_hora = date('Y-m-d H:i:s');
+                        $auditoria->cedula = session()->get('cedula_usuario');
+                        $auditoria->rol = session()->get('rol_usuario');
+                        $auditoria->ip = session()->get('ip_usuario');
+                        $auditoria->operacion = "Inicio de sesión";
+                        $auditoria->descripcion = "El usuario puede ingresar con el rol de Oficial de Seguridad o Empleado";
+                        $auditoria->save();
 
-                    return view('auth/seleccionar_rol')->with('rol',session()->get('rol_usuario'));
-                    break;
+                        return view('auth/seleccionar_rol')->with('rol',session()->get('rol_usuario'));
+                        break;
                 }
         }
         else

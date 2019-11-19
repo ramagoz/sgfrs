@@ -5,7 +5,6 @@
 <link rel="stylesheet" type="text/css" href="{{asset('otros/datatable/jquery.dataTables.min.css')}}" >
 <script src="{{ asset('otros/datatable/jquery.dataTables.min.js') }}" defer></script>
 
-
 <div class="container-fluid">
 
     <div class="page-header">
@@ -30,14 +29,10 @@
          $(document).ready(function ()  {
          var datatable = $('#table').DataTable
          ({
-           dom: 'Bfrtip',
-            buttons: [
-                'excel', 'pdf', 'print'
-            ],
             processing: true,
             serverSide: true,
             ajax: '{{ url('oficial/datatableauditoria') }}',
-            "lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]],
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
             "language": {
                             "sProcessing":     "Procesando...",
                             "sLengthMenu":     "Mostrar _MENU_ registros",
@@ -63,7 +58,7 @@
                             }
                         },
             "order": [
-                                [ 0, "desc" ],
+            [ 0, "desc" ],
                         ],
             columns: [
                             { data: 'fecha_hora', name: 'fecha_hora' },
@@ -73,7 +68,6 @@
                             { data: 'operacion', name: 'operacion'},
                             { data: 'descripcion', name: 'descripcion'},
                      ]
-
         });
 
     /*Cierre de llave de javascript del datatables*/

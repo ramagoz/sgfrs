@@ -19,6 +19,7 @@ class EmpleadoControlador extends Controller
 {
     public function getIndexEmpleado()
     {
+
     	return view('empleado.indexempleado');
     }
     public function getRecibosPendientes()
@@ -36,7 +37,6 @@ class EmpleadoControlador extends Controller
         {
             return view('empleado.recibos_pendientes')->with('recibos',$recibos)->with('boton','boton');
         }
-
     }
     public function getVerReciboPendienteFirmaEmpleado($id)
     {
@@ -58,16 +58,15 @@ class EmpleadoControlador extends Controller
         // Este es el webservice que vamos a consumir
         $wsdl = 'http://localhost:8080/WsDigitalSignature/services/ServicioFirma?wsdl';
 
-        $parametros=array('encoding' => 'UTF-8','trace' => 1,"verify_peer"=>false);
+        $parametros=array("verify_peer"=>false,'exceptions' => true,'encoding' => 'UTF-8','trace' => 1);
 
         // Creamos el cliente SOAP que hará la solicitud
-
         $cliente = new \SoapClient($wsdl,$parametros);
 
         // Consumimos el servicio llamando al método que necesitamos, en este caso
         // func() es un método definido dentro del WSDL
 
-        $resultado = $cliente->func($datos);
+            $resultado = $cliente->func($datos);
         //Se verifica si hay error durante el proceso de firma y se devuelve el error
         if ($resultado->funcReturn != "ok")// si el resultado es diferente de ok, ocurrio un error en el proceso de firma
         {
@@ -100,8 +99,7 @@ class EmpleadoControlador extends Controller
         $id="/recibos/firmados_empresa_empleados/20". $año . "/" . $mes."/".$id.".pdf";
         return view('empleado.ver_recibo_firmado_empleado')->with('id',$id)->with('msj','Recibo firmado correctamente!');
     }
-
-     public function postFirmaMasiva(Request $request)
+    public function postFirmaMasiva(Request $request)
     {
         //aqui se recuperan los identificadores de recibos que fueron selecionados para ser firmados
         $i=0;
@@ -188,8 +186,6 @@ class EmpleadoControlador extends Controller
 
         return view('empleado.recibos_firmados')->with('recibos',$recibos)->with('msj','Recibos firmados correctamente!')->with('boton','boton');
     }
-
-
     public function getRecibosFirmados()
     {
         $recibos = DB::table('recibos')
@@ -205,7 +201,6 @@ class EmpleadoControlador extends Controller
             return view('empleado.recibos_firmados')->with('recibos',$recibos)->with('boton','boton');
         }
     }
-
     public function getVerReciboFirmadoEmpresaEmpleado($id)
     {
         $mes=substr($id, -4,2);
@@ -213,16 +208,16 @@ class EmpleadoControlador extends Controller
         $id="/recibos/firmados_empresa_empleados/20". $año . "/" . $mes."/".$id.".pdf";
         return view('empleado.ver_recibo_firmado_empleado')->with('id',$id);
     }
-
     public function getContactarRrhh()
     {
+
     	return view('empleado.contactar_rrhh');
     }
     public function getCambiarContraseña()
     {
+
         return view('empleado.cambiar_contraseña');
     }
-
     public function postUpdatePassword(Request $request)
     {
         $rules = [
@@ -251,25 +246,14 @@ class EmpleadoControlador extends Controller
                      ->update(['password' => bcrypt($request->password)]);
 
                 //inicio codigo auditoria
-                $auditoria = new Auditoria();
-                $auditoria->fecha_hora = date('Y-m-d H:i:s');
-                $auditoria->cedula = session()->get('cedula_usuario');
-                $auditoria->rol = session()->get('rol_usuario');
-                $auditoria->ip = session()->get('ip_usuario');
-                $auditoria->operacion = "Cambio de Contraseña";
-                $personas =DB::table('personas')->where('correo',Auth::user()->email)->get()->toArray();
-                foreach ($personas as $persona)
-                {
-                    $cedula = $persona->cedula;
-                    $nombre = $persona->nombres;
-                    $apellido = $persona->apellidos;
-                }
-                $auditoria->descripcion = "Se procedio al cambio de contraseña del usuario: "."\n"
-                ."Número de cédula: ".$cedula."\n"
-                ."Nombre: ".$nombre."\n"
-                ."Apellido: ".$apellido;
-
-                $auditoria->save();
+                    $auditoria = new Auditoria();
+                    $auditoria->fecha_hora = date('Y-m-d H:i:s');
+                    $auditoria->cedula = session()->get('cedula_usuario');
+                    $auditoria->rol = session()->get('rol_usuario');
+                    $auditoria->ip = session()->get('ip_usuario');
+                    $auditoria->operacion = "Cambio de contraseña";
+                    $auditoria->descripcion = "El usuario procedio al cambio de su contraseña de acceso al sistema";
+                    $auditoria->save();
                 //fin codigo auditoria
 
                 return view('empleado/cambiar_contraseña')->with('msj', 'Se ha actualizado la contraseña con éxito!!');
