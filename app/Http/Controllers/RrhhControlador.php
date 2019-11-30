@@ -746,6 +746,10 @@ class RrhhControlador extends Controller
                 //esta funcion controla si existen empleados sin recibos para actualizarlos en la BD
                 $funcion = (new FuncionesControlador)->ControlEmpleadosSinRecibos();
 
+                //esta funcion envia las notificaciones
+
+                $notificacion = (new NotificaciónControlador)->NotifyEmpleador();
+
                 return view('rrhh.importar_recibos')->with('msj','Se procedio correctamente con la importación del periodo seleccionado. Mes: '.$request->mes.'  -  Año: '.$request->año)->with('resultados', $resultado)->with('mes',$request->mes)->with('año',$request->año); //se envia los resultados de la validacion a la vista
             }
     }

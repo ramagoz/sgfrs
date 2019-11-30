@@ -220,6 +220,15 @@ class EmpresaControlador extends Controller
         }
         //fin servicio firma
 
+        //envio de notificacion
+
+         $posicioncedula = strpos($request->id, "-");
+            if ($posicioncedula !== false) 
+            {
+                $cedula = substr($request->id, 0, $posicioncedula);
+                $notificacionuniempleado = (new NotificaciónControlador)->NotifyEmpleadoUnitario($cedula);
+            }
+
         $recibo =Recibo::find($id);
         $recibo->id_estado_recibo =2;
         $recibo->save();
@@ -299,6 +308,20 @@ class EmpresaControlador extends Controller
             return view('empresa.recibos_pendientes_empresa')->with('recibos',$recibos)->with('error',$resultado->funcReturn);
             }
             //fin servicio firma
+
+            //envio de notificacion
+            foreach ($request->recibos_a_firmar as $key => $value)
+             {
+                $posicioncedula = strpos($value, "-");
+                    if ($posicioncedula !== false) 
+                    {
+                        $cedula = substr($value, 0, $posicioncedula);
+                        $notificacionuniempleado = (new NotificaciónControlador)->NotifyEmpleadoUnitario($cedula);
+                    }
+            }
+
+             
+
             //inicio codigo de autitoria
         foreach ($request->recibos_a_firmar as $key => $value)
         {
