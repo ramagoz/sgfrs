@@ -22,6 +22,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 use Validator;
+use Ping;
+
 
 
 //prueba de nuevo contribuidor
@@ -748,9 +750,16 @@ class RrhhControlador extends Controller
 
                 //esta funcion envia las notificaciones
 
-                $notificacion = (new NotificaciónControlador)->NotifyEmpleador();
+                 $health = Ping::check('www.google.com.py');
 
-                return view('rrhh.importar_recibos')->with('msj','Se procedio correctamente con la importación del periodo seleccionado. Mes: '.$request->mes.'  -  Año: '.$request->año)->with('resultados', $resultado)->with('mes',$request->mes)->with('año',$request->año); //se envia los resultados de la validacion a la vista
+                            if($health == 200) {
+                                $notificacion = (new NotificaciónControlador)->NotifyEmpleador();
+                                $msjmail='Se notificó al empleador que existe recibos a firmar';
+                            } else {
+                                $msjmail='No se pudo notificar al empleador por problemas de internet';
+                            }   
+
+                  return view('rrhh.importar_recibos')->with('msj','Se procedio correctamente con la importación del periodo seleccionado. Mes: '.$request->mes.'  -  Año: '.$request->año)->with('resultados', $resultado)->with('mes',$request->mes)->with('año',$request->año)->with('msjmail',$msjmail); //se envia los resultados de la validacion a la vista
             }
     }
     public function getEmpleadosSinRecibos()
