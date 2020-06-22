@@ -7,8 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/app.css') }}">
+
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('otros/datatable/jquery.min.js') }}" ></script>
+    <link rel="stylesheet" type="text/css" href="{{asset('otros/datatable/jquery.dataTables.min.css')}}" >
+    <script src="{{ asset('otros/datatable/jquery.dataTables.min.js') }}" defer></script>
+
 </head>
 
 <body>

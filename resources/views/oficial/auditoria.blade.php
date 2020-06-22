@@ -1,11 +1,11 @@
 @extends('layouts.app')
-@include('layouts.menu_oficial')
 @section('content')
+@include('layouts.menu_oficial')
 
 <link rel="stylesheet" type="text/css" href="{{asset('otros/datatable/jquery.dataTables.min.css')}}" >
 <script src="{{ asset('otros/datatable/jquery.dataTables.min.js') }}" defer></script>
 
-<div class="container-fluid">
+<div class="container">
 
     <div class="page-header">
         <h2>Registros de Auditoria</h2>

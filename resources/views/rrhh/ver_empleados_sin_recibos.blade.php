@@ -1,11 +1,12 @@
 @extends('layouts.app')
-@include('layouts.menu_rrhh')
 @section('content')
-<div class="container-fluid" >
-
+@include('layouts.menu_rrhh')
+<div class="container" >
+  <p></p>
 	<div class="page-header">
-	    <h2>Empleados con recibos pendientes de importación</h2>
+	    <h2>Empleados con Recibos Pendientes de Importación</h2>
 	</div>
+	  <p></p>
 
 	@isset($datos)
 		<table class="table table-sm compact" border="1" style="text-align: center;">

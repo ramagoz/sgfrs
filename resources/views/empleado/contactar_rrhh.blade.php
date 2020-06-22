@@ -1,6 +1,6 @@
 @extends('layouts.app')
-@include('layouts.menu_empleado')
 @section('content')
+@include('layouts.menu_empleado')
 
 <div class="container-fluid">
 

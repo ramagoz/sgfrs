@@ -1,11 +1,12 @@
 @extends('layouts.app')
-@include('layouts.menu_rrhh')
 @section('content')
-<div class="container-fluid">
-
+@include('layouts.menu_rrhh')
+<div class="container">
+  <p></p>
     <div class="page-header">
-        <h2>Importar recibos</h2>
+        <h2>Importar Recibos</h2>
     </div>
+      <p></p>
 
 	@isset($msj)
 		<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -62,7 +63,7 @@
 				<button class="btn btn-primary col-sm-2" type="submit">Importar</button>
 		</div>
 	</form>
-
+ <p></p>
 		@isset($resultados)
 		<table class="table" border="1">
 			<thead class="thead-dark" style="text-align: center;">

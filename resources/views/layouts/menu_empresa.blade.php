@@ -1,6 +1,6 @@
 <nav class="navbar navbar-light navbar-expand-lg bg-white shadow-sm">
 <div class="container">
-  <a class="navbar-brand" href="/empresa/inicio">SGFRS
+  <a class="navbar-brand" href="/empresa">SGFRS
   </a>
   <button class="navbar-toggler" type="button"
     data-toggle="collapse"

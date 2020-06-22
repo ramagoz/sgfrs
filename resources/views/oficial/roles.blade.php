@@ -1,16 +1,16 @@
 @extends('layouts.app')
-@include('layouts.menu_oficial')
 @section('content')
+@include('layouts.menu_oficial')
 
 <link rel="stylesheet" type="text/css" href="{{asset('otros/datatable/jquery.dataTables.min.css')}}" >
 <script src="{{ asset('otros/datatable/jquery.dataTables.min.js') }}" defer></script>
 
-<div class="container-fluid">
-
+<div class="container">
+<p></p>
     <div class="page-header">
-        <h2>Roles de usuarios</h2>
+        <h2>Roles de Usuarios</h2>
     </div>
-
+<p></p>
     @isset($msjrol)
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             <strong>{{ $msjrol }}</strong>

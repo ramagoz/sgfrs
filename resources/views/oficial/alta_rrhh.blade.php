@@ -1,10 +1,10 @@
 @extends('layouts.app')
-@include('layouts.menu_oficial')
 @section('content')
-  <div class="container-fluid">
+@include('layouts.menu_oficial')
+  <div class="container">
     <br>
     <div class="page-header">
-        <h2>Alta de usuario RRHH</h2>
+        <h2>Alta de Usuario RRHH</h2>
     </div>
     <br>
 

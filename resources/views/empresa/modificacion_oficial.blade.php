@@ -1,12 +1,12 @@
 @extends('layouts.app')
-@include('layouts.menu_empresa')
 @section('content')
-  <div class="container-fluid">
-    <br>
-    <div class="page-header">
+@include('layouts.menu_empresa')
+<p></p>
+  <div class="container">
+      <div class="page-header">
         <h2>Actualizar datos usuario Oficial de Seguridad</h2>
     </div>
-    <br>
+<p></p>
 
   @isset($error)
     <div class="alert alert-danger alert-dismissible fade show" role="alert">

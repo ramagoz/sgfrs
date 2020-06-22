@@ -1,12 +1,12 @@
 @extends('layouts.app')
-@include('layouts.menu_rrhh')
 @section('content')
-<div class="container-fluid" >
-
+@include('layouts.menu_rrhh')
+<div class="container" >
+  <p></p>
 	<div class="page-header">
-	    <h2>Listado de todos los recibos</h2>
+	    <h2>Listado de Todos los Recibos</h2>
 	</div>
-
+  <p></p>
 	@isset($msj)
 		<div class="alert alert-success alert-dismissible fade show" role="alert">
 			<strong>{{ $msj }}</strong>

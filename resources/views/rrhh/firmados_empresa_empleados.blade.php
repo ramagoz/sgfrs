@@ -1,11 +1,12 @@
 @extends('layouts.app')
-@include('layouts.menu_rrhh')
 @section('content')
-<div class="container-fluid">
-
+@include('layouts.menu_rrhh')
+<div class="container">
+  <p></p>
 	<div class="page-header">
-	    <h2>Recibos firmados por la empresa y los empleados</h2>
+	    <h2>Recibos Firmados por la Empresa y los Empleados</h2>
 	</div>
+	  <p></p>
 
 	<table class="table table-sm" border="1">
 		<thead class="thead-dark">

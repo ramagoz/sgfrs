@@ -1,24 +1,24 @@
 @extends('layouts.app')
-@include('layouts.menu_empresa')
 @section('content')
-
-<link rel="stylesheet" type="text/css" href="{{asset('otros/datatable/jquery.dataTables.min.css')}}" >
+@include('layouts.menu_empresa')
 <script src="{{ asset('otros/datatable/jquery.dataTables.min.js') }}" defer></script>
-
-<div class="container-fluid">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script> 
+<script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script> 
+<p></p>
+  <div class="container">
     <div class="page-header">
         <h2>ABM Oficial de Seguridad</h2>
     </div>
-
-    @isset($msj)
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <strong>{{ $msj }}</strong>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    @endisset
-
+    <p></p>
+       
+            @isset($msj)
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>{{ $msj }}</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endisset
 
     @isset($error)
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -30,30 +30,30 @@
     @endisset
 
     <table class="table table-sm compact" border="1" id="table">
+        
        <thead class="thead-dark">
           <tr>
              <th>Cédula</th>
              <th>Nombres</th>
              <th>Apellidos</th>
              <th>Correo</th>
+             <th>Celular</th>
              <th>Estado</th>
-             <th>Actualizar datos</th>
+             <th>Accion</th>
          </tr>
         </thead>
-    </table>
-
-    <a href="alta_oficial" button class="btn btn-primary">Alta Oficial de Seguridad</button></a>
+      </table>
+  <a href="alta_oficial" button class="btn btn-success">Alta Oficial de Seguridad</button></a>
+    
 
     <!--Javascript de Datatables-->
     <script type="text/javascript">
         $(document).ready(function ()
-        {
-             var datatable = $('#table').DataTable
+        {var datatable = $('#table').DataTable
             ({
                 processing: true,
                 serverSide: true,
                 ajax: '{{ url('empresa/datatable') }}',
-                "lengthMenu": [[7, 25, 50, -1], [7, 25, 50, "All"]],
                 "language":
                 {
                     "sProcessing":     "Procesando...",
@@ -85,22 +85,23 @@
                 {
                     if ( data.estado == 0 )
                     {
-                      $('td', row).eq(4).addClass('text-danger').text('Inactivo');
-                      $('td', row).eq(5).html("<button type='button' class='modif btn btn-info btn-block'>Actualizar</button>");
+                      $('td', row).eq(5).addClass('text-danger').text('Inactivo');
+                     
 
                     } else {
-                      $('td', row).eq(4).addClass('text-success').text('Activo');
-                      $('td', row).eq(5).html("<button type='button' class='modif btn btn-info btn-block'>Actualizar</button>");
+                      $('td', row).eq(5).addClass('text-success').text('Activo');
+                    
                     }
                 },
                 columns:
                 [
-                    { data: 'cedula', name: 'cedula' },
-                    { data: 'nombres', name: 'nombres' },
-                    { data: 'apellidos', name: 'apellidos'},
-                    { data: 'correo', name: 'correo'},
-                    { data: 'estado', name: 'estado'},
-                    {"defaultContent": "<button type='button' class='modif btn btn-success btn-block'>Actualizar</button>"},
+                             { data: 'cedula', name: 'cedula' },
+                             { data: 'nombres', name: 'nombres' },
+                             { data: 'apellidos', name: 'apellidos'},
+                             { data: 'correo', name: 'correo'},
+                             { data: 'cel', name: 'cel'},
+                             { data: 'estado', name: 'estado'},
+                             {"defaultContent": "<button type='button' class='modif btn btn-warning'>Editar<span class='glyphicon glyphicon-edit'></span> </button>"},
                 ]
             });
             /*Javascript para captura de la cedula y redirección a la ruta para modificación*/
@@ -113,5 +114,5 @@
             /*Cierre de llave de javascript del datatables*/
         });
     </script>
-</div>
+
 @endsection
