@@ -20,8 +20,8 @@ Route::group(['middleware' => 'auth'], function()
 //Sección de rol----------------------------------------------
 	Route::post('auth/rol_seleccionado', 'HomeController@postRolSeleccionado');
 //Sección rutas empresa----------------------------------------------
-	Route::get('empresa/inicio', 'EmpresaControlador@getIndexEmpresa');
-	Route::get('empresa', 'EmpresaControlador@getRecibosPendientesEmpresa');
+	Route::get('empresa', 'EmpresaControlador@getIndexEmpresa');
+	Route::get('empresa/inicio', 'EmpresaControlador@getRecibosPendientesEmpresa');
 
 	Route::get('empresa/busqueda_oficial', 'EmpresaControlador@getBusquedaOficial')->name('empresa/busqueda_oficial');
 
@@ -154,7 +154,7 @@ Route::group(['middleware' => 'auth'], function()
 
 //Sección rutas empleado----------------------------------------------
 
-	Route::get('empleado', 'EmpleadoControlador@getRecibosPendientes');
+	Route::get('empleado', 'EmpleadoControlador@getIndexEmpleado');
 
 	Route::get('empleado/recibos_pendientes', 'EmpleadoControlador@getRecibosPendientes')->name('empleado/recibos_pendientes');
 	Route::get('empleado/ver_recibo_pendiente_firma_empleado/{id}', 'EmpleadoControlador@getVerReciboPendienteFirmaEmpleado');

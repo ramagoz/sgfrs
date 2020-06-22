@@ -1,13 +1,13 @@
 @extends('layouts.app')
-@include('layouts.menu_empresa')
 @section('content')
+@include('layouts.menu_empresa')
 
-	<div class="container-fluid">
-
+	<div class="container">
+<p></p>
 		<div class="page-header">
 		    <h2>Recibos firmados empresa y empleados</h2>
 		</div>
-
+<p></p>
 		<table class="table table-sm" border="1">
 			<thead class="thead-dark">
 				<tr>

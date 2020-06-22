@@ -1,12 +1,12 @@
 @extends('layouts.app')
-@include('layouts.menu_oficial')
 @section('content')
-  <div class="container-fluid">
-    <br>
+@include('layouts.menu_oficial')
+  <div class="container">
+  <p></p>
     <div class="page-header">
-        <h2>Actualizar datos usuario Empresa</h2>
+        <h2>Actualizar Datos Usuario Empresa</h2>
     </div>
-    <br>
+<p></p>
 
 
     @isset($error)

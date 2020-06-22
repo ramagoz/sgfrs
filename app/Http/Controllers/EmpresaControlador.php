@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Validator;
+use Ping;
 
 class EmpresaControlador extends Controller
 {
@@ -220,6 +221,15 @@ class EmpresaControlador extends Controller
         }
         //fin servicio firma
 
+        //envio de notificacion
+
+         $posicioncedula = strpos($request->id, "-");
+            if ($posicioncedula !== false) 
+            {
+                $cedula = substr($request->id, 0, $posicioncedula);
+                $notificacionuniempleado = (new NotificaciónControlador)->NotifyEmpleadoUnitario($cedula);
+            }
+
         $recibo =Recibo::find($id);
         $recibo->id_estado_recibo =2;
         $recibo->save();
@@ -299,6 +309,31 @@ class EmpresaControlador extends Controller
             return view('empresa.recibos_pendientes_empresa')->with('recibos',$recibos)->with('error',$resultado->funcReturn);
             }
             //fin servicio firma
+
+            //envio de notificacion
+
+             $health = Ping::check('www.google.com.py');
+
+                            if($health == 200) {
+                                 foreach ($request->recibos_a_firmar as $key => $value)
+                                         {
+                                            $posicioncedula = strpos($value, "-");
+                                                if ($posicioncedula !== false) 
+                                                {
+                                                    $cedula = substr($value, 0, $posicioncedula);
+                                                    $notificacionuniempleado = (new NotificaciónControlador)->NotifyEmpleadoUnitario($cedula);
+                                                }
+                                        }
+                                $msjmail='Se notificó a los empleados que existe recibos a firmar';
+                            } else {
+                                $msjmail='No se pudo notificar a los empleados por problemas de internet';
+                            }   
+
+
+           
+
+             
+
             //inicio codigo de autitoria
         foreach ($request->recibos_a_firmar as $key => $value)
         {
@@ -323,7 +358,7 @@ class EmpresaControlador extends Controller
         ->where('recibos.id_estado_recibo', '2')
         ->paginate(8);
 
-        return view('empresa.recibos_pendientes_empleados')->with('recibos',$recibos)->with('msj','Recibos firmados correctamente!')->with('boton','boton');
+        return view('empresa.recibos_pendientes_empleados')->with('recibos',$recibos)->with('msj','Recibos firmados correctamente!')->with('boton','boton')->with('msjmail',$msjmail);
     }
     public function getRecibosPendientesEmpleados()
     {

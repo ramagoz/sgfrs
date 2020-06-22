@@ -1,16 +1,16 @@
 @extends('layouts.app')
-@include('layouts.menu_oficial')
 @section('content')
+@include('layouts.menu_oficial')
 
 <link rel="stylesheet" type="text/css" href="{{asset('otros/datatable/jquery.dataTables.min.css')}}" >
 <script src="{{ asset('otros/datatable/jquery.dataTables.min.js') }}" defer></script>
 
-<div class="container-fluid">
-
+<div class="container">
+<p></p>
   <div class="page-header">
-      <h2>ABM usuario Empresa</h2>
+      <h2>ABM Usuario Empresa</h2>
   </div>
-
+<p></p>
   @isset($msj)
     <div class="alert alert-success alert-dismissible fade show" role="alert">
       <strong>{{ $msj }}</strong>
@@ -36,14 +36,15 @@
            <th>Nombres</th>
            <th>Apellidos</th>
            <th>Correo</th>
+           <th>Celular</th>
            <th>Estado</th>
-           <th>Actualizar datos</th>
+           <th>Accion</th>
        </tr>
       </thead>
   </table>
 
 
-  <a href="alta_empresa" button class="btn btn-primary">Alta de Empresa</a>
+  <a href="alta_empresa" button class="btn btn-success">Alta de Empresa</a>
 
   <!--Javascript de Datatables-->
   <script type="text/javascript">
@@ -53,7 +54,6 @@
           processing: true,
           serverSide: true,
           ajax: '{{ url('oficial/datatableempresa') }}',
-          "lengthMenu": [[7, 25, 50, -1], [7, 25, 50, "All"]],
           "language": {
                           "sProcessing":     "Procesando...",
                           "sLengthMenu":     "Mostrar _MENU_ registros",
@@ -78,25 +78,29 @@
                               "sSortDescending": ": Activar para ordenar la columna de manera descendente"
                           }
                       },
-                    createdRow: function ( row, data, index ) {
-                                if ( data.estado == 0 ) {
-                                  $('td', row).eq(4).addClass('text-danger').text('Inactivo');
-                                  $('td', row).eq(5).html("<button type='button' class='modif btn btn-info btn-block'>Actualizar</button>");
+                     createdRow: function ( row, data, index )
+                            {
+                                if ( data.estado == 0 )
+                                {
+                                  $('td', row).eq(5).addClass('text-danger').text('Inactivo');
+                    
 
                                 } else {
-                                  $('td', row).eq(4).addClass('text-success').text('Activo');
-                                  $('td', row).eq(5).html("<button type='button' class='modif btn btn-info btn-block'>Actualizar</button>");
+                                  $('td', row).eq(5).addClass('text-success').text('Activo');
+                                
                                 }
-                              },
-          columns: [
-                          { data: 'cedula', name: 'cedula' },
-                          { data: 'nombres', name: 'nombres' },
-                          { data: 'apellidos', name: 'apellidos'},
-                          { data: 'correo', name: 'correo'},
-                          { data: 'estado', name: 'estado'},
-                          {"defaultContent": "<button type='button' class='modif btn btn-info btn-block'>Actualizar</button>"},
-                   ]
-    });
+                            },
+                            columns:
+                            [
+                                         { data: 'cedula', name: 'cedula' },
+                                         { data: 'nombres', name: 'nombres' },
+                                         { data: 'apellidos', name: 'apellidos'},
+                                         { data: 'correo', name: 'correo'},
+                                         { data: 'cel', name: 'cel'},
+                                         { data: 'estado', name: 'estado'},
+                                         {"defaultContent": "<button type='button' class='modif btn btn-warning'>Editar<span class='glyphicon glyphicon-edit'></span> </button>"},
+                            ]
+                        });
 
         /*Javascript para captura de la cedula y redirección a la ruta para modificación*/
 

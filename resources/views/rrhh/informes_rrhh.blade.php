@@ -1,11 +1,12 @@
 @extends('layouts.app')
-@include('layouts.menu_rrhh')
 @section('content')
+@include('layouts.menu_rrhh')
 <div class="container">
-
+  <p></p>
 	<div class="page-header">
-    	<h2>Informes anuales de gestión de recibos</h2>
+    	<h2>Informes Anuales de Gestión de Recibos</h2>
 	</div>
+	  <p></p>
 	<div>
 		<br><br><br><br>
 		<div class="row">

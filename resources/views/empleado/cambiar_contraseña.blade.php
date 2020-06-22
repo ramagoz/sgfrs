@@ -1,13 +1,13 @@
 @extends('layouts.app')
-@include('layouts.menu_empleado')
 @section('content')
+@include('layouts.menu_empleado')
 
 <div class="container">
-
+<p></p>
   <div class="page-header">
-      <h2>Cambiar contraseña</h2>
+      <h2>Cambiar Contraseña</h2>
   </div>
-
+<p></p>
   @isset($msj)
     <div class="alert alert-success alert-dismissible fade show" role="alert">
       <strong>{{ $msj }}</strong>

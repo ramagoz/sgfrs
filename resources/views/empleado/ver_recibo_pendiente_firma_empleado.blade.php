@@ -1,13 +1,13 @@
 @extends('layouts.app')
-@include('layouts.menu_empleado')
 @section('content')
+@include('layouts.menu_empleado')
 
-<div class="container-fluid">
-
+<div class="container">
+<p></p>
 		<div class="page-header">
 		    <h2>Ver recibo pendiente de firma empleado</h2>
 		</div>
-
+<p></p>
 		@isset($error)
 			<div class="alert alert-danger alert-dismissible fade show" role="alert">
 				<strong>{{ $error }}</strong>
@@ -17,7 +17,7 @@
 			</div>
 		@endisset
 
-		<iframe src='{{$id}}' width="100%" height="75%" frameborder="0" allowfullscreen>
+		<iframe src='{{$id}}' width="100%" height="350" frameborder="0" allowfullscreen>
 		</iframe><br><br>
 
 		<form action="/empleado/firmar_recibo" method="post">

@@ -1,10 +1,12 @@
 @extends('layouts.app')
-@include('layouts.menu_oficial')
 @section('content')
+@include('layouts.menu_oficial')
 
-<div class="container-fluid">
+<div class="container">
 	<div class="page-header">
-    	<h2>Inicio</h2>
+		<p></p>
+    	<h2>PAGINA PRINCIPAL</h2>
+    	<p></p>
     </div>
 </div>
 

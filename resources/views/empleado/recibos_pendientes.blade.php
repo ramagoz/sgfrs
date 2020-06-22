@@ -1,12 +1,12 @@
 @extends('layouts.app')
-@include('layouts.menu_empleado')
 @section('content')
-<div class="container-fluid">
-
+@include('layouts.menu_empleado')
+<div class="container">
+<p></p>
 	<div class="page-header">
-	    <h2>Recibos pendientes de firma</h2>
+	    <h2>Recibos Pendientes de Firma</h2>
 	</div>
-
+<p></p>
 	@isset($error)
 		<div class="alert alert-warning alert-dismissible fade show" role="alert">
 			<strong>{{ $error }}</strong>

@@ -1,12 +1,12 @@
 @extends('layouts.app')
-@include('layouts.menu_oficial')
 @section('content')
-<div class="container-fluid">
-
+@include('layouts.menu_oficial')
+<div class="container">
+<p></p>
     <div class="page-header">
-        <h2>Modificación de rol</h2>
+        <h2>Modificación de Rol</h2>
     </div>
-
+<p></p>
    <form action="{{url('/oficial/rol_modificado')}}" id="formulario-form" method="get"  role="form">
     {{ csrf_field() }}
 

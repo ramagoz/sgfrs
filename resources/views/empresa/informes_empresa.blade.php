@@ -1,12 +1,12 @@
 @extends('layouts.app')
-@include('layouts.menu_empresa')
 @section('content')
+@include('layouts.menu_empresa')
 <div class="container">
-
+<p></p>
 	<div class="page-header">
     	<h2>Informes anuales de gestión de recibos</h2>
 	</div>
-
+<p></p>
 	@isset($msj)
 		<div class="alert alert-warning alert-dismissible fade show" role="alert">
 			<strong>{{ $msj }}</strong>
