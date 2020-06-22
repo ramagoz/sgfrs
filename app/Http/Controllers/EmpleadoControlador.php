@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -35,7 +33,7 @@ class EmpleadoControlador extends Controller
             return view('empleado.recibos_pendientes')->with('recibos',$recibos)->with('msj','No existen recibos pendientes de firma por el empleado!');
         }else
         {
-            return view('empleado.recibos_pendientes')->with('recibos',$recibos)->with('boton','boton');
+            return view('empleado.recibos_pendientes')->with('recibos',$recibos);
         }
     }
     public function getVerReciboPendienteFirmaEmpleado($id)

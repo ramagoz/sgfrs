@@ -15,8 +15,8 @@ class CreateEstadoRecibosTable extends Migration
     {
         Schema::create('estado_recibos', function (Blueprint $table) {
             $table->increments('id_estado_recibo');
-            $table->string('ubicacion_recibo');
-            $table->string('estado');
+            $table->string('ubicacion_recibo',256);
+            $table->string('estado',30);
         });
     }
 

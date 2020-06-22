@@ -16,11 +16,11 @@ class CreateAuditoriasTable extends Migration
         Schema::create('auditorias', function (Blueprint $table) {
             $table->increments('id_auditoria');
             $table->dateTime('fecha_hora');
-            $table->string('cedula')->references('cedula')->on('personas');
-            $table->integer('rol');
-            $table->string('ip');
-            $table->string('operacion');
-            $table->string('descripcion',1000);
+            $table->string('cedula',7)->references('cedula')->on('personas');
+            $table->integer('rol')->references('id_rol')->on('roles');
+            $table->string('ip',16);
+            $table->string('operacion',50);
+            $table->string('descripcion',500);
         });
     }
 

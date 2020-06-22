@@ -15,10 +15,10 @@ class CreateRecibosConErroresTable extends Migration
     {
         Schema::create('recibos_con_errores', function (Blueprint $table)
         {
-            $table->String('id')->primary();
-            $table->string('id_recibo');
-            $table->String('cedula');
-            $table->string('motivo_error');
+            $table->String('id',30)->primary();
+            $table->string('id_recibo',13);
+            $table->String('cedula',7);
+            $table->string('motivo_error',100);
             $table->dateTime('fecha_hora');
         });
     }

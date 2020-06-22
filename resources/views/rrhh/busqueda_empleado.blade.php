@@ -42,7 +42,7 @@
       </thead>
   </table>
 
-  <a href="alta_empleado" button class="btn btn-primary">Alta de Empresa</a>
+  <a href="alta_empleado" button class="btn btn-primary">Alta de Empleado</a>
   <!--Javascript de Datatables-->
   <script type="text/javascript">
        $(document).ready(function ()  {
